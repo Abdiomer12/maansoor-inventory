@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maansoor Hotel - Professional Inventory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Maktabadaha loo baahanyahay -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
+        .hotel-gold { color: #c5a059; }
+        .bg-hotel-blue { background-color: #0f172a; }
+        .btn-active { background-color: #c5a059 !important; color: #000 !important; border-color: #c5a059 !important; }
+        .premium-border { border-bottom: 2px solid #c5a059; }
+        
+        /* Hover effects for buttons */
+        .room-btn:hover {
+            background-color: #c5a059 !important;
+            color: #0f172a !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.2s ease;
+        }
+
+        /* Login Screen Style */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background-color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-glow {
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            border: 2px solid rgba(197, 160, 89, 0.5);
+        }
+    </style>
+</head>
+<body onload="checkAuth()">
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-96">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-500 mb-2">
+                    <i class="fas fa-lock text-white"></i>
+                </div>
+                <h2 class="text-xl font-bold text-slate-800 uppercase">Maansoor Login</h2>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold text-gray-500 uppercase ml-1">Username</label>
+                    <input type="text" id="username" placeholder="Username" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-gray-50">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-gray-500 uppercase ml-1">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" class="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-gray-50">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-bold py-3 rounded-lg hover:bg-slate-800 transition shadow-lg mt-2 uppercase tracking-wider">LOGIN</button>
+            </div>
+            <p id="login-error" class="text-red-600 text-[10px] mt-4 text-center hidden font-bold uppercase tracking-tight">Username ama Password waa khalad!</p>
+        </div>
+    </div>
+
+    <!-- Main App UI -->
+    <div id="app-content" class="hidden">
+        <div class="flex h-screen overflow-hidden">
+            <!-- Sidebar -->
+            <div class="w-72 bg-hotel-blue text-white p-6 hidden md:block shadow-2xl overflow-y-auto">
+                <div class="mb-10 text-center border-b border-slate-700/50 pb-8">
+                    <div class="relative inline-block">
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 logo-glow mb-4 rotate-3">
+                            <i class="fa-solid fa-building-columns text-yellow-500 text-4xl -rotate-3"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-extrabold tracking-tighter text-white uppercase italic leading-none">
+                        MAANSOOR
+                        <span class="block text-[10px] font-light hotel-gold tracking-[0.4em] mt-1 not-italic">HOTEL & RESORT</span>
+                    </h1>
+                </div>
+                
+                <nav class="space-y-2 text-left">
+                    <button onclick="changeCategory('rooms', 100)" class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition flex items-center justify-between group">
+                        <span><i class="fas fa-bed mr-3 text-blue-400"></i> Rooms</span>
+                        <span class="text-xs bg-blue-900 px-2 py-1 rounded">100</span>
+                    </button>
+                    <button onclick="changeCategory('halls', 10)" class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition flex items-center justify-between group">
+                        <span><i class="fas fa-users mr-3 text-green-400"></i> Halls</span>
+                        <span class="text-xs bg-green-900 px-2 py-1 rounded">10</span>
+                    </button>
+                    <button onclick="changeCategory('kitchens', 4)" class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition flex items-center justify-between group">
+                        <span><i class="fas fa-utensils mr-3 text-red-400"></i> Kitchens</span>
+                        <span class="text-xs bg-red-900 px-2 py-1 rounded">4</span>
+                    </button>
+                    <button onclick="changeCategory('offices', 1)" class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition flex items-center group">
+                        <i class="fas fa-briefcase mr-3 text-yellow-400"></i> Offices
+                    </button>
+                    <div class="pt-10">
+                         <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 hover:bg-red-900/20 transition flex items-center">
+                            <i class="fas fa-sign-out-alt mr-3"></i> Ka bax (Logout)
+                        </button>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 flex flex-col">
+                <header class="bg-white shadow-sm p-4 flex flex-col md:flex-row justify-between items-center px-10 border-b border-gray-200">
+                    <div class="relative w-full md:w-96 mb-2 md:mb-0">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </span>
+                        <input type="text" id="searchInput" onkeyup="filterInventory()" placeholder="Baar magaca agabka ama qolka..." 
+                               class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-yellow-500">
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="text-right border-r pr-4">
+                            <p class="text-[10px] text-gray-400 font-bold uppercase">Total Assets</p>
+                            <p id="stat-total-items" class="text-sm font-extrabold text-blue-900">0 Items</p>
+                        </div>
+                        <div class="text-right pr-4">
+                            <p class="text-[10px] text-gray-400 font-bold uppercase">Grand Total Value</p>
+                            <p id="stat-total-value" class="text-sm font-extrabold text-green-600">$0.00</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500 border-2 border-yellow-500 shadow-md">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                </header>
+
+                <main class="flex-1 overflow-y-auto p-6">
+                    <div id="selection-area" class="mb-6 bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <h3 id="selection-label" class="mb-3 font-bold text-gray-700 text-sm uppercase flex items-center">
+                            <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha:
+                        </h3>
+                        <div class="grid grid-cols-5 md:grid-cols-10 gap-2" id="grid-buttons"></div>
+                    </div>
+
+                    <!-- Input Form -->
+                    <div id="entry-form" class="bg-white p-8 rounded-xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
+                        <h3 id="form-header" class="text-xl font-extrabold mb-6 text-slate-800 border-b pb-2 tracking-tight uppercase italic text-center">Geli Xogta Agabka</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase">Holder (Qofka)</label>
+                                <input type="text" id="holder" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-yellow-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase">Department</label>
+                                <input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-yellow-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase">Location</label>
+                                <input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-lg font-bold text-yellow-800">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase">Item Code</label>
+                                <input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-yellow-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase">Item Name</label>
+                                <input type="text" id="name" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-yellow-600">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase">QTY</label>
+                                    <input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase">U.VALUE ($)</label>
+                                    <input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-gray-400 uppercase">Description (Faahfaahin)</label>
+                                <input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase text-yellow-600">Total Value ($)</label>
+                                <input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-lg font-bold text-lg">
+                            </div>
+                        </div>
+                        <div class="mt-6 flex space-x-4">
+                            <!-- ID badhanka waa la magacaabay si edit-ka loogu bedelo text-ka -->
+                            <button id="save-btn" onclick="saveData()" class="bg-slate-900 text-yellow-400 border border-yellow-500 px-10 py-3 rounded-lg font-bold shadow-lg hover:bg-slate-800 transition uppercase tracking-widest text-sm">
+                                <i class="fas fa-save mr-2"></i> Kaydi Agabka
+                            </button>
+                            <button onclick="resetForm()" class="bg-gray-400 text-white px-10 py-3 rounded-lg font-bold uppercase text-sm">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Inventory Table -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                        <div class="bg-slate-900 p-4 border-b border-yellow-600 flex justify-between items-center">
+                            <h4 class="font-bold text-yellow-500 uppercase text-xs tracking-[0.2em]">Inventory Log List</h4>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white text-[10px] px-3 py-1 rounded font-bold uppercase transition">
+                                    <i class="fas fa-file-excel mr-1"></i> Export Excel
+                                </button>
+                                <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] px-3 py-1 rounded font-bold uppercase transition">
+                                    <i class="fas fa-file-pdf mr-1"></i> Export PDF
+                                </button>
+                                <button onclick="clearAllData()" class="text-red-400 text-[10px] hover:underline uppercase font-bold pl-4">Tirtir dhamaan</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto max-h-[500px]">
+                            <table id="inventory-table" class="min-w-full divide-y divide-gray-200 text-left">
+                                <thead class="bg-gray-50 sticky top-0 z-10">
+                                    <tr>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Code</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Item Name</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Description</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Qty</th>
+                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Total</th>
+                                        <th class="px-6 py-4 w-24">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-tbody" class="bg-white divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SECURITY & AUTH (QARSAN) ---
+        const _uKey = "YWRtaW4="; // admin
+        const _pKey = "MTIz";    // 123
+        const _expiry = 3600000; // 1 Saac
+
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(btoa(user) === _uKey && btoa(pass) === _pKey) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('loginTime', Date.now());
+                checkAuth();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                setTimeout(() => document.getElementById('login-error').classList.add('hidden'), 3000);
+            }
+        }
+
+        function checkAuth() {
+            const auth = sessionStorage.getItem('isLoggedIn');
+            const loginTime = sessionStorage.getItem('loginTime');
+            const now = Date.now();
+            const loginScreen = document.getElementById('login-screen');
+            const appContent = document.getElementById('app-content');
+
+            if(auth === 'true' && (now - loginTime < _expiry)) {
+                loginScreen.style.display = 'none';
+                appContent.classList.remove('hidden');
+                loadInventory();
+            } else {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('loginTime');
+                loginScreen.style.display = 'flex';
+                appContent.classList.add('hidden');
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('loginTime');
+            window.location.reload();
+        }
+
+        document.getElementById('password').addEventListener('keypress', (e) => e.key === 'Enter' && handleLogin());
+
+        // --- 2. CORE LOGIC ---
+        let inventory = JSON.parse(localStorage.getItem('maansoor_assets')) || [];
+        let currentSelectedLocation = "";
+        let currentCategory = "rooms";
+        let editId = null; // ID-ga shayga la saxayo
+
+        function loadInventory() {
+            updateDashboardStats();
+            changeCategory('rooms', 100);
+        }
+
+        function updateDashboardStats() {
+            const totalItems = inventory.length;
+            const totalValue = inventory.reduce((sum, item) => {
+                let val = item.total ? item.total.replace('$', '').replace(',', '') : 0;
+                return sum + parseFloat(val || 0);
+            }, 0);
+            document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
+            document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
+
+        function calculate() {
+            const qty = document.getElementById('qty').value || 0;
+            const val = document.getElementById('uvalue').value || 0;
+            const totalValue = (qty * val).toFixed(2);
+            document.getElementById('total').value = `$${totalValue}`;
+            return totalValue;
+        }
+
+        function saveData() {
+            const name = document.getElementById('name').value;
+            const qty = document.getElementById('qty').value;
+            if(!name || !qty) { alert("Fadlan buuxi Magaca iyo Tirada!"); return; }
+
+            const itemData = {
+                id: editId || Date.now(),
+                holder: document.getElementById('holder').value,
+                dept: document.getElementById('dept').value,
+                location: document.getElementById('location').value,
+                code: document.getElementById('code').value,
+                name: name,
+                desc: document.getElementById('desc').value,
+                qty: qty,
+                uvalue: document.getElementById('uvalue').value,
+                total: calculate()
+            };
+
+            if(editId) {
+                // Cusboonaysii shay hore u jiray
+                inventory = inventory.map(item => item.id === editId ? itemData : item);
+                alert("Xogta waa la cusboonaysiiyay!");
+            } else {
+                // Kaydi shay cusub
+                inventory.push(itemData);
+                alert("Agabka waa la kaydiyay!");
+            }
+
+            localStorage.setItem('maansoor_assets', JSON.stringify(inventory));
+            resetForm();
+            renderTable(currentSelectedLocation);
+            updateDashboardStats();
+        }
+
+        function editItem(id) {
+            const item = inventory.find(i => i.id === id);
+            if(!item) return;
+
+            editId = id;
+            document.getElementById('holder').value = item.holder;
+            document.getElementById('dept').value = item.dept;
+            document.getElementById('location').value = item.location;
+            document.getElementById('code').value = item.code;
+            document.getElementById('name').value = item.name;
+            document.getElementById('desc').value = item.desc;
+            document.getElementById('qty').value = item.qty;
+            document.getElementById('uvalue').value = item.uvalue;
+            document.getElementById('total').value = item.total;
+
+            document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii';
+            document.getElementById('entry-form').classList.remove('hidden');
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+
+        function renderTable(filterLoc = "") {
+            const tbody = document.getElementById('inventory-tbody');
+            tbody.innerHTML = '';
+            if (filterLoc === "") return;
+            const displayData = inventory.filter(item => item.location === filterLoc);
+            displayData.slice().reverse().forEach(item => {
+                const row = `
+                    <tr class="hover:bg-yellow-50 border-b">
+                        <td class="px-6 py-4 text-sm text-gray-500">${item.code || '-'}</td>
+                        <td class="px-6 py-4 text-sm font-bold text-slate-800">${item.name}</td>
+                        <td class="px-6 py-4 text-sm text-gray-400 italic">${item.desc || '-'}</td>
+                        <td class="px-6 py-4 text-sm font-bold">${item.qty}</td>
+                        <td class="px-6 py-4 text-sm font-extrabold text-slate-900">$${item.total}</td>
+                        <td class="px-6 py-4 text-right flex space-x-2 justify-end">
+                            <button onclick="editItem(${item.id})" class="text-blue-500 hover:text-blue-700 transition p-1"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteItem(${item.id})" class="text-red-400 hover:text-red-600 transition p-1"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function changeCategory(cat, count) {
+            currentCategory = cat;
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = '';
+            resetForm();
+            renderTable("");
+            for (let i = 1; i <= count; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i; btn.id = `btn-${cat}-${i}`;
+                btn.className = "room-btn p-2 bg-white border border-gray-200 rounded text-xs font-bold shadow-sm transition-all duration-200";
+                btn.onclick = (e) => {
+                    document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active'));
+                    btn.classList.add('btn-active');
+                    currentSelectedLocation = `${cat.charAt(0).toUpperCase() + cat.slice(1)} ${i}`;
+                    document.getElementById('location').value = currentSelectedLocation;
+                    document.getElementById('entry-form').classList.remove('hidden');
+                    document.getElementById('form-header').innerText = `Xogta Agabka: ${currentSelectedLocation}`;
+                    renderTable(currentSelectedLocation);
+                };
+                grid.appendChild(btn);
+            }
+        }
+
+        function resetForm() {
+            editId = null;
+            document.getElementById('save-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Kaydi Agabka';
+            const fields = ['code', 'name', 'desc', 'qty', 'uvalue', 'total'];
+            fields.forEach(f => document.getElementById(f).value = '');
+            document.getElementById('entry-form').classList.add('hidden');
+        }
+
+        function deleteItem(id) {
+            if(confirm('Ma hubtaa inaad tirtirto?')) {
+                inventory = inventory.filter(i => i.id !== id);
+                localStorage.setItem('maansoor_assets', JSON.stringify(inventory));
+                renderTable(currentSelectedLocation);
+                updateDashboardStats();
+            }
+        }
+
+        function clearAllData() {
+            if(confirm('Ma hubtaa inaad tirtirto dhamaan xogta ' + currentSelectedLocation + '?')) {
+                inventory = inventory.filter(item => item.location !== currentSelectedLocation);
+                localStorage.setItem('maansoor_assets', JSON.stringify(inventory));
+                renderTable(currentSelectedLocation);
+                updateDashboardStats();
+            }
+        }
+
+        function filterInventory() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = inventory.filter(item => 
+                (item.name.toLowerCase().includes(query) || item.location.toLowerCase().includes(query))
+            );
+            const tbody = document.getElementById('inventory-tbody');
+            tbody.innerHTML = '';
+            filtered.slice().reverse().forEach(item => {
+                const row = `<tr class="hover:bg-yellow-50 border-b">
+                    <td class="px-6 py-4 text-sm">${item.code || '-'}</td>
+                    <td class="px-6 py-4 text-sm font-bold">${item.name} <br><span class="text-[9px] bg-yellow-100 px-1 rounded text-yellow-800 uppercase tracking-tighter">${item.location}</span></td>
+                    <td class="px-6 py-4 text-sm text-gray-400">${item.desc || '-'}</td>
+                    <td class="px-6 py-4 text-sm">${item.qty}</td>
+                    <td class="px-6 py-4 text-sm font-extrabold text-slate-900">$${item.total}</td>
+                    <td class="px-6 py-4 text-right flex justify-end space-x-2">
+                        <button onclick="editItem(${item.id})" class="text-blue-500 p-1"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem(${item.id})" class="text-red-400 p-1"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function exportToExcel() {
+            if (inventory.length === 0) { alert("Ma jiro wax xog ah!"); return; }
+            let dataToExport = currentCategory === 'rooms' ? inventory.filter(item => item.location.startsWith('Room')) : inventory.filter(item => item.location === currentSelectedLocation);
+            const excelData = dataToExport.map(item => ({
+                "HOLDER": item.holder, "DEPARTMENT": item.dept, "ITEM CODE": item.code, "NAME ITEM": item.name,
+                "DESCRIPTION": item.desc, "LOCATION": item.location, "QTY": item.qty, "UNIT VALUE ($)": item.uvalue, "TOTAL": item.total
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
+            XLSX.writeFile(workbook, `Maansoor_Export.xlsx`);
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            doc.setFontSize(18);
+            doc.setTextColor(15, 23, 42);
+            doc.text("MAANSOOR HOTEL - ASSET REPORT", 14, 15);
+            doc.setFontSize(10);
+            doc.text(`Location: ${currentSelectedLocation || 'Full Inventory'}`, 14, 22);
+            doc.text(`Date Generated: ${new Date().toLocaleDateString()}`, 14, 27);
+            let dataToExport = currentSelectedLocation ? inventory.filter(item => item.location === currentSelectedLocation) : inventory;
+            const tableData = dataToExport.map(i => [i.code || '-', i.name, i.desc || '-', i.qty, i.total]);
+            doc.autoTable({
+                head: [['Code', 'Item Name', 'Description', 'Qty', 'Total']],
+                body: tableData,
+                startY: 35,
+                theme: 'grid',
+                headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255] },
+                styles: { font: 'helvetica', fontSize: 9 }
+            });
+            doc.save(`Maansoor_Report_${currentSelectedLocation || 'Full'}.pdf`);
+        }
+    </script>
+</body>
+</html>
