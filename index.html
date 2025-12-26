@@ -121,19 +121,20 @@
                 
                 <nav class="space-y-2 text-left">
                     <button onclick="changeCategory('room', 100)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-bed mr-3 text-[#FF4081]"></i> Rooms</span>
+                        <span><i class="fas fa-bed mr-3 text-[#0D47A1]"></i> Rooms</span>
                         <span class="text-xs bg-blue-900 px-2 py-1 rounded">100</span>
                     </button>
                     <button onclick="changeCategory('hall', 10)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-users mr-3 text-[#FF9100]"></i> Halls</span>
+                        <span><i class="fas fa-users mr-3 text-[#1B5E20]"></i> Halls</span>
                         <span class="text-xs bg-green-900 px-2 py-1 rounded">10</span>
                     </button>
                     <button onclick="changeCategory('kitchen', 4)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-utensils mr-3 text-[#FFEA00]"></i> Kitchens</span>
+                        <span><i class="fas fa-utensils mr-3 text-[#B71C1C]"></i> Kitchens</span>
                         <span class="text-xs bg-red-900 px-2 py-1 rounded">4</span>
                     </button>
-                    <button onclick="changeCategory('office', 1)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center group">
-                        <i class="fas fa-briefcase mr-3 text-[#00E676]"></i> Offices
+                    <button onclick="changeCategory('office', 2)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
+                        <span><i class="fas fa-briefcase mr-3 text-[#B45309]"></i> Offices</span>
+                        <span class="text-xs bg-amber-900 px-2 py-1 rounded">2</span>    
                     </button>
                     <div class="pt-10">
                          <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 hover:bg-red-900/20 transition flex items-center">
@@ -322,20 +323,20 @@
             const counts = cats.map(c => inventory.filter(i => i.location.toLowerCase().includes(c.toLowerCase())).length);
             
             // EXACT COLORS MATCHING YOUR ICONS
-            const iconColors = ['#FF4081', '#FF9100', '#FFEA00', '#00E676']; 
+            const iconColors = ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309']; 
 
             if(myChart1) myChart1.destroy(); if(myChart2) myChart2.destroy();
             
             myChart1 = new Chart(document.getElementById('categoryChart'), { 
                 type: 'bar', 
-                data: { labels: cats, datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 15, barThickness: 40 }] }, 
+                data: { labels: cats, datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 15, barThickness: 50 }] }, 
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false }, beginAtZero: true }, x: { grid: { display: false } } } } 
             });
             
             myChart2 = new Chart(document.getElementById('countChart'), { 
                 type: 'doughnut', 
                 data: { labels: cats, datasets: [{ data: counts, backgroundColor: iconColors, borderWidth: 8, borderColor: '#fff', hoverOffset: 25 }] }, 
-                options: { responsive: true, maintainAspectRatio: false, cutout: '78%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 10 } } } } } 
+                options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 15 } } } } } 
             });
         }
 
