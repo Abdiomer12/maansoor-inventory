@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
+    <!-- Chart.js for Visual Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
         body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
@@ -18,7 +20,6 @@
         .btn-active { background-color: #c5a059 !important; color: #000 !important; border-color: #c5a059 !important; }
         .premium-border { border-bottom: 2px solid #c5a059; }
         
-        /* Hover effects for buttons */
         .room-btn:hover {
             background-color: #c5a059 !important;
             color: #0f172a !important;
@@ -27,7 +28,6 @@
             transition: all 0.2s ease;
         }
 
-        /* Login Screen Style */
         #login-screen {
             position: fixed;
             inset: 0;
@@ -40,11 +40,10 @@
         }
 
         .logo-glow {
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
-            border: 2px solid rgba(197, 160, 89, 0.5);
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
+            border: 2px solid rgba(197, 160, 89, 0.4);
         }
 
-        /* Mobile Sidebar Overlay */
         @media (max-width: 768px) {
             .mobile-sidebar {
                 position: fixed;
@@ -58,11 +57,23 @@
                 left: 0;
             }
         }
+
+        .chart-card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            border: 1px solid rgba(226, 232, 240, 0.7);
+            transition: 0.3s;
+        }
+        .chart-card:hover {
+            box-shadow: 0 15px 45px rgba(197, 160, 89, 0.15);
+            border-color: #c5a059;
+        }
     </style>
 </head>
 <body onload="checkAuth()">
 
-    <!-- Login Screen (Improved UI) -->
+    <!-- Login Screen -->
     <div id="login-screen">
         <div class="bg-white/95 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20">
             <div class="text-center mb-8">
@@ -75,23 +86,13 @@
             <div class="space-y-5">
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Username</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <i class="fas fa-user text-xs"></i>
-                        </span>
-                        <input type="text" id="username" placeholder="Username" class="w-full pl-10 p-3.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
-                    </div>
+                    <input type="text" id="username" placeholder="Username" class="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Password</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <i class="fas fa-key text-xs"></i>
-                        </span>
-                        <input type="password" id="password" placeholder="••••••••" class="w-full pl-10 p-3.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
-                    </div>
+                    <input type="password" id="password" placeholder="••••••••" class="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
-                <button onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-black py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-yellow-500/10 active:scale-95 uppercase tracking-widest mt-4">(LOGIN)</button>
+                <button onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-black py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-yellow-500/10 active:scale-95 uppercase tracking-widest mt-4">LOGIN</button>
             </div>
             <p id="login-error" class="text-red-600 text-[10px] mt-5 text-center hidden font-bold uppercase tracking-tight bg-red-50 p-2 rounded-lg border border-red-100">Username ama Password waa khalad!</p>
         </div>
@@ -101,12 +102,10 @@
     <div id="app-content" class="hidden">
         <div class="flex h-screen overflow-hidden relative">
             
-            <!-- Mobile Toggle Button -->
             <button onclick="toggleSidebar()" class="md:hidden fixed bottom-6 right-6 z-[60] bg-slate-900 text-yellow-500 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl border-2 border-yellow-500/50">
                 <i id="menu-icon" class="fas fa-bars"></i>
             </button>
 
-            <!-- Sidebar -->
             <div id="sidebar" class="w-72 bg-hotel-blue text-white p-6 md:block mobile-sidebar shadow-2xl overflow-y-auto shrink-0 border-r border-slate-800">
                 <div class="mb-10 text-center border-b border-slate-700/50 pb-8">
                     <div class="relative inline-block">
@@ -122,19 +121,19 @@
                 
                 <nav class="space-y-2 text-left">
                     <button onclick="changeCategory('room', 100)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-bed mr-3 text-blue-400"></i> Rooms</span>
+                        <span><i class="fas fa-bed mr-3 text-[#FF4081]"></i> Rooms</span>
                         <span class="text-xs bg-blue-900 px-2 py-1 rounded">100</span>
                     </button>
                     <button onclick="changeCategory('hall', 10)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-users mr-3 text-green-400"></i> Halls</span>
+                        <span><i class="fas fa-users mr-3 text-[#FF9100]"></i> Halls</span>
                         <span class="text-xs bg-green-900 px-2 py-1 rounded">10</span>
                     </button>
                     <button onclick="changeCategory('kitchen', 4)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-utensils mr-3 text-red-400"></i> Kitchens</span>
+                        <span><i class="fas fa-utensils mr-3 text-[#FFEA00]"></i> Kitchens</span>
                         <span class="text-xs bg-red-900 px-2 py-1 rounded">4</span>
                     </button>
                     <button onclick="changeCategory('office', 1)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center group">
-                        <i class="fas fa-briefcase mr-3 text-yellow-400"></i> Offices
+                        <i class="fas fa-briefcase mr-3 text-[#00E676]"></i> Offices
                     </button>
                     <div class="pt-10">
                          <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 hover:bg-red-900/20 transition flex items-center">
@@ -144,7 +143,6 @@
                 </nav>
             </div>
 
-            <!-- Main Content -->
             <div class="flex-1 flex flex-col min-w-0">
                 <header class="bg-white shadow-sm p-4 flex flex-col md:flex-row justify-between items-center px-4 md:px-10 border-b border-gray-200">
                     <div class="relative w-full md:w-80 lg:w-96 mb-3 md:mb-0">
@@ -171,15 +169,31 @@
                 </header>
 
                 <main class="flex-1 overflow-y-auto p-4 md:p-6">
+                    <!-- Dashboard Visual Analytics (SYNCED COLORS) -->
+                    <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                        <div class="chart-card p-8 bg-white overflow-hidden relative">
+                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center">
+                                <i class="fas fa-layer-group text-yellow-500 mr-2 text-lg"></i> Asset Value Distribution ($)
+                            </h3>
+                            <div class="h-64"><canvas id="categoryChart"></canvas></div>
+                        </div>
+                        <div class="chart-card p-8 bg-white overflow-hidden relative">
+                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center justify-center">
+                                <i class="fas fa-chart-pie text-blue-500 mr-2 text-lg"></i> Inventory Composition (Count)
+                            </h3>
+                            <div class="h-64 relative">
+                                <canvas id="countChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200">
                         <h3 id="selection-label" class="mb-3 font-bold text-gray-700 text-xs md:text-sm uppercase flex items-center">
                             <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha:
                         </h3>
-                        <!-- Responsive Grid for Selection Buttons -->
                         <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2" id="grid-buttons"></div>
                     </div>
 
-                    <!-- Input Form (Responsive Layout) -->
                     <div id="entry-form" class="bg-white p-5 md:p-8 rounded-2xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
                         <h3 id="form-header" class="text-lg md:text-xl font-extrabold mb-6 text-slate-800 border-b pb-2 tracking-tight uppercase italic text-center">Geli Xogta Agabka</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -224,24 +238,26 @@
                         </div>
                         <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                             <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-3.5 rounded-xl font-bold shadow-xl hover:bg-slate-800 transition uppercase tracking-widest text-xs">
-                                <i class="fas fa-save mr-2"></i> Kaydi Agabka
+                                <i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka
                             </button>
-                            <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Cancel</button>
+                            <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Close (Dhamaystay)</button>
                         </div>
                     </div>
 
-                    <!-- Inventory Table Area -->
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
-                        <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
+                        <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
                             <h4 class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
-                            <div class="flex items-center space-x-2">
-                                <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
-                                    <i class="fas fa-file-excel mr-1"></i> Excel
+                            <div class="flex flex-wrap items-center justify-center gap-2">
+                                <button onclick="exportToExcel('room')" class="bg-green-600 hover:bg-green-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
+                                    <i class="fas fa-file-excel mr-1"></i> Excel (Location)
+                                </button>
+                                <button onclick="exportToExcel('full')" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
+                                    <i class="fas fa-hotel mr-1"></i> Excel (Full)
                                 </button>
                                 <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
-                                    <i class="fas fa-file-pdf mr-1"></i> PDF
+                                    <i class="fas fa-file-pdf mr-1"></i> PDF Report
                                 </button>
-                                <button onclick="clearAllData()" class="text-red-400 text-[9px] md:text-[10px] hover:underline uppercase font-bold pl-2">Tirtir dhamaan</button>
+                                <button onclick="clearAllData()" class="text-red-400 text-[9px] md:text-[10px] hover:underline uppercase font-bold pl-2">Reset All</button>
                             </div>
                         </div>
                         <div class="overflow-x-auto max-h-[500px]">
@@ -251,8 +267,8 @@
                                         <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Code</th>
                                         <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Name</th>
                                         <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Desc</th>
-                                        <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
-                                        <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Total</th>
+                                        <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
+                                        <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Total</th>
                                         <th class="px-4 md:px-6 py-3 md:py-4 w-20">Actions</th>
                                     </tr>
                                 </thead>
@@ -266,279 +282,206 @@
     </div>
 
     <script>
-        // --- MOBILE SIDEBAR TOGGLE ---
+        // --- 1. SECURITY & UI ---
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const icon = document.getElementById('menu-icon');
-            sidebar.classList.toggle('open');
-            if(sidebar.classList.contains('open')) {
-                icon.className = "fas fa-times";
-            } else {
-                icon.className = "fas fa-bars";
-            }
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('menu-icon').className = document.getElementById('sidebar').classList.contains('open') ? "fas fa-times" : "fas fa-bars";
         }
-
-        // --- 1. SECURITY & AUTH (QARSAN) ---
-        const _uKey = "YWRtaW4="; // admin
-        const _pKey = "MTIz";    // 123
-        const _expiry = 3600000; // 1 Saac
-
+        const _uKey = "YWRtaW4="; const _pKey = "MTIz"; const _expiry = 3600000;
         function handleLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            if(btoa(user) === _uKey && btoa(pass) === _pKey) {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                sessionStorage.setItem('loginTime', Date.now());
-                checkAuth();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-                setTimeout(() => document.getElementById('login-error').classList.add('hidden'), 3000);
-            }
+            if(btoa(document.getElementById('username').value) === _uKey && btoa(document.getElementById('password').value) === _pKey) {
+                sessionStorage.setItem('isLoggedIn', 'true'); sessionStorage.setItem('loginTime', Date.now()); checkAuth();
+            } else { document.getElementById('login-error').classList.remove('hidden'); }
         }
-
         function checkAuth() {
-            const auth = sessionStorage.getItem('isLoggedIn');
-            const loginTime = sessionStorage.getItem('loginTime');
-            const now = Date.now();
-            const loginScreen = document.getElementById('login-screen');
-            const appContent = document.getElementById('app-content');
-
+            const auth = sessionStorage.getItem('isLoggedIn'); const loginTime = sessionStorage.getItem('loginTime'); const now = Date.now();
             if(auth === 'true' && (now - loginTime < _expiry)) {
-                loginScreen.style.display = 'none';
-                appContent.classList.remove('hidden');
-                loadInventory();
-            } else {
-                sessionStorage.removeItem('isLoggedIn');
-                sessionStorage.removeItem('loginTime');
-                loginScreen.style.display = 'flex';
-                appContent.classList.add('hidden');
-            }
+                document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-content').classList.remove('hidden'); loadInventory();
+            } else { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('app-content').classList.add('hidden'); }
         }
-
-        function handleLogout() {
-            sessionStorage.removeItem('isLoggedIn');
-            sessionStorage.removeItem('loginTime');
-            window.location.reload();
-        }
-
+        function handleLogout() { sessionStorage.clear(); window.location.reload(); }
         document.getElementById('password').addEventListener('keypress', (e) => e.key === 'Enter' && handleLogin());
 
         // --- 2. CORE LOGIC ---
         let inventory = JSON.parse(localStorage.getItem('maansoor_assets')) || [];
-        let currentSelectedLocation = "";
-        let currentCategory = "rooms";
-        let editId = null; 
+        let currentSelectedLocation = ""; let currentCategory = "rooms"; let editId = null; let myChart1, myChart2;
 
-        function loadInventory() {
-            updateDashboardStats();
-            changeCategory('rooms', 100);
-        }
+        function loadInventory() { updateDashboardStats(); changeCategory('room', 100); updateCharts(); }
 
         function updateDashboardStats() {
             const totalItems = inventory.length;
-            const totalValue = inventory.reduce((sum, item) => {
-                let val = item.total ? item.total.replace('$', '').replace(',', '') : 0;
-                return sum + parseFloat(val || 0);
-            }, 0);
+            const totalValue = inventory.reduce((sum, item) => sum + parseFloat(item.total.replace('$', '').replace(',', '') || 0), 0);
             document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
             document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
         }
 
-        function calculate() {
-            const qty = document.getElementById('qty').value || 0;
-            const val = document.getElementById('uvalue').value || 0;
-            const totalValue = (qty * val).toFixed(2);
-            document.getElementById('total').value = `$${totalValue}`;
-            return totalValue;
+        // REDESIGNED CHARTS with exactly synced icon colors
+        function updateCharts() {
+            const cats = ['Room', 'Hall', 'Kitchen', 'Office'];
+            const values = cats.map(c => inventory.filter(i => i.location.toLowerCase().includes(c.toLowerCase())).reduce((s, i) => s + parseFloat(i.total.replace('$', '').replace(',', '') || 0), 0));
+            const counts = cats.map(c => inventory.filter(i => i.location.toLowerCase().includes(c.toLowerCase())).length);
+            
+            // EXACT COLORS MATCHING YOUR ICONS
+            const iconColors = ['#FF4081', '#FF9100', '#FFEA00', '#00E676']; 
+
+            if(myChart1) myChart1.destroy(); if(myChart2) myChart2.destroy();
+            
+            myChart1 = new Chart(document.getElementById('categoryChart'), { 
+                type: 'bar', 
+                data: { labels: cats, datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 15, barThickness: 40 }] }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false }, beginAtZero: true }, x: { grid: { display: false } } } } 
+            });
+            
+            myChart2 = new Chart(document.getElementById('countChart'), { 
+                type: 'doughnut', 
+                data: { labels: cats, datasets: [{ data: counts, backgroundColor: iconColors, borderWidth: 8, borderColor: '#fff', hoverOffset: 25 }] }, 
+                options: { responsive: true, maintainAspectRatio: false, cutout: '78%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 10 } } } } } 
+            });
         }
 
+        function calculate() { const q = document.getElementById('qty').value || 0; const v = document.getElementById('uvalue').value || 0; document.getElementById('total').value = `$${(q * v).toFixed(2)}`; return (q * v).toFixed(2); }
+
         function saveData() {
-            const name = document.getElementById('name').value;
-            const qty = document.getElementById('qty').value;
-            if(!name || !qty) { alert("Fadlan buuxi Magaca iyo Tirada!"); return; }
-
-            const itemData = {
-                id: editId || Date.now(),
-                holder: document.getElementById('holder').value,
-                dept: document.getElementById('dept').value,
-                location: document.getElementById('location').value,
-                code: document.getElementById('code').value,
-                name: name,
-                desc: document.getElementById('desc').value,
-                qty: qty,
-                uvalue: document.getElementById('uvalue').value,
-                total: calculate()
-            };
-
-            if(editId) {
-                inventory = inventory.map(item => item.id === editId ? itemData : item);
-                alert("Xogta waa la cusboonaysiiyay!");
-            } else {
-                inventory.push(itemData);
-                alert("Agabka waa la kaydiyay!");
-            }
-
-            localStorage.setItem('maansoor_assets', JSON.stringify(inventory));
-            resetForm();
-            renderTable(currentSelectedLocation);
-            updateDashboardStats();
+            const n = document.getElementById('name').value; const q = document.getElementById('qty').value; if(!n || !q) return alert("Fadlan buuxi Magaca & Tirada!");
+            const data = { id: editId || Date.now(), holder: document.getElementById('holder').value, dept: document.getElementById('dept').value, location: document.getElementById('location').value, code: document.getElementById('code').value, name: n, desc: document.getElementById('desc').value, qty: q, uvalue: document.getElementById('uvalue').value, total: `$${calculate()}` };
+            
+            if(editId) { inventory = inventory.map(i => i.id === editId ? data : i); editId = null; } else { inventory.push(data); }
+            localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
+            
+            ['code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = '');
+            document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka';
+            
+            renderTable(currentSelectedLocation); updateDashboardStats(); updateCharts();
         }
 
         function editItem(id) {
-            const item = inventory.find(i => i.id === id);
-            if(!item) return;
-
-            editId = id;
-            document.getElementById('holder').value = item.holder;
-            document.getElementById('dept').value = item.dept;
-            document.getElementById('location').value = item.location;
-            document.getElementById('code').value = item.code;
-            document.getElementById('name').value = item.name;
-            document.getElementById('desc').value = item.desc;
-            document.getElementById('qty').value = item.qty;
-            document.getElementById('uvalue').value = item.uvalue;
-            document.getElementById('total').value = item.total;
-
+            const i = inventory.find(x => x.id === id); if(!i) return; editId = id;
+            ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = i[f]);
             document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii';
-            document.getElementById('entry-form').classList.remove('hidden');
-            window.scrollTo({ top: 100, behavior: 'smooth' });
+            document.getElementById('entry-form').classList.remove('hidden'); window.scrollTo({ top: 100, behavior: 'smooth' });
         }
 
-        function renderTable(filterLoc = "") {
-            const tbody = document.getElementById('inventory-tbody');
-            tbody.innerHTML = '';
-            if (filterLoc === "") return;
-            const displayData = inventory.filter(item => item.location === filterLoc);
-            displayData.slice().reverse().forEach(item => {
-                const row = `
-                    <tr class="hover:bg-yellow-50 border-b">
-                        <td class="px-4 md:px-6 py-4 text-[11px] md:text-sm text-gray-500">${item.code || '-'}</td>
-                        <td class="px-4 md:px-6 py-4 text-[11px] md:text-sm font-bold text-slate-800">${item.name}</td>
-                        <td class="px-4 md:px-6 py-4 text-[11px] md:text-sm text-gray-400 italic">${item.desc || '-'}</td>
-                        <td class="px-4 md:px-6 py-4 text-[11px] md:text-sm font-bold">${item.qty}</td>
-                        <td class="px-4 md:px-6 py-4 text-[11px] md:text-sm font-extrabold text-slate-900">$${item.total}</td>
-                        <td class="px-4 md:px-6 py-4 text-right flex space-x-1 md:space-x-2 justify-end">
-                            <button onclick="editItem(${item.id})" class="text-blue-500 hover:text-blue-700 transition p-1"><i class="fas fa-edit text-xs md:text-sm"></i></button>
-                            <button onclick="deleteItem(${item.id})" class="text-red-400 hover:text-red-600 transition p-1"><i class="fas fa-trash text-xs md:text-sm"></i></button>
-                        </td>
-                    </tr>`;
-                tbody.innerHTML += row;
+        function renderTable(loc = "") {
+            const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = ''; if (!loc) return;
+            inventory.filter(i => i.location === loc).slice().reverse().forEach(i => {
+                tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
+                    <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name}</td>
+                    <td class="px-4 md:px-6 py-4 text-xs text-gray-400 italic">${i.desc || '-'}</td>
+                    <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
+                    <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
+                    <td class="px-4 md:px-6 py-4 text-right flex space-x-2 justify-end"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
             });
         }
 
         function changeCategory(cat, count) {
-            currentCategory = cat;
-            const grid = document.getElementById('grid-buttons');
-            grid.innerHTML = '';
-            resetForm();
-            renderTable("");
-            
-            // Close mobile sidebar on selection
-            if(window.innerWidth < 768) {
-                const sidebar = document.getElementById('sidebar');
-                sidebar.classList.remove('open');
-                document.getElementById('menu-icon').className = "fas fa-bars";
-            }
-
+            currentCategory = cat; const grid = document.getElementById('grid-buttons'); grid.innerHTML = ''; resetForm(); renderTable("");
+            if(window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('menu-icon').className = "fas fa-bars"; }
             for (let i = 1; i <= count; i++) {
-                const btn = document.createElement('button');
-                btn.innerText = i; btn.id = `btn-${cat}-${i}`;
-                btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all duration-200";
-                btn.onclick = (e) => {
-                    document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active'));
-                    btn.classList.add('btn-active');
-                    currentSelectedLocation = `${cat.charAt(0).toUpperCase() + cat.slice(1)} ${i}`;
-                    document.getElementById('location').value = currentSelectedLocation;
-                    document.getElementById('entry-form').classList.remove('hidden');
-                    document.getElementById('form-header').innerText = `Xogta Agabka: ${currentSelectedLocation}`;
-                    renderTable(currentSelectedLocation);
+                const btn = document.createElement('button'); btn.innerText = i; btn.id = `btn-${cat}-${i}`;
+                btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
+                btn.onclick = (e) => { 
+                    document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active')); 
+                    btn.classList.add('btn-active'); 
+                    currentSelectedLocation = `${cat.charAt(0).toUpperCase() + cat.slice(1)} ${i}`; 
+                    document.getElementById('location').value = currentSelectedLocation; 
+                    document.getElementById('entry-form').classList.remove('hidden'); 
+                    document.getElementById('form-header').innerText = `Geli Agabka: ${currentSelectedLocation}`; 
+                    renderTable(currentSelectedLocation); 
                 };
                 grid.appendChild(btn);
             }
         }
 
-        function resetForm() {
-            editId = null;
-            document.getElementById('save-btn').innerHTML = '<i class="fas fa-save mr-2"></i> Kaydi Agabka';
-            const fields = ['code', 'name', 'desc', 'qty', 'uvalue', 'total'];
-            fields.forEach(f => document.getElementById(f).value = '');
-            document.getElementById('entry-form').classList.add('hidden');
-        }
+        function resetForm() { editId = null; document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka'; ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = ''); document.getElementById('entry-form').classList.add('hidden'); }
 
-        function deleteItem(id) {
-            if(confirm('Ma hubtaa inaad tirtirto?')) {
-                inventory = inventory.filter(i => i.id !== id);
-                localStorage.setItem('maansoor_assets', JSON.stringify(inventory));
-                renderTable(currentSelectedLocation);
-                updateDashboardStats();
-            }
-        }
+        function deleteItem(id) { if(confirm('Ma hubtaa?')) { inventory = inventory.filter(i => i.id !== id); localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); renderTable(currentSelectedLocation); updateDashboardStats(); updateCharts(); } }
 
-        function clearAllData() {
-            if(confirm('Ma hubtaa inaad tirtirto dhamaan xogta ' + currentSelectedLocation + '?')) {
-                inventory = inventory.filter(item => item.location !== currentSelectedLocation);
-                localStorage.setItem('maansoor_assets', JSON.stringify(inventory));
-                renderTable(currentSelectedLocation);
-                updateDashboardStats();
-            }
-        }
+        function clearAllData() { if(confirm('DHAMAAN ma tirtirnaa?')) { inventory = []; localStorage.removeItem('maansoor_assets'); window.location.reload(); } }
 
         function filterInventory() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = inventory.filter(item => 
-                (item.name.toLowerCase().includes(query) || item.location.toLowerCase().includes(query))
-            );
-            const tbody = document.getElementById('inventory-tbody');
-            tbody.innerHTML = '';
-            filtered.slice().reverse().forEach(item => {
-                const row = `<tr class="hover:bg-yellow-50 border-b">
-                    <td class="px-4 py-4 text-xs">${item.code || '-'}</td>
-                    <td class="px-4 py-4 text-xs font-bold">${item.name} <br><span class="text-[9px] bg-yellow-100 px-1 rounded text-yellow-800 uppercase tracking-tighter">${item.location}</span></td>
-                    <td class="px-4 py-4 text-xs text-gray-400">${item.desc || '-'}</td>
-                    <td class="px-4 py-4 text-xs font-bold">${item.qty}</td>
-                    <td class="px-4 py-4 text-xs font-extrabold text-slate-900">$${item.total}</td>
-                    <td class="px-4 py-4 text-right flex justify-end space-x-2">
-                        <button onclick="editItem(${item.id})" class="text-blue-500 p-1"><i class="fas fa-edit"></i></button>
-                        <button onclick="deleteItem(${item.id})" class="text-red-400 p-1"><i class="fas fa-trash"></i></button>
-                    </td>
+            const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = inventory.filter(i => i.name.toLowerCase().includes(q) || i.location.toLowerCase().includes(q));
+            const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = '';
+            filtered.slice().reverse().forEach(i => {
+                tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
+                    <td class="px-4 py-4 text-xs">${i.code || '-'}</td>
+                    <td class="px-4 py-4 text-xs font-bold">${i.name} <br><span class="text-[9px] bg-yellow-100 px-1 rounded text-yellow-800 uppercase tracking-tighter">${i.location}</span></td>
+                    <td class="px-4 py-4 text-xs text-gray-400">${i.desc || '-'}</td>
+                    <td class="px-4 py-4 text-xs font-bold">${i.qty}</td>
+                    <td class="px-4 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
+                    <td class="px-4 py-4 text-right flex justify-end space-x-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
-                tbody.innerHTML += row;
             });
         }
 
-        function exportToExcel() {
-            if (inventory.length === 0) { alert("Ma jiro wax xog ah!"); return; }
-            let dataToExport = currentCategory === 'rooms' ? inventory.filter(item => item.location.startsWith('Room')) : inventory.filter(item => item.location === currentSelectedLocation);
-            const excelData = dataToExport.map(item => ({
-                "HOLDER": item.holder, "DEPARTMENT": item.dept, "ITEM CODE": item.code, "NAME ITEM": item.name,
-                "DESCRIPTION": item.desc, "LOCATION": item.location, "QTY": item.qty, "UNIT VALUE ($)": item.uvalue, "TOTAL": item.total
-            }));
-            const worksheet = XLSX.utils.json_to_sheet(excelData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
-            XLSX.writeFile(workbook, `Maansoor_Export.xlsx`);
+        function exportToExcel(type) {
+            if (inventory.length === 0) return alert("Xog ma jirto!");
+            let dataToExport = (type === 'room') ? inventory.filter(i => i.location === currentSelectedLocation) : inventory;
+            if(dataToExport.length === 0) return alert("Meeshan xog kuma jirto!");
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport); const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory"); XLSX.writeFile(workbook, `Maansoor_${type}_Export.xlsx`);
         }
 
+        // FULLY WORKING PDF EXPORT FUNCTION
         function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // PDF Styling
+            const hotelName = "MAANSOOR HOTEL & RESORT";
+            const reportTitle = "INVENTORY ASSET REPORT";
+            const date = new Date().toLocaleString();
+            const locationName = currentSelectedLocation || "FULL HOTEL INVENTORY";
+
+            // Header
             doc.setFontSize(18);
-            doc.setTextColor(15, 23, 42);
-            doc.text("MAANSOOR HOTEL - ASSET REPORT", 14, 15);
-            doc.setFontSize(10);
-            doc.text(`Location: ${currentSelectedLocation || 'Full Inventory'}`, 14, 22);
-            doc.text(`Date Generated: ${new Date().toLocaleDateString()}`, 14, 27);
-            let dataToExport = currentSelectedLocation ? inventory.filter(item => item.location === currentSelectedLocation) : inventory;
-            const tableData = dataToExport.map(i => [i.code || '-', i.name, i.desc || '-', i.qty, i.total]);
+            doc.setTextColor(15, 23, 42); // Navy
+            doc.text(hotelName, 14, 20);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(197, 160, 89); // Gold
+            doc.text(reportTitle, 14, 28);
+            
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+            doc.text(`Location: ${locationName}`, 14, 35);
+            doc.text(`Generated on: ${date}`, 14, 40);
+            
+            // Draw a Gold line
+            doc.setDrawColor(197, 160, 89);
+            doc.setLineWidth(0.5);
+            doc.line(14, 43, 196, 43);
+
+            // Filter Data
+            let data = currentSelectedLocation ? inventory.filter(i => i.location === currentSelectedLocation) : inventory;
+            
+            if(data.length === 0) {
+                alert("Xog ma jirto oo PDF laga dhigo!");
+                return;
+            }
+
+            const tableData = data.map(i => [
+                i.code || '-', 
+                i.name, 
+                i.desc || '-', 
+                i.qty, 
+                i.total
+            ]);
+
+            // Table
             doc.autoTable({
-                head: [['Code', 'Item Name', 'Description', 'Qty', 'Total']],
+                head: [['Code', 'Item Name', 'Description', 'Qty', 'Total Value']],
                 body: tableData,
-                startY: 35,
+                startY: 48,
                 theme: 'grid',
-                headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255] },
-                styles: { font: 'helvetica', fontSize: 9 }
+                headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255], fontStyle: 'bold' },
+                alternateRowStyles: { fillColor: [250, 250, 250] },
+                styles: { fontSize: 8, cellPadding: 3 }
             });
-            doc.save(`Maansoor_Report_${currentSelectedLocation || 'Full'}.pdf`);
+
+            // Save File
+            doc.save(`Maansoor_Report_${locationName.replace(" ", "_")}.pdf`);
         }
     </script>
 </body>
