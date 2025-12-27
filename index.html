@@ -2,7 +2,7 @@
 <html lang="so">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Maansoor Hotel - Professional Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
         .hotel-gold { color: #c5a059; }
         .bg-hotel-blue { background-color: #0f172a; }
         .btn-active { background-color: #c5a059 !important; color: #000 !important; border-color: #c5a059 !important; }
@@ -44,17 +44,20 @@
             border: 2px solid rgba(197, 160, 89, 0.4);
         }
 
+        /* MOBILE SIDEBAR MOVEMENT FIX */
         @media (max-width: 768px) {
             .mobile-sidebar {
                 position: fixed;
-                left: -100%;
+                left: 0;
                 top: 0;
                 bottom: 0;
-                z-index: 50;
-                transition: 0.3s;
+                z-index: 100;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                width: 280px;
             }
             .mobile-sidebar.open {
-                left: 0;
+                transform: translateX(0);
             }
         }
 
@@ -69,13 +72,19 @@
             box-shadow: 0 15px 45px rgba(197, 160, 89, 0.15);
             border-color: #c5a059;
         }
+
+        /* Smooth Table Scrolling on Mobile */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body onload="checkAuth()">
 
     <!-- Login Screen -->
     <div id="login-screen">
-        <div class="bg-white/95 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20">
+        <div class="bg-white/95 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-md border border-white/20">
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-slate-900 logo-glow mb-4 shadow-xl">
                     <i class="fa-solid fa-building-columns text-yellow-500 text-4xl"></i>
@@ -92,9 +101,15 @@
                     <label class="text-[10px] font-bold text-slate-400 uppercase ml-1 tracking-wider">Password</label>
                     <input type="password" id="password" placeholder="••••••••" class="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
+                <div class="flex items-center justify-between px-1">
+                    <label class="flex items-center text-[11px] font-bold text-slate-500 cursor-pointer">
+                        <input type="checkbox" id="rememberMe" class="mr-2 w-4 h-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"> Remember Me
+                    </label>
+                    <button id="forgot-link" onclick="handleForgot()" class="text-[11px] font-bold text-red-500 hidden hover:underline">Forgot Password?</button>
+                </div>
                 <button onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-black py-4 rounded-xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-yellow-500/10 active:scale-95 uppercase tracking-widest mt-4">LOGIN</button>
             </div>
-            <p id="login-error" class="text-red-600 text-[10px] mt-5 text-center hidden font-bold uppercase tracking-tight bg-red-50 p-2 rounded-lg border border-red-100">Username ama Password waa khalad!</p>
+            <p id="login-error" class="text-red-600 text-[10px] mt-5 text-center hidden font-bold uppercase tracking-tight bg-red-50 p-2 rounded-lg border border-red-100">Username ama Password waa khaldan!</p>
         </div>
     </div>
 
@@ -102,7 +117,7 @@
     <div id="app-content" class="hidden">
         <div class="flex h-screen overflow-hidden relative">
             
-            <button onclick="toggleSidebar()" class="md:hidden fixed bottom-6 right-6 z-[60] bg-slate-900 text-yellow-500 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl border-2 border-yellow-500/50">
+            <button onclick="toggleSidebar()" class="md:hidden fixed bottom-6 right-6 z-[110] bg-slate-900 text-yellow-500 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl border-2 border-yellow-500/50 active:scale-90 transition">
                 <i id="menu-icon" class="fas fa-bars"></i>
             </button>
 
@@ -137,6 +152,9 @@
                         <span class="text-xs bg-amber-900 px-2 py-1 rounded">2</span>    
                     </button>
                     <div class="pt-10">
+                        <button onclick="showSettings()" class="w-full text-left py-3 px-4 rounded-lg text-yellow-500 hover:bg-slate-800 transition flex items-center mb-2">
+                            <i class="fas fa-cog mr-3"></i> Security Settings
+                        </button>
                          <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 hover:bg-red-900/20 transition flex items-center">
                             <i class="fas fa-sign-out-alt mr-3"></i> Ka bax (Logout)
                         </button>
@@ -150,95 +168,153 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                             <i class="fas fa-search text-gray-400"></i>
                         </span>
-                        <input type="text" id="searchInput" onkeyup="filterInventory()" placeholder="Baar agabka ama qolka..." 
+                        <input type="text" id="searchInput" onkeyup="filterInventory()" placeholder="ku raadi Code , Name , Room ..." 
                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-yellow-500 transition-all">
                     </div>
                     
                     <div class="flex items-center justify-between w-full md:w-auto md:space-x-6 space-x-2">
                         <div class="text-right border-r pr-3 md:pr-4">
-                            <p class="text-[9px] md:text-[10px] text-gray-400 font-bold uppercase">Total Assets</p>
+                            <p class="text-[9px] md:text-[10px] text-gray-400 font-bold uppercase">Total Items</p>
                             <p id="stat-total-items" class="text-xs md:text-sm font-extrabold text-blue-900">0 Items</p>
                         </div>
                         <div class="text-right border-r pr-3 md:pr-4">
                             <p class="text-[9px] md:text-[10px] text-gray-400 font-bold uppercase">Grand Total</p>
                             <p id="stat-total-value" class="text-xs md:text-sm font-extrabold text-green-600">$0.00</p>
                         </div>
-                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500 border-2 border-yellow-500 shadow-md">
-                            <i class="fas fa-user-shield text-xs md:text-base"></i>
+                        <!-- USER HEADER INFO -->
+                        <div onclick="showSettings()" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded-full transition group">
+                            <p id="header-username" class="text-[11px] font-bold text-slate-700 hidden md:block uppercase"></p>
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500 border-2 border-yellow-500 shadow-md">
+                                <i class="fas fa-user-shield text-xs md:text-base"></i>
+                            </div>
                         </div>
                     </div>
                 </header>
 
                 <main class="flex-1 overflow-y-auto p-4 md:p-6">
-                    <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                        <div class="chart-card p-8 bg-white overflow-hidden relative">
-                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center">
-                                <i class="fas fa-layer-group text-yellow-500 mr-2 text-lg"></i> Asset Value Distribution ($)
+                    
+                    <!-- SECURITY SETTINGS SECTION -->
+                    <div id="settings-screen" class="hidden max-w-4xl mx-auto py-10">
+                        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+                            <div class="bg-slate-900 p-8 text-center border-b-4 border-yellow-500">
+                                <div class="w-24 h-24 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center border-2 border-yellow-500 mb-4">
+                                    <i class="fas fa-user-shield text-yellow-500 text-5xl"></i>
+                                </div>
+                                <h2 class="text-2xl font-black text-white uppercase tracking-tighter italic">Account Settings</h2>
+                                <p class="text-gray-400 text-xs mt-1 uppercase tracking-widest">Maamul xogtaada ama beddel password-ka</p>
+                            </div>
+                            
+                            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase ml-1 mb-1">Username</label>
+                                    <input type="text" id="set-username" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase ml-1 mb-1">Full Name</label>
+                                    <input type="text" id="set-fullname" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase ml-1 mb-1">Gmail Address</label>
+                                    <input type="email" id="set-email" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase ml-1 mb-1">Phone Number</label>
+                                    <input type="text" id="set-phone" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm font-bold">
+                                </div>
+                                <div class="md:col-span-2 bg-yellow-50/50 p-6 rounded-2xl border border-yellow-100">
+                                    <h4 class="text-xs font-black text-yellow-700 uppercase mb-4 flex items-center">
+                                        <i class="fas fa-lock mr-2"></i> Beddel Password-ka
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <input type="password" id="set-new-pass" placeholder="Password cusub" class="p-3.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-yellow-500">
+                                        <input type="password" id="set-confirm-pass" placeholder="Hubi Password-ka" class="p-3.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-yellow-500">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-8 pt-0 flex space-x-4">
+                                <button onclick="saveUserProfile()" class="flex-1 bg-slate-900 text-yellow-500 font-black py-4 rounded-xl shadow-xl hover:bg-slate-800 transition-all uppercase text-xs tracking-widest">
+                                    SAVE CHANGES
+                                </button>
+                                <button onclick="showHomePage()" class="px-8 bg-gray-100 text-gray-400 font-black py-4 rounded-xl hover:bg-gray-200 transition-all uppercase text-xs tracking-widest">
+                                    CANCEL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="dashboard-content">
+                        <!-- Dashboard Visual Analytics -->
+                        <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                            <div class="chart-card p-8 bg-white overflow-hidden relative">
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center">
+                                    <i class="fas fa-layer-group text-yellow-500 mr-2 text-lg"></i> Asset Value Distribution ($)
+                                </h3>
+                                <div class="h-64"><canvas id="categoryChart"></canvas></div>
+                            </div>
+                            <div class="chart-card p-8 bg-white overflow-hidden relative">
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center justify-center">
+                                    <i class="fas fa-chart-pie text-blue-500 mr-2 text-lg"></i> Inventory Composition (Count)
+                                </h3>
+                                <div class="h-64 relative">
+                                    <canvas id="countChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200">
+                            <h3 id="selection-label" class="mb-3 font-bold text-gray-700 text-xs md:text-sm uppercase flex items-center">
+                                <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha aad rabto :
                             </h3>
-                            <div class="h-64"><canvas id="categoryChart"></canvas></div>
+                            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2" id="grid-buttons"></div>
                         </div>
-                        <div class="chart-card p-8 bg-white overflow-hidden relative">
-                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center justify-center">
-                                <i class="fas fa-chart-pie text-blue-500 mr-2 text-lg"></i> Inventory Composition (Count)
-                            </h3>
-                            <div class="h-64 relative">
-                                <canvas id="countChart"></canvas>
+
+                        <div id="entry-form" class="bg-white p-5 md:p-8 rounded-2xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
+                            <h3 id="form-header" class="text-lg md:text-xl font-extrabold mb-6 text-slate-800 border-b pb-2 tracking-tight uppercase italic text-center">Geli Xogta Agabka</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Holder</label><input type="text" id="holder" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Department</label><input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Location</label><input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Code</label><input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label><input type="text" id="name" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label><input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                    <div><label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label><input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                </div>
+                                <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label><input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-lg"></div>
+                            </div>
+                            <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                                <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-3.5 rounded-xl font-bold uppercase text-xs transition active:scale-95 shadow-xl"><i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka</button>
+                                <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Close</button>
                             </div>
                         </div>
-                    </div>
 
-                    <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200">
-                        <h3 id="selection-label" class="mb-3 font-bold text-gray-700 text-xs md:text-sm uppercase flex items-center">
-                            <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha:
-                        </h3>
-                        <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2" id="grid-buttons"></div>
-                    </div>
-
-                    <div id="entry-form" class="bg-white p-5 md:p-8 rounded-2xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
-                        <h3 id="form-header" class="text-lg md:text-xl font-extrabold mb-6 text-slate-800 border-b pb-2 tracking-tight uppercase italic text-center">Geli Xogta Agabka</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Holder</label><input type="text" id="holder" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Department</label><input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Location</label><input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-sm"></div>
-                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Code</label><input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label><input type="text" id="name" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label><input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label><input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+                            <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                                <h4 id="table-title" class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
+                                <div class="flex flex-wrap items-center justify-center gap-2">
+                                    <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 hover:bg-green-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-file-excel mr-1"></i> Excel (Location)</button>
+                                    <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-hotel mr-1"></i> Excel (Full)</button>
+                                    <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-file-pdf mr-1"></i> PDF Report</button>
+                                    <button onclick="clearAllData()" class="text-red-400 text-[9px] md:text-[10px] hover:underline uppercase font-bold pl-2">Reset All</button>
+                                </div>
                             </div>
-                            <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                            <div><label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label><input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-lg"></div>
-                        </div>
-                        <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                            <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-3.5 rounded-xl font-bold uppercase text-xs transition active:scale-95 shadow-xl"><i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka</button>
-                            <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Close</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
-                        <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                            <h4 id="table-title" class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
-                            <div class="flex flex-wrap items-center justify-center gap-2">
-                                <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 hover:bg-green-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-file-excel mr-1"></i> Excel (Location)</button>
-                                <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-hotel mr-1"></i> Excel (Full)</button>
-                                <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-file-pdf mr-1"></i> PDF Report</button>
-                                <button onclick="clearAllData()" class="text-red-400 text-[9px] md:text-[10px] hover:underline uppercase font-bold pl-2">Reset All</button>
+                            <div class="table-container">
+                                <table class="min-w-full divide-y divide-gray-200 text-left">
+                                    <thead class="bg-gray-50 sticky top-0 z-10">
+                                        <tr>
+                                            <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Code</th>
+                                            <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Name</th>
+                                            <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Desc</th>
+                                            <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
+                                            <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Total</th>
+                                            <th class="px-4 md:px-6 py-3 md:py-4 w-20">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventory-tbody" class="bg-white divide-y divide-gray-100"></tbody>
+                                </table>
                             </div>
-                        </div>
-                        <div class="overflow-x-auto max-h-[500px]">
-                            <table class="min-w-full divide-y divide-gray-200 text-left">
-                                <thead class="bg-gray-50 sticky top-0 z-10">
-                                    <tr>
-                                        <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Code</th>
-                                        <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Name</th>
-                                        <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Desc</th>
-                                        <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
-                                        <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Total</th>
-                                        <th class="px-4 md:px-6 py-3 md:py-4 w-20">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inventory-tbody" class="bg-white divide-y divide-gray-100"></tbody>
-                            </table>
                         </div>
                     </div>
                 </main>
@@ -247,13 +323,92 @@
     </div>
 
     <script>
-        // --- 1. SECURITY ---
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('menu-icon').className = document.getElementById('sidebar').classList.contains('open') ? "fas fa-times" : "fas fa-bars"; }
-        const _uKey = "YWRtaW4="; const _pKey = "MTIz"; const _expiry = 3600000;
-        function handleLogin() { if(btoa(document.getElementById('username').value) === _uKey && btoa(document.getElementById('password').value) === _pKey) { sessionStorage.setItem('isLoggedIn', 'true'); sessionStorage.setItem('loginTime', Date.now()); checkAuth(); } else { document.getElementById('login-error').classList.remove('hidden'); } }
-        function checkAuth() { const auth = sessionStorage.getItem('isLoggedIn'); const loginTime = sessionStorage.getItem('loginTime'); const now = Date.now(); if(auth === 'true' && (now - loginTime < _expiry)) { document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-content').classList.remove('hidden'); loadInventory(); } else { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('app-content').classList.add('hidden'); } }
-        function handleLogout() { sessionStorage.clear(); window.location.reload(); }
-        document.getElementById('password').addEventListener('keypress', (e) => e.key === 'Enter' && handleLogin());
+        // --- 1. SECURITY & USER DATA ---
+        let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
+            user: "admin",
+            pass: "123",
+            fullName: "Admin Maansoor",
+            email: "admin@maansoorhotel.com",
+            phone: "+252 612 345678"
+        };
+
+        function handleLogin() {
+            const uInput = document.getElementById('username').value.trim();
+            const pInput = document.getElementById('password').value.trim();
+            const remember = document.getElementById('rememberMe').checked;
+
+            if(uInput === profile.user && pInput === profile.pass) {
+                if(remember) {
+                    localStorage.setItem('maansoor_isLoggedIn', 'true');
+                } else {
+                    sessionStorage.setItem('maansoor_isLoggedIn', 'true');
+                }
+                sessionStorage.setItem('loginTime', Date.now());
+                checkAuth();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                document.getElementById('forgot-link').classList.remove('hidden');
+            }
+        }
+
+        function checkAuth() {
+            const authL = localStorage.getItem('maansoor_isLoggedIn');
+            const authS = sessionStorage.getItem('maansoor_isLoggedIn');
+            
+            if((authL === 'true' || authS === 'true')) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-content').classList.remove('hidden');
+                document.getElementById('header-username').innerText = profile.user;
+                loadInventory();
+            } else {
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('app-content').classList.add('hidden');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('maansoor_isLoggedIn');
+            sessionStorage.clear();
+            window.location.reload();
+        }
+
+        function handleForgot() {
+            alert(`Xusuusin:\nUsername: ${profile.user}\nPassword: ${profile.pass}\nFadlan xafid mar kale!`);
+        }
+
+        function showSettings() {
+            document.getElementById('dashboard-content').classList.add('hidden');
+            document.getElementById('settings-screen').classList.remove('hidden');
+            document.getElementById('set-username').value = profile.user;
+            document.getElementById('set-fullname').value = profile.fullName;
+            document.getElementById('set-email').value = profile.email;
+            document.getElementById('set-phone').value = profile.phone;
+        }
+
+        function saveUserProfile() {
+            const newU = document.getElementById('set-username').value.trim();
+            const newFN = document.getElementById('set-fullname').value.trim();
+            const newEmail = document.getElementById('set-email').value.trim();
+            const newPhone = document.getElementById('set-phone').value.trim();
+            const newPass = document.getElementById('set-new-pass').value.trim();
+            const confPass = document.getElementById('set-confirm-pass').value.trim();
+
+            if(!newU || !newFN) return alert("Fadlan buuxi Username iyo Magaca!");
+
+            if(newPass) {
+                if(newPass !== confPass) return alert("Password-ka isku mid maahan!");
+                profile.pass = newPass;
+            }
+
+            profile.user = newU;
+            profile.fullName = newFN;
+            profile.email = newEmail;
+            profile.phone = newPhone;
+
+            localStorage.setItem('maansoor_profile', JSON.stringify(profile));
+            alert("Xogta Account-ka waa la beddelay!");
+            window.location.reload();
+        }
 
         // --- 2. CORE LOGIC ---
         let inventory = JSON.parse(localStorage.getItem('maansoor_assets')) || [];
@@ -263,6 +418,8 @@
         
         function showHomePage() { 
             currentSelectedLocation = ""; 
+            document.getElementById('settings-screen').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active')); 
             document.getElementById('selection-area').classList.add('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
@@ -271,6 +428,13 @@
             document.getElementById('btn-excel-loc').classList.add('hidden');
             document.getElementById('btn-excel-full').classList.remove('hidden');
             renderTable(""); 
+        }
+
+        function toggleSidebar() { 
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('menu-icon');
+            sidebar.classList.toggle('open');
+            icon.className = sidebar.classList.contains('open') ? "fas fa-times" : "fas fa-bars";
         }
 
         function updateDashboardStats() {
@@ -287,7 +451,7 @@
             const iconColors = ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309']; 
             if(myChart1) myChart1.destroy(); if(myChart2) myChart2.destroy();
             myChart1 = new Chart(document.getElementById('categoryChart'), { type: 'bar', data: { labels: cats, datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 15, barThickness: 50 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false }, beginAtZero: true }, x: { grid: { display: false } } } } });
-            myChart2 = new Chart(document.getElementById('countChart'), { type: 'doughnut', data: { labels: cats, datasets: [{ data: counts, backgroundColor: iconColors, borderWidth: 8, borderColor: '#fff', hoverOffset: 25 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 15 } } } } } });
+            myChart2 = new Chart(document.getElementById('countChart'), { type: 'doughnut', data: { labels: cats, datasets: [{ data: counts, backgroundColor: iconColors, borderWidth: 8, borderColor: '#fff', hoverOffset: 25 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 12 } } } } } });
         }
 
         function calculate() { const q = document.getElementById('qty').value || 0; const v = document.getElementById('uvalue').value || 0; document.getElementById('total').value = `$${(q * v).toFixed(2)}`; return (q * v).toFixed(2); }
@@ -313,7 +477,7 @@
             filtered.slice().reverse().forEach(i => {
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
-                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600">${i.location}</span></td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-400 italic">${i.desc || '-'}</td>
                     <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
                     <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
@@ -323,13 +487,14 @@
         }
 
         function changeCategory(cat, count) {
-            currentCategory = cat; currentSelectedLocation = ""; const grid = document.getElementById('grid-buttons'); grid.innerHTML = ''; resetForm(); 
+            currentCategory = cat; currentSelectedLocation = ""; 
+            document.getElementById('settings-screen').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            const grid = document.getElementById('grid-buttons'); grid.innerHTML = ''; resetForm(); 
             document.getElementById('selection-area').classList.remove('hidden'); document.getElementById('dashboard-visuals').classList.add('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active')); event.currentTarget.classList.add('btn-active');
-            
             document.getElementById('btn-excel-full').classList.add('hidden');
             document.getElementById('btn-excel-loc').classList.remove('hidden');
-
             const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
             document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
             if(window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('menu-icon').className = "fas fa-bars"; }
@@ -353,17 +518,36 @@
         function resetForm() { editId = null; document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka'; ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = ''); document.getElementById('entry-form').classList.add('hidden'); }
 
         function filterInventory() {
-            const q = document.getElementById('searchInput').value.toLowerCase(); 
-            const filtered = inventory.filter(i => i.name.toLowerCase().includes(q) || i.location.toLowerCase().includes(q) || (i.code && i.code.toLowerCase().includes(q)));
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
             const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = '';
+            
+            if(q === "") {
+                renderTable(currentSelectedLocation);
+                return;
+            }
+
+            const filtered = inventory.filter(i => {
+                const code = (i.code || "").toLowerCase();
+                const name = (i.name || "").toLowerCase();
+                const loc = (i.location || "").toLowerCase();
+                return code === q || name.includes(q) || loc.includes(q);
+            });
+            
             filtered.slice().reverse().forEach(i => {
-                tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
-                    <td class="px-4 py-4 text-xs">${i.code || '-'}</td><td class="px-4 py-4 text-xs font-bold">${i.name} <br><span class="text-[9px] bg-yellow-100 px-1 rounded text-yellow-800 uppercase tracking-tighter">${i.location}</span></td><td class="px-4 py-4 text-xs text-gray-400">${i.desc || '-'}</td><td class="px-4 py-4 text-xs font-bold">${i.qty}</td><td class="px-4 py-4 text-xs font-extrabold text-slate-900">${i.total}</td><td class="px-4 py-4 text-right flex justify-end space-x-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button></td>
+                tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
+                    <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
+                    <td class="px-4 md:px-6 py-4 text-xs text-gray-400 italic">${i.desc || '-'}</td>
+                    <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
+                    <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
+                    <td class="px-4 md:px-6 py-4 text-right flex space-x-2 justify-end">
+                        <button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button>
+                    </td>
                 </tr>`;
             });
         }
 
-        // --- 3. EXPORT GUUD EE EXCEL ---
         function getPriority(loc) {
             if (loc.startsWith("Room")) return 1;
             if (loc.startsWith("Hall")) return 2;
@@ -376,8 +560,6 @@
             if (inventory.length === 0) return alert("Xog ma jirto!");
             let dataToExport = [];
             let fileName = "";
-            let showLocation = true;
-
             if (type === 'full') {
                 dataToExport = [...inventory].sort((a, b) => {
                     let pA = getPriority(a.location);
@@ -392,43 +574,14 @@
                     fileName = `Maansoor_${currentSelectedLocation.replace(/\s+/g, '_')}`;
                 } else {
                     const catLabel = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
-                    dataToExport = inventory.filter(i => i.location.startsWith(catLabel))
-                                            .sort((a, b) => a.location.localeCompare(b.location, undefined, {numeric: true}));
+                    dataToExport = inventory.filter(i => i.location.startsWith(catLabel)).sort((a, b) => a.location.localeCompare(b.location, undefined, {numeric: true}));
                     fileName = `Maansoor_All_${catLabel}s`;
                 }
             }
-
             if (dataToExport.length === 0) return alert("Meeshan xog kuma jirto!");
-
-            // Calculate Grand Total
-            const grandTotal = dataToExport.reduce((sum, item) => {
-                const val = parseFloat(item.total.replace('$', '').replace(',', '')) || 0;
-                return sum + val;
-            }, 0);
-
-            const cleanData = dataToExport.map(i => ({
-                'Location': i.location,
-                'Item Code': i.code || '-',
-                'Item Name': i.name,
-                'Description': i.desc || '-',
-                'Holder': i.holder || '-',
-                'QTY': i.qty,
-                'Unit Value': i.uvalue,
-                'Total Value': i.total
-            }));
-
-            // KU DAR ROW-GA UGU DAMBEEYA EE TOTAL-KA
-            cleanData.push({
-                'Location': 'GRAND TOTAL',
-                'Item Code': '',
-                'Item Name': '',
-                'Description': '',
-                'Holder': '',
-                'QTY': '',
-                'Unit Value': '',
-                'Total Value': `$${grandTotal.toFixed(2)}`
-            });
-
+            const grandTotal = dataToExport.reduce((sum, item) => sum + (parseFloat(item.total.replace('$', '').replace(',', '')) || 0), 0);
+            const cleanData = dataToExport.map(i => ({'Location': i.location, 'Item Code': i.code || '-', 'Item Name': i.name, 'Description': i.desc || '-', 'Holder': i.holder || '-', 'QTY': i.qty, 'Unit Value': i.uvalue, 'Total Value': i.total}));
+            cleanData.push({'Location': 'GRAND TOTAL', 'Item Code': '', 'Item Name': '', 'Description': '', 'Holder': '', 'QTY': '', 'Unit Value': '', 'Total Value': `$${grandTotal.toFixed(2)}`});
             const worksheet = XLSX.utils.json_to_sheet(cleanData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
@@ -438,14 +591,12 @@
         function exportToPDF() {
             const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'mm', 'a4'); const date = new Date().toLocaleString();
             let dataToExport = []; let titleText = "";
-            
             if (currentSelectedLocation) {
                 dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
                 titleText = `INVENTORY: ${currentSelectedLocation.toUpperCase()}`;
             } else if (!document.getElementById('selection-area').classList.contains('hidden')) {
                 const catLabel = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
-                dataToExport = inventory.filter(i => i.location.startsWith(catLabel))
-                                        .sort((a, b) => a.location.localeCompare(b.location, undefined, {numeric: true}));
+                dataToExport = inventory.filter(i => i.location.startsWith(catLabel)).sort((a, b) => a.location.localeCompare(b.location, undefined, {numeric: true}));
                 titleText = `INVENTORY: ALL ${catLabel.toUpperCase()}S`;
             } else {
                 dataToExport = [...inventory].sort((a, b) => {
@@ -456,21 +607,11 @@
                 });
                 titleText = "FULL HOTEL INVENTORY REPORT";
             }
-
             if (dataToExport.length === 0) return alert("Xog ma jirto!");
-            
             doc.setFontSize(18); doc.setTextColor(15, 23, 42); doc.text("MAANSOOR HOTEL & RESORT", 14, 20);
             doc.setFontSize(11); doc.setTextColor(197, 160, 89); doc.text(titleText, 14, 28);
             doc.setFontSize(8); doc.setTextColor(100); doc.text(`Generated: ${date}`, 14, 34); doc.line(14, 36, 196, 36);
-            
-            const tableData = dataToExport.map(i => [
-                i.location,
-                i.code || '-',
-                i.name,
-                i.qty,
-                i.total
-            ]);
-
+            const tableData = dataToExport.map(i => [i.location, i.code || '-', i.name, i.qty, i.total]);
             doc.autoTable({
                 head: [['Location', 'Code', 'Item Name', 'Qty', 'Total']],
                 body: tableData,
@@ -481,6 +622,8 @@
             });
             doc.save(`${titleText.replace(/\s+/g, '_')}.pdf`);
         }
+
+        document.getElementById('password').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
     </script>
 </body>
 </html>
