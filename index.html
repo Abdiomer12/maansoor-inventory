@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Maktabadaha loo baahanyahay -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/Project/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
     <!-- Chart.js for Visual Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -107,7 +107,7 @@
             </button>
 
             <div id="sidebar" class="w-72 bg-hotel-blue text-white p-6 md:block mobile-sidebar shadow-2xl overflow-y-auto shrink-0 border-r border-slate-800">
-                <div class="mb-10 text-center border-b border-slate-700/50 pb-8">
+                <div onclick="showHomePage()" class="mb-10 text-center border-b border-slate-700/50 pb-8 cursor-pointer hover:opacity-80 transition">
                     <div class="relative inline-block">
                         <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 logo-glow mb-4 rotate-3">
                             <i class="fa-solid fa-building-columns text-yellow-500 text-4xl -rotate-3"></i>
@@ -120,19 +120,19 @@
                 </div>
                 
                 <nav class="space-y-2 text-left">
-                    <button onclick="changeCategory('room', 100)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
+                    <button onclick="changeCategory('room', 100)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
                         <span><i class="fas fa-bed mr-3 text-[#0D47A1]"></i> Rooms</span>
                         <span class="text-xs bg-blue-900 px-2 py-1 rounded">100</span>
                     </button>
-                    <button onclick="changeCategory('hall', 10)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
+                    <button onclick="changeCategory('hall', 10)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
                         <span><i class="fas fa-users mr-3 text-[#1B5E20]"></i> Halls</span>
                         <span class="text-xs bg-green-900 px-2 py-1 rounded">10</span>
                     </button>
-                    <button onclick="changeCategory('kitchen', 4)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
+                    <button onclick="changeCategory('kitchen', 4)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
                         <span><i class="fas fa-utensils mr-3 text-[#B71C1C]"></i> Kitchens</span>
                         <span class="text-xs bg-red-900 px-2 py-1 rounded">4</span>
                     </button>
-                    <button onclick="changeCategory('office', 2)" class="w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
+                    <button onclick="changeCategory('office', 2)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
                         <span><i class="fas fa-briefcase mr-3 text-[#B45309]"></i> Offices</span>
                         <span class="text-xs bg-amber-900 px-2 py-1 rounded">2</span>    
                     </button>
@@ -170,7 +170,6 @@
                 </header>
 
                 <main class="flex-1 overflow-y-auto p-4 md:p-6">
-                    <!-- Dashboard Visual Analytics (SYNCED COLORS) -->
                     <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
                         <div class="chart-card p-8 bg-white overflow-hidden relative">
                             <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center">
@@ -198,71 +197,36 @@
                     <div id="entry-form" class="bg-white p-5 md:p-8 rounded-2xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
                         <h3 id="form-header" class="text-lg md:text-xl font-extrabold mb-6 text-slate-800 border-b pb-2 tracking-tight uppercase italic text-center">Geli Xogta Agabka</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                            <div>
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Holder (Qofka)</label>
-                                <input type="text" id="holder" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-yellow-600 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Department</label>
-                                <input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-yellow-600 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Location</label>
-                                <input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-yellow-800 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Item Code</label>
-                                <input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-yellow-600 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label>
-                                <input type="text" id="name" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-yellow-600 text-sm">
-                            </div>
+                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Holder</label><input type="text" id="holder" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Department</label><input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Location</label><input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-sm"></div>
+                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Code</label><input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                            <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label><input type="text" id="name" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                             <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label>
-                                    <input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label>
-                                    <input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
-                                </div>
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label><input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label><input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                             </div>
-                            <div class="sm:col-span-2">
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Description (Faahfaahin)</label>
-                                <input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label>
-                                <input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-base md:text-lg">
-                            </div>
+                            <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                            <div><label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label><input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-lg"></div>
                         </div>
                         <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                            <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-3.5 rounded-xl font-bold shadow-xl hover:bg-slate-800 transition uppercase tracking-widest text-xs">
-                                <i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka
-                            </button>
-                            <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Close (Dhamaystay)</button>
+                            <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-3.5 rounded-xl font-bold uppercase text-xs transition active:scale-95 shadow-xl"><i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka</button>
+                            <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Close</button>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
                         <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                            <h4 class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
+                            <h4 id="table-title" class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
                             <div class="flex flex-wrap items-center justify-center gap-2">
-                                <button onclick="exportToExcel('room')" class="bg-green-600 hover:bg-green-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
-                                    <i class="fas fa-file-excel mr-1"></i> Excel (Location)
-                                </button>
-                                <button onclick="exportToExcel('full')" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
-                                    <i class="fas fa-hotel mr-1"></i> Excel (Full)
-                                </button>
-                                <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition flex items-center">
-                                    <i class="fas fa-file-pdf mr-1"></i> PDF Report
-                                </button>
+                                <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 hover:bg-green-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-file-excel mr-1"></i> Excel (Location)</button>
+                                <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-hotel mr-1"></i> Excel (Full)</button>
+                                <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-700 text-white text-[9px] md:text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase flex items-center transition"><i class="fas fa-file-pdf mr-1"></i> PDF Report</button>
                                 <button onclick="clearAllData()" class="text-red-400 text-[9px] md:text-[10px] hover:underline uppercase font-bold pl-2">Reset All</button>
                             </div>
                         </div>
                         <div class="overflow-x-auto max-h-[500px]">
-                            <table id="inventory-table" class="min-w-full divide-y divide-gray-200 text-left">
+                            <table class="min-w-full divide-y divide-gray-200 text-left">
                                 <thead class="bg-gray-50 sticky top-0 z-10">
                                     <tr>
                                         <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Code</th>
@@ -283,31 +247,31 @@
     </div>
 
     <script>
-        // --- 1. SECURITY & UI ---
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('menu-icon').className = document.getElementById('sidebar').classList.contains('open') ? "fas fa-times" : "fas fa-bars";
-        }
+        // --- 1. SECURITY ---
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('menu-icon').className = document.getElementById('sidebar').classList.contains('open') ? "fas fa-times" : "fas fa-bars"; }
         const _uKey = "YWRtaW4="; const _pKey = "MTIz"; const _expiry = 3600000;
-        function handleLogin() {
-            if(btoa(document.getElementById('username').value) === _uKey && btoa(document.getElementById('password').value) === _pKey) {
-                sessionStorage.setItem('isLoggedIn', 'true'); sessionStorage.setItem('loginTime', Date.now()); checkAuth();
-            } else { document.getElementById('login-error').classList.remove('hidden'); }
-        }
-        function checkAuth() {
-            const auth = sessionStorage.getItem('isLoggedIn'); const loginTime = sessionStorage.getItem('loginTime'); const now = Date.now();
-            if(auth === 'true' && (now - loginTime < _expiry)) {
-                document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-content').classList.remove('hidden'); loadInventory();
-            } else { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('app-content').classList.add('hidden'); }
-        }
+        function handleLogin() { if(btoa(document.getElementById('username').value) === _uKey && btoa(document.getElementById('password').value) === _pKey) { sessionStorage.setItem('isLoggedIn', 'true'); sessionStorage.setItem('loginTime', Date.now()); checkAuth(); } else { document.getElementById('login-error').classList.remove('hidden'); } }
+        function checkAuth() { const auth = sessionStorage.getItem('isLoggedIn'); const loginTime = sessionStorage.getItem('loginTime'); const now = Date.now(); if(auth === 'true' && (now - loginTime < _expiry)) { document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-content').classList.remove('hidden'); loadInventory(); } else { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('app-content').classList.add('hidden'); } }
         function handleLogout() { sessionStorage.clear(); window.location.reload(); }
         document.getElementById('password').addEventListener('keypress', (e) => e.key === 'Enter' && handleLogin());
 
         // --- 2. CORE LOGIC ---
         let inventory = JSON.parse(localStorage.getItem('maansoor_assets')) || [];
-        let currentSelectedLocation = ""; let currentCategory = "rooms"; let editId = null; let myChart1, myChart2;
+        let currentSelectedLocation = ""; let currentCategory = "room"; let editId = null; let myChart1, myChart2;
 
-        function loadInventory() { updateDashboardStats(); changeCategory('room', 100); updateCharts(); }
+        function loadInventory() { updateDashboardStats(); showHomePage(); updateCharts(); }
+        
+        function showHomePage() { 
+            currentSelectedLocation = ""; 
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active')); 
+            document.getElementById('selection-area').classList.add('hidden'); 
+            document.getElementById('entry-form').classList.add('hidden'); 
+            document.getElementById('dashboard-visuals').classList.remove('hidden'); 
+            document.getElementById('table-title').innerText = "FULL HOTEL INVENTORY LOG"; 
+            document.getElementById('btn-excel-loc').classList.add('hidden');
+            document.getElementById('btn-excel-full').classList.remove('hidden');
+            renderTable(""); 
+        }
 
         function updateDashboardStats() {
             const totalItems = inventory.length;
@@ -316,28 +280,14 @@
             document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
         }
 
-        // REDESIGNED CHARTS with exactly synced icon colors
         function updateCharts() {
             const cats = ['Room', 'Hall', 'Kitchen', 'Office'];
             const values = cats.map(c => inventory.filter(i => i.location.toLowerCase().includes(c.toLowerCase())).reduce((s, i) => s + parseFloat(i.total.replace('$', '').replace(',', '') || 0), 0));
             const counts = cats.map(c => inventory.filter(i => i.location.toLowerCase().includes(c.toLowerCase())).length);
-            
-            // EXACT COLORS MATCHING YOUR ICONS
             const iconColors = ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309']; 
-
             if(myChart1) myChart1.destroy(); if(myChart2) myChart2.destroy();
-            
-            myChart1 = new Chart(document.getElementById('categoryChart'), { 
-                type: 'bar', 
-                data: { labels: cats, datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 15, barThickness: 50 }] }, 
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false }, beginAtZero: true }, x: { grid: { display: false } } } } 
-            });
-            
-            myChart2 = new Chart(document.getElementById('countChart'), { 
-                type: 'doughnut', 
-                data: { labels: cats, datasets: [{ data: counts, backgroundColor: iconColors, borderWidth: 8, borderColor: '#fff', hoverOffset: 25 }] }, 
-                options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 15 } } } } } 
-            });
+            myChart1 = new Chart(document.getElementById('categoryChart'), { type: 'bar', data: { labels: cats, datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 15, barThickness: 50 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false }, beginAtZero: true }, x: { grid: { display: false } } } } });
+            myChart2 = new Chart(document.getElementById('countChart'), { type: 'doughnut', data: { labels: cats, datasets: [{ data: counts, backgroundColor: iconColors, borderWidth: 8, borderColor: '#fff', hoverOffset: 25 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 25, font: { weight: 'bold', size: 15 } } } } } });
         }
 
         function calculate() { const q = document.getElementById('qty').value || 0; const v = document.getElementById('uvalue').value || 0; document.getElementById('total').value = `$${(q * v).toFixed(2)}`; return (q * v).toFixed(2); }
@@ -345,29 +295,25 @@
         function saveData() {
             const n = document.getElementById('name').value; const q = document.getElementById('qty').value; if(!n || !q) return alert("Fadlan buuxi Magaca & Tirada!");
             const data = { id: editId || Date.now(), holder: document.getElementById('holder').value, dept: document.getElementById('dept').value, location: document.getElementById('location').value, code: document.getElementById('code').value, name: n, desc: document.getElementById('desc').value, qty: q, uvalue: document.getElementById('uvalue').value, total: `$${calculate()}` };
-            
             if(editId) { inventory = inventory.map(i => i.id === editId ? data : i); editId = null; } else { inventory.push(data); }
             localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
-            
             ['code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = '');
             document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka';
-            
-            renderTable(currentSelectedLocation); updateDashboardStats(); updateCharts();
+            renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
+            updateDashboardStats(); updateCharts();
         }
 
-        function editItem(id) {
-            const i = inventory.find(x => x.id === id); if(!i) return; editId = id;
-            ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = i[f]);
-            document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii';
-            document.getElementById('entry-form').classList.remove('hidden'); window.scrollTo({ top: 100, behavior: 'smooth' });
-        }
+        function editItem(id) { const i = inventory.find(x => x.id === id); if(!i) return; editId = id; ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = i[f]); document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii'; document.getElementById('entry-form').classList.remove('hidden'); window.scrollTo({ top: 100, behavior: 'smooth' }); }
+        function deleteItem(id) { if(confirm('Ma hubtaa?')) { inventory = inventory.filter(i => i.id !== id); localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); updateDashboardStats(); updateCharts(); } }
+        function clearAllData() { if(confirm('DHAMAAN ma tirtirnaa?')) { inventory = []; localStorage.removeItem('maansoor_assets'); window.location.reload(); } }
 
         function renderTable(loc = "") {
-            const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = ''; if (!loc) return;
-            inventory.filter(i => i.location === loc).slice().reverse().forEach(i => {
+            const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = ''; 
+            let filtered = (loc === "") ? inventory : inventory.filter(i => i.location.startsWith(loc));
+            filtered.slice().reverse().forEach(i => {
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
-                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name}</td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600">${i.location}</span></td>
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-400 italic">${i.desc || '-'}</td>
                     <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
                     <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
@@ -377,112 +323,163 @@
         }
 
         function changeCategory(cat, count) {
-            currentCategory = cat; const grid = document.getElementById('grid-buttons'); grid.innerHTML = ''; resetForm(); renderTable("");
+            currentCategory = cat; currentSelectedLocation = ""; const grid = document.getElementById('grid-buttons'); grid.innerHTML = ''; resetForm(); 
+            document.getElementById('selection-area').classList.remove('hidden'); document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active')); event.currentTarget.classList.add('btn-active');
+            
+            document.getElementById('btn-excel-full').classList.add('hidden');
+            document.getElementById('btn-excel-loc').classList.remove('hidden');
+
+            const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
+            document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
             if(window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('menu-icon').className = "fas fa-bars"; }
             for (let i = 1; i <= count; i++) {
-                const btn = document.createElement('button'); btn.innerText = i; btn.id = `btn-${cat}-${i}`;
-                btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
+                const btn = document.createElement('button'); btn.innerText = i; btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
                 btn.onclick = (e) => { 
                     document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active')); 
-                    btn.classList.add('btn-active'); 
-                    currentSelectedLocation = `${cat.charAt(0).toUpperCase() + cat.slice(1)} ${i}`; 
+                    e.currentTarget.classList.add('btn-active'); 
+                    currentSelectedLocation = `${catLabel} ${i}`; 
                     document.getElementById('location').value = currentSelectedLocation; 
                     document.getElementById('entry-form').classList.remove('hidden'); 
                     document.getElementById('form-header').innerText = `Geli Agabka: ${currentSelectedLocation}`; 
+                    document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`; 
                     renderTable(currentSelectedLocation); 
                 };
                 grid.appendChild(btn);
             }
+            renderTable(catLabel); 
         }
 
         function resetForm() { editId = null; document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka'; ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = ''); document.getElementById('entry-form').classList.add('hidden'); }
 
-        function deleteItem(id) { if(confirm('Ma hubtaa?')) { inventory = inventory.filter(i => i.id !== id); localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); renderTable(currentSelectedLocation); updateDashboardStats(); updateCharts(); } }
-
-        function clearAllData() { if(confirm('DHAMAAN ma tirtirnaa?')) { inventory = []; localStorage.removeItem('maansoor_assets'); window.location.reload(); } }
-
         function filterInventory() {
-            const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = inventory.filter(i => i.name.toLowerCase().includes(q) || i.location.toLowerCase().includes(q));
+            const q = document.getElementById('searchInput').value.toLowerCase(); 
+            const filtered = inventory.filter(i => i.name.toLowerCase().includes(q) || i.location.toLowerCase().includes(q) || (i.code && i.code.toLowerCase().includes(q)));
             const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = '';
             filtered.slice().reverse().forEach(i => {
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
-                    <td class="px-4 py-4 text-xs">${i.code || '-'}</td>
-                    <td class="px-4 py-4 text-xs font-bold">${i.name} <br><span class="text-[9px] bg-yellow-100 px-1 rounded text-yellow-800 uppercase tracking-tighter">${i.location}</span></td>
-                    <td class="px-4 py-4 text-xs text-gray-400">${i.desc || '-'}</td>
-                    <td class="px-4 py-4 text-xs font-bold">${i.qty}</td>
-                    <td class="px-4 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
-                    <td class="px-4 py-4 text-right flex justify-end space-x-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button></td>
+                    <td class="px-4 py-4 text-xs">${i.code || '-'}</td><td class="px-4 py-4 text-xs font-bold">${i.name} <br><span class="text-[9px] bg-yellow-100 px-1 rounded text-yellow-800 uppercase tracking-tighter">${i.location}</span></td><td class="px-4 py-4 text-xs text-gray-400">${i.desc || '-'}</td><td class="px-4 py-4 text-xs font-bold">${i.qty}</td><td class="px-4 py-4 text-xs font-extrabold text-slate-900">${i.total}</td><td class="px-4 py-4 text-right flex justify-end space-x-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
         }
 
-        function exportToExcel(type) {
-            if (inventory.length === 0) return alert("Xog ma jirto!");
-            let dataToExport = (type === 'room') ? inventory.filter(i => i.location === currentSelectedLocation) : inventory;
-            if(dataToExport.length === 0) return alert("Meeshan xog kuma jirto!");
-            const worksheet = XLSX.utils.json_to_sheet(dataToExport); const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory"); XLSX.writeFile(workbook, `Maansoor_${type}_Export.xlsx`);
+        // --- 3. EXPORT GUUD EE EXCEL ---
+        function getPriority(loc) {
+            if (loc.startsWith("Room")) return 1;
+            if (loc.startsWith("Hall")) return 2;
+            if (loc.startsWith("Kitchen")) return 3;
+            if (loc.startsWith("Office")) return 4;
+            return 5;
         }
 
-        // FULLY WORKING PDF EXPORT FUNCTION
-        function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-            
-            // PDF Styling
-            const hotelName = "MAANSOOR HOTEL & RESORT";
-            const reportTitle = "INVENTORY ASSET REPORT";
-            const date = new Date().toLocaleString();
-            const locationName = currentSelectedLocation || "FULL HOTEL INVENTORY";
+        function exportToExcel(type) {
+            if (inventory.length === 0) return alert("Xog ma jirto!");
+            let dataToExport = [];
+            let fileName = "";
+            let showLocation = true;
 
-            // Header
-            doc.setFontSize(18);
-            doc.setTextColor(15, 23, 42); // Navy
-            doc.text(hotelName, 14, 20);
-            
-            doc.setFontSize(12);
-            doc.setTextColor(197, 160, 89); // Gold
-            doc.text(reportTitle, 14, 28);
-            
-            doc.setFontSize(9);
-            doc.setTextColor(100);
-            doc.text(`Location: ${locationName}`, 14, 35);
-            doc.text(`Generated on: ${date}`, 14, 40);
-            
-            // Draw a Gold line
-            doc.setDrawColor(197, 160, 89);
-            doc.setLineWidth(0.5);
-            doc.line(14, 43, 196, 43);
-
-            // Filter Data
-            let data = currentSelectedLocation ? inventory.filter(i => i.location === currentSelectedLocation) : inventory;
-            
-            if(data.length === 0) {
-                alert("Xog ma jirto oo PDF laga dhigo!");
-                return;
+            if (type === 'full') {
+                dataToExport = [...inventory].sort((a, b) => {
+                    let pA = getPriority(a.location);
+                    let pB = getPriority(b.location);
+                    if (pA !== pB) return pA - pB;
+                    return a.location.localeCompare(b.location, undefined, {numeric: true, sensitivity: 'base'});
+                });
+                fileName = "Maansoor_Full_Inventory";
+            } else {
+                if (currentSelectedLocation) {
+                    dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
+                    fileName = `Maansoor_${currentSelectedLocation.replace(/\s+/g, '_')}`;
+                } else {
+                    const catLabel = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+                    dataToExport = inventory.filter(i => i.location.startsWith(catLabel))
+                                            .sort((a, b) => a.location.localeCompare(b.location, undefined, {numeric: true}));
+                    fileName = `Maansoor_All_${catLabel}s`;
+                }
             }
 
-            const tableData = data.map(i => [
-                i.code || '-', 
-                i.name, 
-                i.desc || '-', 
-                i.qty, 
+            if (dataToExport.length === 0) return alert("Meeshan xog kuma jirto!");
+
+            // Calculate Grand Total
+            const grandTotal = dataToExport.reduce((sum, item) => {
+                const val = parseFloat(item.total.replace('$', '').replace(',', '')) || 0;
+                return sum + val;
+            }, 0);
+
+            const cleanData = dataToExport.map(i => ({
+                'Location': i.location,
+                'Item Code': i.code || '-',
+                'Item Name': i.name,
+                'Description': i.desc || '-',
+                'Holder': i.holder || '-',
+                'QTY': i.qty,
+                'Unit Value': i.uvalue,
+                'Total Value': i.total
+            }));
+
+            // KU DAR ROW-GA UGU DAMBEEYA EE TOTAL-KA
+            cleanData.push({
+                'Location': 'GRAND TOTAL',
+                'Item Code': '',
+                'Item Name': '',
+                'Description': '',
+                'Holder': '',
+                'QTY': '',
+                'Unit Value': '',
+                'Total Value': `$${grandTotal.toFixed(2)}`
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(cleanData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
+            XLSX.writeFile(workbook, `${fileName}.xlsx`);
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'mm', 'a4'); const date = new Date().toLocaleString();
+            let dataToExport = []; let titleText = "";
+            
+            if (currentSelectedLocation) {
+                dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
+                titleText = `INVENTORY: ${currentSelectedLocation.toUpperCase()}`;
+            } else if (!document.getElementById('selection-area').classList.contains('hidden')) {
+                const catLabel = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+                dataToExport = inventory.filter(i => i.location.startsWith(catLabel))
+                                        .sort((a, b) => a.location.localeCompare(b.location, undefined, {numeric: true}));
+                titleText = `INVENTORY: ALL ${catLabel.toUpperCase()}S`;
+            } else {
+                dataToExport = [...inventory].sort((a, b) => {
+                    let pA = getPriority(a.location);
+                    let pB = getPriority(b.location);
+                    if (pA !== pB) return pA - pB;
+                    return a.location.localeCompare(b.location, undefined, {numeric: true});
+                });
+                titleText = "FULL HOTEL INVENTORY REPORT";
+            }
+
+            if (dataToExport.length === 0) return alert("Xog ma jirto!");
+            
+            doc.setFontSize(18); doc.setTextColor(15, 23, 42); doc.text("MAANSOOR HOTEL & RESORT", 14, 20);
+            doc.setFontSize(11); doc.setTextColor(197, 160, 89); doc.text(titleText, 14, 28);
+            doc.setFontSize(8); doc.setTextColor(100); doc.text(`Generated: ${date}`, 14, 34); doc.line(14, 36, 196, 36);
+            
+            const tableData = dataToExport.map(i => [
+                i.location,
+                i.code || '-',
+                i.name,
+                i.qty,
                 i.total
             ]);
 
-            // Table
             doc.autoTable({
-                head: [['Code', 'Item Name', 'Description', 'Qty', 'Total Value']],
+                head: [['Location', 'Code', 'Item Name', 'Qty', 'Total']],
                 body: tableData,
-                startY: 48,
+                startY: 40,
                 theme: 'grid',
-                headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255], fontStyle: 'bold' },
-                alternateRowStyles: { fillColor: [250, 250, 250] },
-                styles: { fontSize: 8, cellPadding: 3 }
+                headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255] },
+                styles: { fontSize: 8 }
             });
-
-            // Save File
-            doc.save(`Maansoor_Report_${locationName.replace(" ", "_")}.pdf`);
+            doc.save(`${titleText.replace(/\s+/g, '_')}.pdf`);
         }
     </script>
 </body>
