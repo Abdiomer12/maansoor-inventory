@@ -13,6 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
     <!-- Chart.js for Visual Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
         body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
@@ -61,7 +63,8 @@
             input[type="text"], 
             input[type="number"], 
             input[type="password"], 
-            input[type="search"] {
+            input[type="search"],
+            select {
                 font-size: 16px !important;
             }
         }
@@ -162,8 +165,11 @@
                         <span><i class="fas fa-briefcase mr-3 text-[#B45309]"></i> Offices</span>
                         <span class="text-xs bg-amber-900 px-2 py-1 rounded">2</span>    
                     </button>
-                    <div class="pt-10">
-                        <button onclick="showSettings()" class="w-full text-left py-3 px-4 rounded-lg text-yellow-500 hover:bg-slate-800 transition flex items-center mb-2">
+                    <div class="pt-6 border-t border-slate-700 mt-6">
+                        <button onclick="showLogs()" class="nav-btn w-full text-left py-3 px-4 rounded-lg text-blue-400 hover:bg-slate-800 transition flex items-center mb-2">
+                            <i class="fas fa-history mr-3"></i> Activity Log
+                        </button>
+                        <button onclick="showSettings()" class="nav-btn w-full text-left py-3 px-4 rounded-lg text-yellow-500 hover:bg-slate-800 transition flex items-center mb-2">
                             <i class="fas fa-cog mr-3"></i> Security Settings
                         </button>
                          <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 hover:bg-red-900/20 transition flex items-center">
@@ -204,6 +210,29 @@
 
                 <main class="flex-1 overflow-y-auto p-4 md:p-6">
                     
+                    <!-- 1. LOGS SECTION (Diiwaanka) -->
+                    <div id="logs-screen" class="hidden max-w-5xl mx-auto py-5">
+                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                            <div class="bg-slate-900 p-6 flex justify-between items-center border-b-4 border-blue-500">
+                                <h2 class="text-white font-black uppercase italic tracking-tighter"><i class="fas fa-history mr-2"></i> Activity Log (Diiwaanka)</h2>
+                                <button onclick="clearLogs()" class="text-[10px] bg-red-600 text-white px-3 py-1.5 rounded-lg font-bold uppercase hover:bg-red-700 transition">Tirtir Logs</button>
+                            </div>
+                            <div class="overflow-x-auto max-h-[600px]">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50 sticky top-0">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Qofka</th>
+                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Ficilka</th>
+                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Faahfaahin</th>
+                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Xilliga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="logs-tbody" class="bg-white divide-y divide-gray-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- SECURITY SETTINGS SECTION -->
                     <div id="settings-screen" class="hidden max-w-4xl mx-auto py-10">
                         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
@@ -292,7 +321,15 @@
                                     <div><label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label><input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                                     <div><label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label><input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                                 </div>
-                                <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Status (Xaaladda)</label>
+                                    <select id="status" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-yellow-600">
+                                            <option value="Good">Good (Hagaagsan)</option>
+                                            <option value="Damaged">Damaged (Jaban)</option>
+                                            <option value="Missing">Missing (Maqan)</option>
+                                    </select>
+                                </div>
+                                <div class="sm:col-span-1"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                                 <div><label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label><input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-lg"></div>
                             </div>
                             <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
@@ -317,7 +354,7 @@
                                         <tr>
                                             <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Code</th>
                                             <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Name</th>
-                                            <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Desc</th>
+                                            <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Status</th>
                                             <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
                                             <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Total</th>
                                             <th class="px-4 md:px-6 py-3 md:py-4 w-20">Actions</th>
@@ -355,6 +392,7 @@
                     sessionStorage.setItem('maansoor_isLoggedIn', 'true');
                 }
                 sessionStorage.setItem('loginTime', Date.now());
+                addLog("Login", `User-ka ${profile.user} ayaa nidaamka soo galay.`);
                 checkAuth();
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
@@ -378,6 +416,7 @@
         }
 
         function handleLogout() {
+            addLog("Logout", `User-ka ${profile.user} ayaa ka baxay nidaamka.`);
             localStorage.removeItem('maansoor_isLoggedIn');
             sessionStorage.clear();
             window.location.reload();
@@ -388,7 +427,7 @@
         }
 
         function showSettings() {
-            document.getElementById('dashboard-content').classList.add('hidden');
+            hideAllScreens();
             document.getElementById('settings-screen').classList.remove('hidden');
             document.getElementById('set-username').value = profile.user;
             document.getElementById('set-fullname').value = profile.fullName;
@@ -417,11 +456,68 @@
             profile.phone = newPhone;
 
             localStorage.setItem('maansoor_profile', JSON.stringify(profile));
+            addLog("Profile Update", `Xogta user-ka ${profile.user} waa la beddelay.`);
             alert("Xogta Account-ka waa la beddelay!");
             window.location.reload();
         }
 
-        // --- 2. CORE LOGIC ---
+        // --- 2. ACTIVITY LOG LOGIC ---
+        let activityLogs = JSON.parse(localStorage.getItem('maansoor_logs')) || [];
+
+        function addLog(action, details) {
+            const now = new Date();
+            const logEntry = {
+                user: profile.user,
+                action: action,
+                details: details,
+                timestamp: now.toLocaleString('en-GB')
+            };
+            activityLogs.unshift(logEntry); // Add to the top
+            if(activityLogs.length > 200) activityLogs.pop(); // Keep last 200
+            localStorage.setItem('maansoor_logs', JSON.stringify(activityLogs));
+        }
+
+        function showLogs() {
+            hideAllScreens();
+            document.getElementById('logs-screen').classList.remove('hidden');
+            renderLogsTable();
+        }
+
+        function renderLogsTable() {
+            const tbody = document.getElementById('logs-tbody');
+            tbody.innerHTML = '';
+            activityLogs.forEach(log => {
+                let actionColor = "text-gray-700";
+                if(log.action.includes("Ku daray")) actionColor = "text-green-600 font-bold";
+                if(log.action.includes("Tirtiray")) actionColor = "text-red-600 font-bold";
+                if(log.action.includes("Cusboonaysiiyey")) actionColor = "text-blue-600 font-bold";
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 text-xs font-bold text-slate-800">${log.user}</td>
+                        <td class="px-6 py-4 text-xs ${actionColor}">${log.action}</td>
+                        <td class="px-6 py-4 text-xs text-gray-500 italic">${log.details}</td>
+                        <td class="px-6 py-4 text-[10px] text-gray-400 font-mono">${log.timestamp}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function clearLogs() {
+            if(confirm("Ma hubtaa in aad tirtirto dhamaan diiwaanka dhaqdhaqaaqa?")) {
+                activityLogs = [];
+                localStorage.setItem('maansoor_logs', JSON.stringify(activityLogs));
+                renderLogsTable();
+            }
+        }
+
+        function hideAllScreens() {
+            document.getElementById('dashboard-content').classList.add('hidden');
+            document.getElementById('settings-screen').classList.add('hidden');
+            document.getElementById('logs-screen').classList.add('hidden');
+        }
+
+        // --- 3. CORE LOGIC ---
         let inventory = JSON.parse(localStorage.getItem('maansoor_assets')) || [];
         let currentSelectedLocation = ""; let currentCategory = "room"; let editId = null; let myChart1, myChart2;
 
@@ -429,7 +525,7 @@
         
         function showHomePage() { 
             currentSelectedLocation = ""; 
-            document.getElementById('settings-screen').classList.add('hidden');
+            hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active')); 
             document.getElementById('selection-area').classList.add('hidden'); 
@@ -468,28 +564,81 @@
         function calculate() { const q = document.getElementById('qty').value || 0; const v = document.getElementById('uvalue').value || 0; document.getElementById('total').value = `$${(q * v).toFixed(2)}`; return (q * v).toFixed(2); }
 
         function saveData() {
-            const n = document.getElementById('name').value; const q = document.getElementById('qty').value; if(!n || !q) return alert("Fadlan buuxi Magaca & Tirada!");
-            const data = { id: editId || Date.now(), holder: document.getElementById('holder').value, dept: document.getElementById('dept').value, location: document.getElementById('location').value, code: document.getElementById('code').value, name: n, desc: document.getElementById('desc').value, qty: q, uvalue: document.getElementById('uvalue').value, total: `$${calculate()}` };
+            const n = document.getElementById('name').value; 
+            const q = document.getElementById('qty').value; 
+            const s = document.getElementById('status').value;
+            if(!n || !q) return alert("Fadlan buuxi Magaca & Tirada!");
+            
+            const data = { 
+                id: editId || Date.now(), 
+                holder: document.getElementById('holder').value, 
+                dept: document.getElementById('dept').value, 
+                location: document.getElementById('location').value, 
+                code: document.getElementById('code').value, 
+                name: n, 
+                status: s,
+                desc: document.getElementById('desc').value, 
+                qty: q, 
+                uvalue: document.getElementById('uvalue').value, 
+                total: `$${calculate()}` 
+            };
+
+            const logAction = editId ? "Cusboonaysiiyey" : "Ku daray";
+            addLog(logAction, `Agab: ${n} (${q} xabbo) meesta ${data.location}.`);
+
             if(editId) { inventory = inventory.map(i => i.id === editId ? data : i); editId = null; } else { inventory.push(data); }
             localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
+            
+            // Notification wax ku kordhin
+            alert("Waa la kaydiyey agabka!");
+
             ['code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = '');
+            document.getElementById('status').value = 'Good';
             document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka';
             renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
             updateDashboardStats(); updateCharts();
         }
 
-        function editItem(id) { const i = inventory.find(x => x.id === id); if(!i) return; editId = id; ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = i[f]); document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii'; document.getElementById('entry-form').classList.remove('hidden'); window.scrollTo({ top: 100, behavior: 'smooth' }); }
-        function deleteItem(id) { if(confirm('Ma hubtaa?')) { inventory = inventory.filter(i => i.id !== id); localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); updateDashboardStats(); updateCharts(); } }
-        function clearAllData() { if(confirm('DHAMAAN ma tirtirnaa?')) { inventory = []; localStorage.removeItem('maansoor_assets'); window.location.reload(); } }
+        function editItem(id) { 
+            const i = inventory.find(x => x.id === id); 
+            if(!i) return; editId = id; 
+            ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = i[f]); 
+            document.getElementById('status').value = i.status || 'Good';
+            document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii'; 
+            document.getElementById('entry-form').classList.remove('hidden'); 
+            window.scrollTo({ top: 100, behavior: 'smooth' }); 
+        }
+
+        function deleteItem(id) { 
+            if(confirm('Ma hubtaa?')) { 
+                const i = inventory.find(x => x.id === id);
+                addLog("Tirtiray", `Agabka: ${i.name} ee yaalay ${i.location} waa la tirtiray.`);
+                inventory = inventory.filter(i => i.id !== id); 
+                localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
+                renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
+                updateDashboardStats(); updateCharts(); 
+            } 
+        }
+        function clearAllData() { 
+            if(confirm('DHAMAAN ma tirtirnaa?')) { 
+                addLog("Reset All", "Dhamaan xogta huteelka waa la tirtiray.");
+                inventory = []; localStorage.removeItem('maansoor_assets'); window.location.reload(); 
+            } 
+        }
 
         function renderTable(loc = "") {
             const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = ''; 
             let filtered = (loc === "") ? inventory : inventory.filter(i => i.location.startsWith(loc));
+            
             filtered.slice().reverse().forEach(i => {
+                const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
+                
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
-                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600">${i.location}</span></td>
-                    <td class="px-4 md:px-6 py-4 text-xs text-gray-400 italic">${i.desc || '-'}</td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold">
+                        <span class="px-2 py-1 rounded-full text-[12px] ${statusColor}">${i.status || 'Good'}</span>
+                    </td>
                     <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
                     <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
                     <td class="px-4 md:px-6 py-4 text-right flex space-x-2 justify-end"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button></td>
@@ -499,7 +648,7 @@
 
         function changeCategory(cat, count) {
             currentCategory = cat; currentSelectedLocation = ""; 
-            document.getElementById('settings-screen').classList.add('hidden');
+            hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             const grid = document.getElementById('grid-buttons'); grid.innerHTML = ''; resetForm(); 
             document.getElementById('selection-area').classList.remove('hidden'); document.getElementById('dashboard-visuals').classList.add('hidden');
@@ -526,7 +675,13 @@
             renderTable(catLabel); 
         }
 
-        function resetForm() { editId = null; document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka'; ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = ''); document.getElementById('entry-form').classList.add('hidden'); }
+        function resetForm() { 
+            editId = null; 
+            document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka'; 
+            ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = ''); 
+            document.getElementById('status').value = 'Good';
+            document.getElementById('entry-form').classList.add('hidden'); 
+        }
 
         // Baadhista oo hadda Strict looga dhigay Item Code
         function filterInventory() {
@@ -546,10 +701,13 @@
             });
             
             filtered.slice().reverse().forEach(i => {
+                const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
                     <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
-                    <td class="px-4 md:px-6 py-4 text-xs text-gray-400 italic">${i.desc || '-'}</td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold">
+                        <span class="px-2 py-1 rounded-full text-[9px] ${statusColor}">${i.status || 'Good'}</span>
+                    </td>
                     <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
                     <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
                     <td class="px-4 md:px-6 py-4 text-right flex space-x-2 justify-end">
@@ -592,8 +750,8 @@
             }
             if (dataToExport.length === 0) return alert("Meeshan xog kuma jirto!");
             const grandTotal = dataToExport.reduce((sum, item) => sum + (parseFloat(item.total.replace('$', '').replace(',', '')) || 0), 0);
-            const cleanData = dataToExport.map(i => ({'Location': i.location, 'Item Code': i.code || '-', 'Item Name': i.name, 'Description': i.desc || '-', 'Holder': i.holder || '-', 'QTY': i.qty, 'Unit Value': i.uvalue, 'Total Value': i.total}));
-            cleanData.push({'Location': 'GRAND TOTAL', 'Item Code': '', 'Item Name': '', 'Description': '', 'Holder': '', 'QTY': '', 'Unit Value': '', 'Total Value': `$${grandTotal.toFixed(2)}`});
+            const cleanData = dataToExport.map(i => ({'Location': i.location, 'Item Code': i.code || '-', 'Item Name': i.name, 'Status': i.status || 'Good', 'Description': i.desc || '-', 'QTY': i.qty, 'Unit Value': i.uvalue, 'Total Value': i.total}));
+            cleanData.push({'Location': 'GRAND TOTAL', 'Item Code': '', 'Item Name': '', 'Status': '', 'Description': '', 'QTY': '', 'Unit Value': '', 'Total Value': `$${grandTotal.toFixed(2)}`});
             const worksheet = XLSX.utils.json_to_sheet(cleanData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
@@ -623,9 +781,9 @@
             doc.setFontSize(18); doc.setTextColor(15, 23, 42); doc.text("MAANSOOR HOTEL & RESORT", 14, 20);
             doc.setFontSize(11); doc.setTextColor(197, 160, 89); doc.text(titleText, 14, 28);
             doc.setFontSize(8); doc.setTextColor(100); doc.text(`Generated: ${date}`, 14, 34); doc.line(14, 36, 196, 36);
-            const tableData = dataToExport.map(i => [i.location, i.code || '-', i.name, i.qty, i.total]);
+            const tableData = dataToExport.map(i => [i.location, i.code || '-', i.name, i.status || 'Good', i.qty, i.total]);
             doc.autoTable({
-                head: [['Location', 'Code', 'Item Name', 'Qty', 'Total']],
+                head: [['Location', 'Code', 'Item Name', 'Status', 'Qty', 'Total']],
                 body: tableData,
                 startY: 40,
                 theme: 'grid',
