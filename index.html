@@ -229,7 +229,7 @@
                             <p class="text-[9px] md:text-[10px] text-gray-400 font-bold uppercase">Grand Total</p>
                             <p id="stat-total-value" class="text-xs md:text-sm font-extrabold text-green-600">$0.00</p>
                         </div>
-                        <!-- USER HEADER INFO - Qodobka u dambeeyay: 'hidden md:block' waa laga saaray si markasta u muuqdo -->
+                        <!-- USER HEADER INFO -->
                         <div onclick="showSettings()" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded-full transition group">
                             <p id="header-username" class="text-[11px] font-bold text-slate-700 uppercase"></p>
                             <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500 border-2 border-yellow-500 shadow-md group-hover:scale-105 transition">
@@ -360,6 +360,20 @@
                                             <option value="Missing">Missing (Maqan)</option>
                                     </select>
                                 </div>
+                                <!-- QODOBKA SAWIRKA: Lagu kordhiyey badhanka Camera-ka -->
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Sawirka Agabka</label>
+                                    <div class="flex space-x-2 mt-1">
+                                        <input type="file" id="itemImage" accept="image/*" class="flex-1 text-[10px] bg-gray-50 border border-gray-200 rounded-xl p-2">
+                                        <button onclick="openCamera()" class="bg-blue-600 text-white p-2 rounded-xl text-sm hover:bg-blue-700 transition" title="Toos u sawir">
+                                            <i class="fas fa-camera"></i>
+                                        </button>
+                                    </div>
+                                    <div id="image-preview-container" class="mt-2 hidden flex items-center space-x-2">
+                                        <img id="image-preview" src="" class="h-12 w-12 object-cover rounded-lg border-2 border-yellow-500">
+                                        <button onclick="clearImage()" class="text-red-500 text-xs font-bold hover:underline">Ka saar</button>
+                                    </div>
+                                </div>
                                 <div class="sm:col-span-1"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                                 <div><label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label><input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-lg"></div>
                             </div>
@@ -369,7 +383,7 @@
                             </div>
                         </div>
 
-                        <!-- QODOBKA SEARCH SCROLL: Waxaan ku daray ID-gan si kor loogu soo qaado -->
+                        <!-- QODOBKA SEARCH SCROLL -->
                         <div id="inventory-section" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
                             <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
                                 <h4 id="table-title" class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
@@ -402,6 +416,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Video element for capturing (TRUE HIDDEN) -->
+    <video id="webcam" autoplay playsinline style="width:1px; height:1px; position: absolute; opacity: 0; pointer-events: none;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
 
     <script>
         // --- 1. SECURITY & USER DATA ---
@@ -625,12 +643,7 @@
                     activityLogs = [];
                     localStorage.setItem('maansoor_logs', JSON.stringify(activityLogs));
                     renderLogsTable();
-                    Swal.fire({
-                        title: 'La tirtiray!', 
-                        text: 'Diiwaankii waa la tirtiray.', 
-                        icon: 'success',
-                        confirmButtonColor: '#0f172a'
-                    });
+                    Swal.fire({ title: 'La tirtiray!', text: 'Diiwaankii waa la tirtiray.', icon: 'success', confirmButtonColor: '#0f172a' });
                 }
             });
         }
@@ -644,6 +657,73 @@
         // --- 3. CORE LOGIC ---
         let inventory = JSON.parse(localStorage.getItem('maansoor_assets')) || [];
         let currentSelectedLocation = ""; let currentCategory = "room"; let editId = null; let myChart1, myChart2;
+        let currentImageBase64 = null; 
+
+        // Handle image selection and conversion
+        document.getElementById('itemImage')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    currentImageBase64 = event.target.result;
+                    document.getElementById('image-preview').src = currentImageBase64;
+                    document.getElementById('image-preview-container').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function clearImage() {
+            currentImageBase64 = null;
+            document.getElementById('itemImage').value = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
+        }
+
+        // QODOBKA CAMERA: Function-ka lagu furayo camera-ka
+        async function openCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                
+                Swal.fire({
+                    title: 'Sawir ka qaad agabka',
+                    html: `<div id="camera-box" class="flex flex-col items-center">
+                             <div class="relative w-full overflow-hidden rounded-2xl bg-black aspect-video">
+                               <video id="swal-video" autoplay playsinline class="w-full h-full object-cover"></video>
+                             </div>
+                             <p class="text-[10px] text-gray-400 mt-2 uppercase font-bold">U jeedi camera-ka agabka</p>
+                           </div>`,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-camera mr-2"></i> SAWIR',
+                    confirmButtonColor: '#0f172a',
+                    cancelButtonText: 'CLOSE',
+                    didOpen: () => {
+                        const v = document.getElementById('swal-video');
+                        v.srcObject = stream;
+                    },
+                    willClose: () => {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const v = document.getElementById('swal-video');
+                        const canvas = document.getElementById('canvas');
+                        canvas.width = v.videoWidth;
+                        canvas.height = v.videoHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+                        
+                        currentImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                        document.getElementById('image-preview').src = currentImageBase64;
+                        document.getElementById('image-preview-container').classList.remove('hidden');
+                        
+                        stream.getTracks().forEach(track => track.stop());
+                        Swal.fire({ title: 'Sawirka waa la qaaday!', icon: 'success', timer: 1000, showConfirmButton: false });
+                    }
+                });
+            } catch (err) {
+                Swal.fire('Cillad!', 'Camera-ka lama furi karo. Hubi in aad fasaxday.', 'error');
+            }
+        }
 
         function loadInventory() { updateDashboardStats(); showHomePage(); updateCharts(); }
         
@@ -691,9 +771,7 @@
             const n = document.getElementById('name').value; 
             const q = document.getElementById('qty').value; 
             const s = document.getElementById('status').value;
-            if(!n || !q) {
-                return Swal.fire({ title: 'Cillad!', text: 'Fadlan buuxi Magaca & Tirada!', icon: 'error', confirmButtonColor: '#0f172a' });
-            }
+            if(!n || !q) { return Swal.fire({ title: 'Cillad!', text: 'Fadlan buuxi Magaca & Tirada!', icon: 'error', confirmButtonColor: '#0f172a' }); }
             
             const data = { 
                 id: editId || Date.now(), 
@@ -703,6 +781,7 @@
                 code: document.getElementById('code').value, 
                 name: n, 
                 status: s,
+                image: currentImageBase64,
                 desc: document.getElementById('desc').value, 
                 qty: q, 
                 uvalue: document.getElementById('uvalue').value, 
@@ -710,22 +789,14 @@
             };
 
             const logAction = editId ? "Cusboonaysiiyey" : "Ku daray";
-            addLog(logAction, `Agab: ${n} (${q} xabbo) meesta ${data.location}.`);
+            addLog(logAction, `Agab: ${n} (${q} xabbo) meesha ${data.location}.`);
 
             if(editId) { inventory = inventory.map(i => i.id === editId ? data : i); editId = null; } else { inventory.push(data); }
             localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
             
-            Swal.fire({
-                title: 'Waa la kaydiyey!',
-                text: 'Agabka si guul leh ayaa loo kaydiyey!',
-                icon: 'success',
-                timer: 1500,
-                showConfirmButton: false
-            });
+            Swal.fire({ title: 'Waa la kaydiyey!', text: 'Agabka si guul leh ayaa loo kaydiyey!', icon: 'success', timer: 1500, showConfirmButton: false });
 
-            ['code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = '');
-            document.getElementById('status').value = 'Good';
-            document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka';
+            resetForm();
             renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
             updateDashboardStats(); updateCharts();
         }
@@ -735,9 +806,29 @@
             if(!i) return; editId = id; 
             ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = i[f]); 
             document.getElementById('status').value = i.status || 'Good';
+            
+            if(i.image) {
+                currentImageBase64 = i.image;
+                document.getElementById('image-preview').src = i.image;
+                document.getElementById('image-preview-container').classList.remove('hidden');
+            } else {
+                currentImageBase64 = null;
+                document.getElementById('image-preview-container').classList.add('hidden');
+            }
+
             document.getElementById('save-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cusboonaysii'; 
             document.getElementById('entry-form').classList.remove('hidden'); 
             window.scrollTo({ top: 100, behavior: 'smooth' }); 
+        }
+
+        function viewImage(imgBase64, itemName) {
+            Swal.fire({
+                title: itemName,
+                imageUrl: imgBase64,
+                imageAlt: 'Agabka: ' + itemName,
+                confirmButtonColor: '#0f172a',
+                confirmButtonText: 'Xidho'
+            });
         }
 
         function deleteItem(id) { 
@@ -757,12 +848,7 @@
                     localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
                     renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
                     updateDashboardStats(); updateCharts(); 
-                    Swal.fire({
-                        title: 'La tirtiray!', 
-                        text: 'Agabkii waa la tirtiray.', 
-                        icon: 'success',
-                        confirmButtonColor: '#0f172a'
-                    });
+                    Swal.fire({ title: 'La tirtiray!', text: 'Agabkii waa la tirtiray.', icon: 'success', confirmButtonColor: '#0f172a' });
                 }
             });
         }
@@ -792,11 +878,12 @@
             
             filtered.slice().reverse().forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-                
+                let imageIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500 hover:text-blue-700"><i class="fas fa-camera"></i></button>` : '';
+
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
                     <td class="px-4 md:px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
-                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} ${imageIcon} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
                     <td class="px-4 md:px-6 py-4 text-xs font-bold">
                         <span class="px-2 py-1 rounded-full text-[12px] ${statusColor}">${i.status || 'Good'}</span>
                     </td>
@@ -838,39 +925,34 @@
 
         function resetForm() { 
             editId = null; 
+            currentImageBase64 = null;
             document.getElementById('save-btn').innerHTML = '<i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka'; 
             ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => document.getElementById(f).value = ''); 
             document.getElementById('status').value = 'Good';
+            document.getElementById('itemImage').value = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
             document.getElementById('entry-form').classList.add('hidden'); 
         }
 
         function filterInventory() {
             const q = document.getElementById('searchInput').value.toLowerCase().trim();
             const tbody = document.getElementById('inventory-tbody'); tbody.innerHTML = '';
-            
-            if(q === "") {
-                renderTable(currentSelectedLocation);
-                return;
-            }
-
-            // QODOBKA SEARCH SCROLL: Marka uu qofku bilaabo baadhista, kor u soo qaad shaxda
+            if(q === "") { renderTable(currentSelectedLocation); return; }
             document.getElementById('inventory-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
             const filtered = inventory.filter(i => {
                 const code = (i.code || "").toLowerCase();
                 const name = (i.name || "").toLowerCase();
                 const loc = (i.location || "").toLowerCase();
                 const status = (i.status || "Good").toLowerCase();
-                
                 return code.includes(q) || name.includes(q) || loc.includes(q) || status.includes(q);
             });
-            
             filtered.slice().reverse().forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
+                let imageIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500 hover:text-blue-700"><i class="fas fa-camera"></i></button>` : '';
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b transition">
                     <td class="px-4 md:px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
                     <td class="px-4 md:px-6 py-4 text-xs text-gray-500">${i.code || '-'}</td>
-                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
+                    <td class="px-4 md:px-6 py-4 text-xs font-bold text-slate-700">${i.name} ${imageIcon} <br><span class="text-[9px] text-yellow-600 uppercase font-bold">${i.location}</span></td>
                     <td class="px-4 md:px-6 py-4 text-xs font-bold">
                         <span class="px-2 py-1 rounded-full text-[12px] ${statusColor}">${i.status || 'Good'}</span>
                     </td>
