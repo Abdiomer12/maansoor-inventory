@@ -888,27 +888,41 @@
             });
         }
 
-        function deleteItem(id) { 
-            const i = inventory.find(x => x.id === id);
-            Swal.fire({
-                title: 'Ma hubtaa?',
-                text: `Ma hubtaa in aad tirtirto: ${i.name}?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#0f172a',
-                confirmButtonText: 'Haa, tirtir!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    addLog("Tirtiray", `Agabka: ${i.name} ee yaalay ${i.location} waa la tirtiray.`, i);
-                    inventory = inventory.filter(i => i.id !== id); 
-                    localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
-                    renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
-                    updateDashboardStats(); updateCharts(); 
-                    Swal.fire({ title: 'La tirtiray!', text: 'Agabkii waa la tirtiray.', icon: 'success', confirmButtonColor: '#0f172a' });
-                }
-            });
+        async function deleteItem(id) {
+    const i = inventory.find(x => x.id === id);
+    
+    Swal.fire({
+        title: 'Ma hubtaa?',
+        text: `Ma rabtaa in aad tirtirto: ${i.name}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#0f172a',
+        confirmButtonText: 'Haa, tirtir!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            // Khadkan hoose ayaa Supabase Cloud-ka ka tirtiraya xogta
+            const { error } = await supabase.from('inventory').delete().eq('id', id);
+
+            if (!error) {
+                // Ku dar Log-ka si hadhow loo Restore-gareeyo haddii loo baahdo
+                addLog("Tirtiray", `Agabka: ${i.name} ee yaalay ${i.location}`, i);
+                
+                Swal.fire({
+                    title: 'La tirtiray!',
+                    text: 'Agabkii waa laga saaray Database-ka.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                // Marba haddii Realtime sync-gu shaqaynayo, iskiis ayuu u bixi doonaa
+            } else {
+                console.error("Delete error:", error);
+                Swal.fire('Cillad!', 'Xogta Cloud-ka lagama tirtiri karo.', 'error');
+            }
         }
+    });
+}
         
         function clearAllData() { 
             Swal.fire({
