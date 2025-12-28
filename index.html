@@ -10,13 +10,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Maktabadaha loo baahanyahay -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/Project/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Kani waa kan saxda ah -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Chart.js for Visual Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- SweetAlert2 for beautiful popups -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
@@ -238,7 +239,6 @@
                         </div>
                     </div>
                 </header>
-
                 <main class="flex-1 overflow-y-auto p-4 md:p-6">
                     
                     <!-- 1. LOGS SECTION (Diiwaanka) -->
@@ -422,6 +422,7 @@
     <canvas id="canvas" style="display:none;"></canvas>
 
     <script>
+
         // --- 1. SECURITY & USER DATA ---
         let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
             user: "admin",
@@ -725,7 +726,18 @@
             }
         }
 
-        function loadInventory() { updateDashboardStats(); showHomePage(); updateCharts(); }
+        async function loadInventory() {
+    // Ka soo iibi xogta Supabase
+    const { data, error } = await db.from('inventory').select('*').order('id', { ascending: false });
+    
+    if (!error) {
+        inventory = data; // Ku rid xogta variable-ka inventory
+        renderTable(currentSelectedLocation);
+        updateDashboardStats();
+        updateCharts();
+        updateBadges();
+    }
+}
         
         function showHomePage() { 
             currentSelectedLocation = ""; 
@@ -767,39 +779,84 @@
 
         function calculate() { const q = document.getElementById('qty').value || 0; const v = document.getElementById('uvalue').value || 0; document.getElementById('total').value = `$${(q * v).toFixed(2)}`; return (q * v).toFixed(2); }
 
-        function saveData() {
-            const n = document.getElementById('name').value; 
-            const q = document.getElementById('qty').value; 
-            const s = document.getElementById('status').value;
-            if(!n || !q) { return Swal.fire({ title: 'Cillad!', text: 'Fadlan buuxi Magaca & Tirada!', icon: 'error', confirmButtonColor: '#0f172a' }); }
-            
-            const data = { 
-                id: editId || Date.now(), 
-                holder: document.getElementById('holder').value, 
-                dept: document.getElementById('dept').value, 
-                location: document.getElementById('location').value, 
-                code: document.getElementById('code').value, 
-                name: n, 
-                status: s,
-                image: currentImageBase64,
-                desc: document.getElementById('desc').value, 
-                qty: q, 
-                uvalue: document.getElementById('uvalue').value, 
-                total: `$${calculate()}` 
-            };
 
-            const logAction = editId ? "Cusboonaysiiyey" : "Ku daray";
-            addLog(logAction, `Agab: ${n} (${q} xabbo) meesha ${data.location}.`);
-
-            if(editId) { inventory = inventory.map(i => i.id === editId ? data : i); editId = null; } else { inventory.push(data); }
-            localStorage.setItem('maansoor_assets', JSON.stringify(inventory)); 
-            
-            Swal.fire({ title: 'Waa la kaydiyey!', text: 'Agabka si guul leh ayaa loo kaydiyey!', icon: 'success', timer: 1500, showConfirmButton: false });
-
-            resetForm();
-            renderTable(currentSelectedLocation || (currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1))); 
-            updateDashboardStats(); updateCharts();
+        function updateBadges() {
+    // Liiska qaybaha aan doonayno inay badges-koodu isbeddelaan
+    const categories = ['Room', 'Hall', 'Kitchen', 'Office'];
+    
+    categories.forEach(cat => {
+        // Tiri inta agab ee qaybtan ku jira
+        const count = inventory.filter(i => i.location && i.location.includes(cat)).length;
+        
+        // Hel meesha (ID-ga) nambarka lagu qorayo
+        const badgeElement = document.getElementById(`badge-${cat.toLowerCase()}`);
+        
+        // Haddii meeshu jirto, ku qor tirada cusub
+        if(badgeElement) {
+            badgeElement.innerText = count;
         }
+    });
+}        
+        
+            async function saveData() {
+    const n = document.getElementById('name').value;
+    const q = document.getElementById('qty').value;
+    
+    // 1. Hubi in magaca iyo tirada la buuxiyey
+    if(!n || !q) {
+        return Swal.fire('Cillad!', 'Fadlan buuxi Magaca iyo Tirada agabka!', 'error');
+    }
+
+    // 2. Muuji "Loading" yar inta xogtu Cloud-ka u socoto
+    Swal.showLoading();
+
+    const data = {
+        id: editId || Date.now(),
+        holder: document.getElementById('holder').value || '',
+        dept: document.getElementById('dept').value || '',
+        location: document.getElementById('location').value || '',
+        code: document.getElementById('code').value || '',
+        name: n,
+        status: document.getElementById('status').value,
+        qty: parseFloat(q),
+        uvalue: parseFloat(document.getElementById('uvalue').value) || 0,
+        total: document.getElementById('total').value || '$0.00',
+        image: currentImageBase64 || null,
+        desc: document.getElementById('desc').value || ''
+    };
+
+    try {
+        let result;
+        if(editId) {
+            // Haddii uu yahay Update (wax laga beddelayo)
+            result = await db.from('inventory').update(data).eq('id', editId);
+        } else {
+            // Haddii uu yahay agab cusub (Insert)
+            result = await db.from('inventory').insert([data]);
+        }
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        // 3. Haddii xogtu si fiican u gashay
+        Swal.fire({
+            title: 'Waa la guulaystay!',
+            text: 'Agabka waxaa lagu kaydiyey Cloud-ka Supabase',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
+        resetForm();
+        loadInventory(); // Dib u soo iibi xogta si shaxdu u cusboonaato
+
+    } catch (err) {
+        console.error("Supabase Error:", err);
+        Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin. Hubi internet-ka iyo API-gaaga.', 'error');
+    }
+}
 
         function editItem(id) { 
             const i = inventory.find(x => x.id === id); 
@@ -1042,6 +1099,12 @@
         }
 
         document.getElementById('password').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
-    </script>
+   
+   
+        const supabaseUrl = 'https://caianuiwgprgxyjevyqy.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
+        const db = supabase.createClient(supabaseUrl, supabaseKey);
+   
+   </script>
 </body>
 </html>
