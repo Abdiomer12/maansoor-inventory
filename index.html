@@ -469,6 +469,9 @@ async function checkAuth() {
         document.getElementById('app-content').classList.add('hidden');
     }
 
+      const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
+        document.getElementById('header-username').innerText = savedProfile.user;
+
     // 1. KA SAAR HIGHLIGHT-KA BADHAMADA KALE
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
 
@@ -752,7 +755,7 @@ async function loadLogs() {
             const file = e.target.files[0];
             if (file) {
                 // Hubi in sawirku uusan aad u weynayn (Max 1MB)
-                if (file.size > 1024 * 1024) {
+                if (file.size > 20000 * 20000) {
                     Swal.fire('Sawirku waa weyn yahay!', 'Fadlan isticmaal sawir ka yar 1MB', 'warning');
                     this.value = "";
                     return;
@@ -777,91 +780,38 @@ async function loadLogs() {
 
         // QODOBKA CAMERA: Function-ka lagu furayo camera-ka
         // QODOBKA CAMERA: Function-ka la hagaajiyey si sawirka madow looga saaro
-async function openCamera() {
-    try {
-        // 1. Codso Camera-ka adoo isticmaalaya cabbir go'an
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { 
-                facingMode: "environment", 
-                width: { ideal: 640 }, 
-                height: { ideal: 480 } 
-            } 
-        });
-        
-        Swal.fire({
-            title: 'Sawir ka qaad agabka',
-            html: `
-                <div id="camera-box" class="flex flex-col items-center">
-                    <div class="relative w-full max-w-[400px] overflow-hidden rounded-2xl bg-black aspect-video shadow-2xl border-4 border-slate-800">
-                        <video id="swal-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
-                    </div>
-                    <p class="text-[11px] text-gray-500 mt-3 font-bold uppercase tracking-widest">Hubi in agabku halkan ka muuqdo</p>
-                </div>`,
-            showCancelButton: true,
-            confirmButtonText: '<i class="fas fa-camera mr-2"></i> QABO SAWIRKA',
-            confirmButtonColor: '#0f172a',
-            cancelButtonText: 'XIDH',
-            allowOutsideClick: false,
-            didOpen: () => {
-                const video = document.getElementById('swal-video');
-                video.srcObject = stream;
-                
-                // Khasab kaga dhig inuu Play yiraahdo markuu diyaar yahay
-                video.addEventListener('loadedmetadata', () => {
-                    video.play();
+function openCamera() {
+    const cameraInput = document.createElement('input');
+    cameraInput.type = 'file';
+    cameraInput.accept = 'image/*';
+    cameraInput.capture = 'environment';
+
+    cameraInput.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // 1. HUBI XAJMIGA (MAX 1MB)
+            const fileSizeMB = file.size / (1024 * 1024); // u beddel MB
+            if (fileSizeMB > 1) { // Haddii uu 1MB ka weyn yahay
+                return Swal.fire({
+                    title: 'Sawirka waa weyn yahay!',
+                    text: 'Fadlan soo geli sawir ka yar 1MB. Kaaga hadda waa: ' + fileSizeMB.toFixed(2) + ' MB',
+                    icon: 'warning',
+                    confirmButtonColor: '#0f172a'
                 });
-            },
-            willClose: () => {
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                }
             }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const video = document.getElementById('swal-video');
-                const canvas = document.getElementById('canvas'); // Waxaan isticmaalaynaa kan hoose
-                
-                // 2. Hubinta ugu muhiimsan: Haddii video-gu uu madow yahay ama uusan shaqayn
-                if (!video || video.paused || video.ended) {
-                    Swal.fire('Cillad!', 'Camera-ga ma diyaarsana.', 'error');
-                    return;
-                }
 
-                // Deji cabbirka Canvas-ka si uu ula mid noqdo Video-ga
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                
-                const ctx = canvas.getContext('2d');
-                
-                // 3. SI TOOS AH U SAWIR (Direct Drawing)
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                // 4. U beddel Base64 (JPEG si uu u yaraado xajmigu)
-                const capturedImage = canvas.toDataURL('image/jpeg', 0.8);
-
-                // 5. Hubi haddii sawirku uusan madow ahayn (Base64 length check)
-                if (capturedImage.length > 1000) {
-                    currentImageBase64 = capturedImage;
-                    
-                    // Ku dhex muuji foomkaaga
-                    const previewImg = document.getElementById('image-preview');
-                    const previewContainer = document.getElementById('image-preview-container');
-                    
-                    if (previewImg && previewContainer) {
-                        previewImg.src = capturedImage;
-                        previewContainer.classList.remove('hidden');
-                    }
-                    
-                    Swal.fire({ title: 'Waa la qabtay!', icon: 'success', timer: 800, showConfirmButton: false });
-                } else {
-                    Swal.fire('Cillad!', 'Sawirka ma suurtagalin, fadlan isku day mar kale.', 'error');
-                }
-            }
-        });
-    } catch (err) {
-        console.error("Camera error:", err);
-        Swal.fire('Cillad!', 'Camera-ka lama furi karo. Hubi oggolaanshaha (Settings).', 'error');
-    }
+            // 2. HADII UU SAX YAHAY SII SUDIG (PROCESS)
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentImageBase64 = event.target.result;
+                document.getElementById('image-preview').src = currentImageBase64;
+                document.getElementById('image-preview-container').classList.remove('hidden');
+                Swal.fire({ title: 'Waa la qabtay!', icon: 'success', timer: 1000, showConfirmButton: false });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    cameraInput.click();
 }
         async function loadInventory() {
     // Ka soo iibi xogta Supabase
@@ -1163,7 +1113,7 @@ if (ctx2) {
             Swal.fire({
                 title: itemName,
                 imageUrl: imgBase64,
-                imageWidth: 400,
+                imageWidth: 500,
                 imageAlt: 'Agabka: ' + itemName,
                 confirmButtonColor: '#0f172a',
                 confirmButtonText: 'XIDHO',
