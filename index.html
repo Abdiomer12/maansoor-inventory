@@ -1,77 +1,204 @@
-<script>
-        // --- 1. CONFIGURATION & DATABASE CONNECTION ---
+<!DOCTYPE html>
+<html lang="so" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Maansoor Hotel - Professional Inventory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
+        .hotel-gold { color: #c5a059; }
+        .bg-hotel-blue { background-color: #0f172a; }
+        .btn-active { background-color: #ca9c45 !important; color: #ffffff !important; border-color: #c5a059 !important; }
+        .premium-border { border-bottom: 2px solid #c5a059; }
+        .room-btn:hover { background-color: #c5a059 !important; color: #0f172a !important; transform: translateY(-2px); transition: all 0.2s ease; }
+        #login-screen { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .logo-glow { box-shadow: 0 0 20px rgba(197, 160, 89, 0.3); border: 2px solid rgba(197, 160, 89, 0.4); }
+        @media (max-width: 768px) {
+            .mobile-sidebar { position: fixed; left: -100%; top: 0; bottom: 0; z-index: 50; transition: 0.3s; }
+            .mobile-sidebar.open { left: 0; }
+            input, select { font-size: 16px !important; }
+        }
+        .chart-card { background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid rgba(226, 232, 240, 0.7); }
+        .swal2-popup { border-radius: 2.5rem !important; font-family: 'Poppins', sans-serif !important; }
+    </style>
+</head>
+<body onload="checkAuth()">
+
+    <!-- Login Screen -->
+    <div id="login-screen" style="display: none;">
+        <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl w-full max-w-[480px] border border-white/20 mx-4">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-slate-900 logo-glow mb-6 shadow-xl">
+                    <i class="fa-solid fa-building-columns text-yellow-500 text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter italic">Maansoor Hotel</h2>
+            </div>
+            <div class="space-y-6">
+                <input type="text" id="username" placeholder="Username" class="w-full p-4 border rounded-2xl outline-none focus:ring-2 focus:ring-yellow-500 bg-slate-50">
+                <input type="password" id="password" placeholder="••••••••" class="w-full p-4 border rounded-2xl outline-none focus:ring-2 focus:ring-yellow-500 bg-slate-50">
+                <button onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-black py-5 rounded-2xl uppercase text-sm">LOGIN</button>
+            </div>
+            <p id="login-error" class="text-red-600 text-[11px] mt-6 text-center hidden font-bold">Username ama Password waa khaldan!</p>
+        </div>
+    </div>
+
+    <!-- Main App UI -->
+    <div id="app-content" class="hidden">
+        <div class="flex h-screen overflow-hidden relative">
+            
+            <button onclick="toggleSidebar()" class="md:hidden fixed bottom-6 right-6 z-[60] bg-slate-900 text-yellow-500 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl">
+                <i id="menu-icon" class="fas fa-bars"></i>
+            </button>
+
+            <div id="sidebar" class="w-72 bg-hotel-blue text-white p-6 md:block mobile-sidebar shadow-2xl overflow-y-auto shrink-0 border-r border-slate-800">
+                <div onclick="showHomePage()" class="mb-10 text-center border-b border-slate-700/50 pb-8 cursor-pointer">
+                    <h1 class="text-3xl font-extrabold text-white uppercase italic">MAANSOOR</h1>
+                </div>
+                
+                <nav class="space-y-2">
+                    <button onclick="changeCategory('room', 100)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex justify-between">
+                        <span><i class="fas fa-bed mr-3 text-[#0D47A1]"></i> Rooms</span>
+                        <span id="badge-room" class="text-xs bg-blue-900 px-2 py-1 rounded">0</span>
+                    </button>
+                    <button onclick="changeCategory('hall', 10)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex justify-between">
+                        <span><i class="fas fa-users mr-3 text-[#1B5E20]"></i> Halls</span>
+                        <span id="badge-hall" class="text-xs bg-green-900 px-2 py-1 rounded">0</span>
+                    </button>
+                    <!-- Badges-ka kale halkan ku dar... -->
+                    <div class="pt-6 border-t border-slate-700 mt-6">
+                        <button onclick="showLogs()" class="nav-btn w-full text-left py-3 px-4 rounded-lg text-blue-400 flex items-center mb-2"><i class="fas fa-history mr-3"></i> Activity Log</button>
+                        <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 flex items-center"><i class="fas fa-sign-out-alt mr-3"></i> Ka bax</button>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="flex-1 flex flex-col min-w-0">
+                <header class="bg-white shadow-sm p-4 flex justify-between items-center px-10">
+                    <input type="text" id="searchInput" onkeyup="filterInventory()" placeholder="ku raadi..." class="w-80 p-2 border rounded-full bg-gray-50 text-sm outline-none">
+                    <div class="flex space-x-6">
+                        <div class="text-right"><p class="text-[10px] text-gray-400 font-bold">TOTAL ITEMS</p><p id="stat-total-items" class="text-sm font-extrabold text-blue-900">0 Items</p></div>
+                        <div class="text-right"><p class="text-[10px] text-gray-400 font-bold">GRAND TOTAL</p><p id="stat-total-value" class="text-sm font-extrabold text-green-600">$0.00</p></div>
+                        <div id="header-username" class="text-xs font-bold text-slate-700 uppercase self-center"></div>
+                    </div>
+                </header>
+
+                <main class="flex-1 overflow-y-auto p-6">
+                    <!-- Dashboard Visuals -->
+                    <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                        <div class="chart-card p-8"><canvas id="categoryChart"></canvas></div>
+                        <div class="chart-card p-8"><canvas id="countChart"></canvas></div>
+                    </div>
+
+                    <!-- Selection & Form -->
+                    <div id="selection-area" class="mb-6 bg-white p-5 rounded-2xl shadow-sm border hidden">
+                        <div class="grid grid-cols-10 gap-2" id="grid-buttons"></div>
+                    </div>
+
+                    <div id="entry-form" class="bg-white p-8 rounded-2xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
+                        <div class="grid grid-cols-3 gap-6">
+                            <input type="text" id="location" readonly class="p-2.5 bg-yellow-50 border rounded-xl font-bold">
+                            <input type="text" id="code" placeholder="Code" class="p-2.5 border rounded-xl">
+                            <input type="text" id="name" placeholder="Item Name" class="p-2.5 border rounded-xl">
+                            <input type="number" id="qty" oninput="calculate()" placeholder="QTY" class="p-2.5 border rounded-xl">
+                            <input type="number" id="uvalue" oninput="calculate()" placeholder="Unit Value" class="p-2.5 border rounded-xl">
+                            <input type="text" id="total" disabled placeholder="Total" class="p-2.5 bg-slate-900 text-yellow-400 font-bold rounded-xl">
+                            <select id="status" class="p-2.5 border rounded-xl">
+                                <option value="Good">Good</option>
+                                <option value="Damaged">Damaged</option>
+                                <option value="Missing">Missing</option>
+                            </select>
+                            <input type="file" id="itemImage" accept="image/*" class="p-2.5 border rounded-xl">
+                        </div>
+                        <div class="mt-6 flex space-x-4">
+                            <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 py-3 rounded-xl font-bold">KAYDI AGABKA</button>
+                            <button onclick="resetForm()" class="px-10 bg-gray-400 text-white py-3 rounded-xl font-bold">CLOSE</button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div id="inventory-section" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-slate-900 p-4 flex justify-between items-center">
+                            <h4 id="table-title" class="text-yellow-500 font-bold text-xs uppercase">Inventory Log List</h4>
+                            <div class="space-x-2">
+                                <button onclick="exportToExcel('full')" class="bg-blue-600 text-white text-[9px] px-3 py-1 rounded">Excel</button>
+                                <button onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1 rounded">PDF</button>
+                            </div>
+                        </div>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-[10px] font-bold text-gray-500 uppercase">No.</th>
+                                    <th class="px-6 py-3 text-[10px] font-bold text-gray-500 uppercase">Code</th>
+                                    <th class="px-6 py-3 text-[10px] font-bold text-gray-500 uppercase">Name</th>
+                                    <th class="px-6 py-3 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
+                                    <th class="px-6 py-3 text-[10px] font-bold text-gray-500 uppercase">Total</th>
+                                    <th class="px-6 py-3 text-[10px] font-bold text-gray-500 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-tbody" class="bg-white divide-y divide-gray-100"></tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION ---
         const supabaseUrl = 'https://caianuiwgprgxyjevyqy.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
         const db = supabase.createClient(supabaseUrl, supabaseKey);
 
-        let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
-            user: "admin",
-            pass: "123",
-            fullName: "Admin Maansoor",
-            email: "admin@maansoorhotel.com",
-            phone: "+252 634245995"
-        };
-
+        let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "admin", pass: "123" };
         let inventory = [];
-        let activityLogs = [];
-        let currentSelectedLocation = ""; 
-        let currentCategory = "room"; 
-        let editId = null; 
+        let currentSelectedLocation = "";
+        let editId = null;
         let myChart1, myChart2;
-        let currentImageBase64 = null; 
+        let currentImageBase64 = null;
 
-        // --- 2. AUTHENTICATION LOGIC ---
+        // --- 2. AUTHENTICATION ---
         async function checkAuth() {
             const auth = localStorage.getItem('maansoor_isLoggedIn');
-            const loginTime = localStorage.getItem('maansoor_loginTime');
-            const oneHour = 3600000;
-
             if(auth === 'true') {
-                if (loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
-                    handleLogout();
-                    return;
-                }
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-content').classList.remove('hidden');
-                
-                await loadInventory(); 
-                await loadLogs();
-                setupRealtime(); // Daar is-waafajinta tooska ah
+                document.getElementById('header-username').innerText = profile.user;
+                await loadInventory();
+                setupRealtime();
                 showHomePage();
-
-                const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
-                document.getElementById('header-username').innerText = savedProfile.user;
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
-                document.getElementById('app-content').classList.add('hidden');
             }
         }
 
         function handleLogin() {
-            const uInput = document.getElementById('username').value.trim();
-            const pInput = document.getElementById('password').value.trim();
-            if(uInput === profile.user && pInput === profile.pass) {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if(u === profile.user && p === profile.pass) {
                 localStorage.setItem('maansoor_isLoggedIn', 'true');
-                localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
-                addLog("Login", `User-ka ${uInput} ayaa soo galay.`); 
                 checkAuth();
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
         }
 
-        async function handleLogout() {
+        function handleLogout() {
             localStorage.removeItem('maansoor_isLoggedIn');
-            localStorage.removeItem('maansoor_loginTime');
             window.location.reload();
         }
 
-        function setupRealtime() {
-            db.channel('any').on('postgres_changes', { event: '*', schema: 'public', table: 'inventory' }, () => loadInventory()).subscribe();
-            db.channel('logs').on('postgres_changes', { event: '*', schema: 'public', table: 'logs' }, () => loadLogs()).subscribe();
-        }
-
-        // --- 3. DATA LOADING ---
+        // --- 3. DATABASE LOGIC ---
         async function loadInventory() {
             const { data, error } = await db.from('inventory').select('*').order('id', { ascending: false });
             if (!error) {
@@ -83,154 +210,61 @@
             }
         }
 
-        async function loadLogs() {
-            const { data, error } = await db.from('logs').select('*').order('id', { ascending: false }).limit(100);
-            if (!error) {
-                activityLogs = data;
-                renderLogsTable();
-            }
-        }
-
-        // --- 4. CORE FUNCTIONS ---
-        async function addLog(action, details, backupData = null) {
-            const logEntry = {
-                user: profile.user || "admin",
-                action: action,
-                details: details,
-                timestamp: new Date().toLocaleString('en-GB'),
-                backup: backupData ? JSON.parse(JSON.stringify(backupData)) : null
-            };
-            await db.from('logs').insert([logEntry]);
-        }
-
-        function showHomePage() {
-            currentSelectedLocation = ""; 
-            currentCategory = "";
-            hideAllScreens(); 
-            document.getElementById('dashboard-content').classList.remove('hidden');
-            document.getElementById('dashboard-visuals').classList.remove('hidden');
-            document.getElementById('selection-area').classList.add('hidden');
-            document.getElementById('table-title').innerText = "FULL HOTEL INVENTORY LOG"; 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
-            renderTable("");
-        }
-
-        function renderTable(loc = "") {
-            const tbody = document.getElementById('inventory-tbody'); 
-            if(!tbody) return;
-            tbody.innerHTML = ''; 
-            
-            let filtered = (loc === "" || ["Room","Hall","Kitchen","Office"].includes(loc)) 
-                           ? inventory.filter(i => i.location && i.location.startsWith(loc)) 
-                           : inventory.filter(i => i.location === loc);
-            
-            filtered.forEach((i, index) => {
-                const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-                let imageIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500"><i class="fas fa-camera"></i></button>` : '';
-
-                tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b">
-                    <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
-                    <td class="px-6 py-4 text-xs font-mono">${i.code || '-'}</td>
-                    <td class="px-6 py-4 text-xs font-bold text-slate-700">
-                        <div class="flex items-center">${i.name} ${imageIcon}</div>
-                        <span class="text-[9px] text-yellow-600 uppercase font-black">${i.location}</span>
-                    </td>
-                    <td class="px-6 py-4 text-xs">
-                        <span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span>
-                    </td>
-                    <td class="px-6 py-4 text-xs font-bold text-slate-700">${i.qty}</td>
-                    <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
-                    <td class="px-6 py-4 text-right">
-                        <button onclick="editItem(${i.id})" class="text-blue-500 mr-2"><i class="fas fa-edit"></i></button>
-                        <button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>`;
-            });
+        function setupRealtime() {
+            db.channel('any').on('postgres_changes', { event: '*', schema: 'public', table: 'inventory' }, () => {
+                loadInventory();
+            }).subscribe();
         }
 
         async function saveData() {
             const n = document.getElementById('name').value;
             const q = document.getElementById('qty').value;
-            if(!n || !q) return Swal.fire('Cillad!', 'Buuxi Magaca iyo Tirada!', 'error');
+            if(!n || !q) return Swal.fire('Cillad', 'Buuxi Magaca iyo Tirada', 'error');
 
-            Swal.showLoading();
             const data = {
                 id: editId || Date.now(),
-                holder: document.getElementById('holder').value || '',
-                dept: document.getElementById('dept').value || '',
-                location: document.getElementById('location').value || '',
-                code: document.getElementById('code').value || '',
+                location: document.getElementById('location').value,
+                code: document.getElementById('code').value,
                 name: n,
                 status: document.getElementById('status').value,
                 qty: parseFloat(q),
                 uvalue: parseFloat(document.getElementById('uvalue').value) || 0,
-                total: document.getElementById('total').value || '$0.00',
-                image: currentImageBase64 || null,
-                desc: document.getElementById('desc').value || ''
+                total: document.getElementById('total').value,
+                image: currentImageBase64
             };
 
             let result = editId ? await db.from('inventory').update(data).eq('id', editId) : await db.from('inventory').insert([data]);
             
-            if (!result.error) {
-                Swal.fire({ title: 'Waa la kaydiyey!', icon: 'success', timer: 1500, showConfirmButton: false });
-                addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
+            if(!result.error) {
+                Swal.fire('Guul', 'Waa la kaydiyey', 'success');
                 resetForm();
                 loadInventory();
-            } else {
-                Swal.fire('Cillad!', 'Xogta ma fariisan.', 'error');
             }
         }
 
-        // --- 5. UI UTILITIES ---
-        function calculate() { 
-            const q = parseFloat(document.getElementById('qty').value) || 0; 
-            const v = parseFloat(document.getElementById('uvalue').value) || 0; 
-            document.getElementById('total').value = `$${(q * v).toFixed(2)}`; 
-        }
+        // --- 4. UI FUNCTIONS ---
+        function renderTable(loc = "") {
+            const tbody = document.getElementById('inventory-tbody');
+            tbody.innerHTML = '';
+            let filtered = loc === "" ? inventory : inventory.filter(i => i.location === loc || (i.location && i.location.startsWith(loc)));
 
-        function hideAllScreens() {
-            ['dashboard-content', 'settings-screen', 'logs-screen', 'entry-form', 'selection-area'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.classList.add('hidden');
+            filtered.forEach((i, idx) => {
+                tbody.innerHTML += `<tr>
+                    <td class="px-6 py-4 text-xs font-bold">${idx + 1}</td>
+                    <td class="px-6 py-4 text-xs">${i.code || '-'}</td>
+                    <td class="px-6 py-4 text-xs font-bold">${i.name} <br><small class="text-yellow-600">${i.location}</small></td>
+                    <td class="px-6 py-4 text-xs">${i.qty}</td>
+                    <td class="px-6 py-4 text-xs font-bold">${i.total}</td>
+                    <td class="px-6 py-4 text-xs">
+                        <button onclick="editItem(${i.id})" class="text-blue-500 mr-2">Edit</button>
+                        <button onclick="deleteItem(${i.id})" class="text-red-500">Del</button>
+                    </td>
+                </tr>`;
             });
         }
 
-        function resetForm() {
-            editId = null; currentImageBase64 = null;
-            const fields = ['holder','dept','location','code','name','desc','qty','uvalue','total'];
-            fields.forEach(f => { if(document.getElementById(f)) document.getElementById(f).value = ''; });
-            document.getElementById('status').value = 'Good';
-            document.getElementById('image-preview-container').classList.add('hidden');
-        }
-
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
-
-        // --- DASHBOARD & CHARTS ---
-        function updateDashboardStats() {
-            const totalItems = inventory.length;
-            const totalValue = inventory.reduce((sum, item) => sum + (parseFloat(item.total?.replace(/[$,]/g, '')) || 0), 0);
-            document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
-            document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString()}`;
-        }
-
-        function updateCharts() {
-            const cats = ['Room', 'Hall', 'Kitchen', 'Office'];
-            const values = cats.map(c => inventory.filter(i => i.location?.includes(c)).reduce((sum, i) => sum + (parseFloat(i.total?.replace(/[$,]/g, '')) || 0), 0));
-            const counts = cats.map(c => inventory.filter(i => i.location?.includes(c)).length);
-
-            if(myChart1) myChart1.destroy();
-            if(myChart2) myChart2.destroy();
-
-            const ctx1 = document.getElementById('categoryChart')?.getContext('2d');
-            if(ctx1) myChart1 = new Chart(ctx1, { type: 'bar', data: { labels: cats, datasets: [{ data: values, backgroundColor: ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309'] }] }, options: { responsive: true, maintainAspectRatio: false } });
-
-            const ctx2 = document.getElementById('countChart')?.getContext('2d');
-            if(ctx2) myChart2 = new Chart(ctx2, { type: 'doughnut', data: { labels: cats, datasets: [{ data: counts, backgroundColor: ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
-        }
-
         function changeCategory(cat, count) {
-            currentCategory = cat; currentSelectedLocation = "";
+            currentSelectedLocation = "";
             const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
@@ -239,7 +273,7 @@
             for (let i = 1; i <= count; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = i; btn.className = "room-btn p-2.5 bg-white border rounded-xl text-xs font-bold";
-                btn.onclick = (e) => {
+                btn.onclick = () => {
                     currentSelectedLocation = `${catLabel} ${i}`;
                     document.getElementById('location').value = currentSelectedLocation;
                     document.getElementById('entry-form').classList.remove('hidden');
@@ -250,50 +284,68 @@
             renderTable(catLabel);
         }
 
+        function showHomePage() {
+            currentSelectedLocation = "";
+            hideAllScreens();
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.remove('hidden');
+            renderTable("");
+        }
+
+        function calculate() {
+            const q = parseFloat(document.getElementById('qty').value) || 0;
+            const v = parseFloat(document.getElementById('uvalue').value) || 0;
+            document.getElementById('total').value = `$${(q * v).toFixed(2)}`;
+        }
+
+        function hideAllScreens() {
+            ['dashboard-content','selection-area','entry-form'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        }
+
+        function resetForm() {
+            editId = null;
+            ['location','code','name','qty','uvalue','total'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        function updateDashboardStats() {
+            const total = inventory.length;
+            const val = inventory.reduce((s, i) => s + (parseFloat(i.total?.replace('$','')) || 0), 0);
+            document.getElementById('stat-total-items').innerText = `${total} Items`;
+            document.getElementById('stat-total-value').innerText = `$${val.toFixed(2)}`;
+        }
+
+        function updateCharts() {
+            const labels = ['Room', 'Hall', 'Kitchen', 'Office'];
+            const counts = labels.map(l => inventory.filter(i => i.location?.includes(l)).length);
+            if(myChart1) myChart1.destroy();
+            const ctx1 = document.getElementById('categoryChart').getContext('2d');
+            myChart1 = new Chart(ctx1, { type: 'bar', data: { labels, datasets: [{ data: counts, backgroundColor: '#0f172a' }] } });
+        }
+
         function updateBadges() {
-            ['Room', 'Hall', 'Kitchen', 'Office'].forEach(cat => {
-                const count = inventory.filter(i => i.location?.includes(cat)).length;
-                const el = document.getElementById(`badge-${cat.toLowerCase()}`);
-                if(el) el.innerText = count;
+            ['room','hall'].forEach(c => {
+                const count = inventory.filter(i => i.location?.toLowerCase().includes(c)).length;
+                if(document.getElementById(`badge-${c}`)) document.getElementById(`badge-${c}`).innerText = count;
             });
         }
-        
-        // --- ADD MISSING UI FUNCTIONS ---
-        function showLogs() { hideAllScreens(); document.getElementById('logs-screen').classList.remove('hidden'); loadLogs(); }
-        function showSettings() { hideAllScreens(); document.getElementById('settings-screen').classList.remove('hidden'); }
-        function filterInventory() { 
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            if(!q) { renderTable(currentSelectedLocation); return; }
-            const filtered = inventory.filter(i => i.name?.toLowerCase().includes(q) || i.code?.toLowerCase().includes(q) || i.location?.toLowerCase().includes(q));
-            inventory = filtered; renderTable(""); loadInventory(); // Reset list after search
-        }
-        
+
         async function deleteItem(id) {
-            const i = inventory.find(x => x.id === id);
-            Swal.fire({ title: 'Ma hubtaa?', text: `Tirtir: ${i.name}?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Haa' }).then(async (r) => {
-                if(r.isConfirmed) {
-                    const { error } = await db.from('inventory').delete().eq('id', id);
-                    if(!error) { addLog("Tirtiray", `Agabka: ${i.name}`, i); loadInventory(); }
-                }
+            if(confirm('Ma hubtaa?')) {
+                await db.from('inventory').delete().eq('id', id);
+                loadInventory();
+            }
+        }
+        
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+        function filterInventory() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = inventory.filter(i => i.name.toLowerCase().includes(q) || (i.code && i.code.toLowerCase().includes(q)));
+            const tbody = document.getElementById('inventory-tbody');
+            tbody.innerHTML = '';
+            filtered.forEach((i, idx) => {
+                tbody.innerHTML += `<tr><td class="px-6 py-4 text-xs">${idx+1}</td><td class="px-6 py-4 text-xs">${i.code||'-'}</td><td class="px-6 py-4 text-xs font-bold">${i.name}</td><td class="px-6 py-4 text-xs">${i.qty}</td><td class="px-6 py-4 text-xs font-bold">${i.total}</td><td class="px-6 py-4 text-xs"><button onclick="deleteItem(${i.id})" class="text-red-500">Del</button></td></tr>`;
             });
         }
-
-        // Camera helper
-        function openCamera() {
-            const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    currentImageBase64 = ev.target.result;
-                    document.getElementById('image-preview').src = currentImageBase64;
-                    document.getElementById('image-preview-container').classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        }
-
     </script>
 </body>
 </html>
