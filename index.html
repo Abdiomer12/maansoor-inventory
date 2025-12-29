@@ -436,20 +436,18 @@
         };
 
         function handleLogin() {
-    const uInput = document.getElementById('username').value.trim();
-    const pInput = document.getElementById('password').value.trim();
+        const uInput = document.getElementById('username').value.trim();
+        const pInput = document.getElementById('password').value.trim();
 
-    if(uInput === profile.user && pInput === profile.pass) {
-        localStorage.setItem('maansoor_isLoggedIn', 'true');
-        // KHADKAN KU DAR: Kaydi waqtiga login-ka hadda
-        localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
-        
-        addLog("Login", `User-ka ${uInput} ayaa soo galay.`); 
-        checkAuth();
-    } else {
-        document.getElementById('login-error').classList.remove('hidden');
+        if (uInput === profile.user && pInput === profile.pass) {
+            localStorage.setItem('maansoor_isLoggedIn', 'true');
+            localStorage.setItem('maansoor_loginTime', Date.now().toString());
+            addLog("Login", `User-ka ${uInput} ayaa soo galay.`);
+            checkAuth();
+        } else {
+            document.getElementById('login-error').classList.remove('hidden');
+        }
     }
-}
 
 // 1. Hubinta Login-ka iyo Soo iibinta xogta Cloud-ka
         // 1. Hubinta Login-ka iyo Soo iibinta xogta Cloud-ka
@@ -505,39 +503,21 @@ setInterval(() => {
 }, 60000); // 60,000ms = 1 Minute
         // 3. Ka bixitaanka Nidaamka
         async function handleLogout() {
-            // Log-garee ka bixitaanka ka hor intaanan tirtirin session-ka
-            await addLog("Logout", `User-ka ${profile.user} ayaa ka baxay nidaamka.`);
-            
-            localStorage.removeItem('maansoor_isLoggedIn');
-            localStorage.removeItem('maansoor_loginTime');
-            sessionStorage.clear();
-            window.location.reload();
-        }
+        localStorage.removeItem('maansoor_isLoggedIn');
+        localStorage.removeItem('maansoor_loginTime');
+        window.location.reload();
+    }
 
-        // 4. Xusuusinta Password-ka
-        function handleForgot() {
-            Swal.fire({
-                title: 'Security Hint',
-                html: `<div class="text-left p-2 bg-gray-50 rounded-xl border border-dashed border-yellow-500">
-                        <p class="text-sm"><b>Username:</b> ${profile.user}</p>
-                        <p class="text-sm"><b>Password:</b> ${profile.pass}</p>
-                       </div>`,
-                icon: 'info',
-                confirmButtonColor: '#0f172a',
-                confirmButtonText: 'WAAN DHAYGAY'
-            });
-        }
-
-        // 5. Muujinta Profile Settings
-        function showSettings() {
-            hideAllScreens();
-            document.getElementById('settings-screen').classList.remove('hidden');
-            document.getElementById('set-username').value = profile.user;
-            document.getElementById('set-fullname').value = profile.fullName;
-
-             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
-            closeSidebar();
-        }
+    async function addLog(action, details, backupData = null) {
+        const logEntry = {
+            user: profile.user || "admin",
+            action: action,
+            details: details,
+            timestamp: new Date().toLocaleString('en-GB'),
+            backup: backupData ? JSON.parse(JSON.stringify(backupData)) : null
+        };
+        await db.from('logs').insert([logEntry]);
+    }
 
         // 6. Kaydinta Isbeddelka Profile-ka
         async function saveUserProfile() {
@@ -581,34 +561,54 @@ setInterval(() => {
         let activityLogs = JSON.parse(localStorage.getItem('maansoor_logs')) || [];
 
         // 1. Function-kan wuxuu xogta u diraa Cloud-ka
-async function addLog(action, details, backupData = null) {
-    const logEntry = {
-        user: profile.user || "admin",
-        action: action,
-        details: details,
-        timestamp: new Date().toLocaleString('en-GB'),
-        backup: backupData ? JSON.parse(JSON.stringify(backupData)) : null
-    };
+async function checkAuth() {
+        const auth = localStorage.getItem('maansoor_isLoggedIn');
+        const loginTime = localStorage.getItem('maansoor_loginTime');
+        const oneHour = 3600000;
 
-    // Toos ugu dir Supabase
-    const { error } = await db.from('logs').insert([logEntry]);
-    
-    if (!error) {
-        loadLogs(); // Isla markaba soo iibi Logs-ka cusub si loo arko
-    } else {
-        console.error("Log insertion error:", error);
+        if (auth === 'true') {
+            if (loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
+                handleLogout();
+                return;
+            }
+
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-content').classList.remove('hidden');
+            
+            // SI TOOS AH U SOO RAR XOGTA MARKA BOGGU FURMO
+            await loadInventory();
+            await loadLogs();
+            setupRealtime(); // Daar is-waafajinta tooska ah (Realtime)
+            
+            showHomePage();
+            const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
+            document.getElementById('header-username').innerText = savedProfile.user;
+        } else {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('app-content').classList.add('hidden');
+        }
     }
-}
+
+function setupRealtime() {
+        // La soco isbedelka Inventory-ga
+        db.channel('any')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'inventory' }, payload => {
+            loadInventory(); // Haddii wax isbedelaan dib u soo rar
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'logs' }, payload => {
+            loadLogs(); // Haddii logs ku soo kordhaan dib u soo rar
+        })
+        .subscribe();
+    }
 
 // 2. Function-kan wuxuu Logs-ka ka soo aqriyaa Supabase
 async function loadLogs() {
-    const { data, error } = await db.from('logs').select('*').order('id', { ascending: false }).limit(100);
-    if (!error) {
-        activityLogs = data; // Ku rid xogta variable-ka caalamiga ah
-        renderLogsTable(); // Muuji shaxda
+        const { data, error } = await db.from('logs').select('*').order('id', { ascending: false }).limit(100);
+        if (!error) {
+            activityLogs = data;
+            renderLogsTable();
+        }
     }
-}
-
         async function showLogs() {
     hideAllScreens();
     document.getElementById('logs-screen').classList.remove('hidden');
@@ -759,13 +759,11 @@ async function loadLogs() {
 
         // 2. Qari dhamaan screens-ka si loo furo mid cusub
         function hideAllScreens() {
-            // Liiska dhamaan qaybaha webka
-            const screens = ['dashboard-content', 'settings-screen', 'logs-screen', 'entry-form', 'selection-area'];
-            screens.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.classList.add('hidden'); // Qari mid kasta
-            });
-        }
+        ['dashboard-content', 'settings-screen', 'logs-screen', 'entry-form', 'selection-area'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+    }
 
         // --- 3. CORE LOGIC (Supabase Based) ---
         let inventory = []; // Xogta halkan ayay ku soo dhacaysaa markay Cloud-ka ka timaado
@@ -839,54 +837,27 @@ function openCamera() {
     cameraInput.click();
 }
         async function loadInventory() {
-    // Ka soo iibi xogta Supabase
-    const { data, error } = await db.from('inventory').select('*').order('id', { ascending: false });
-    
-    if (!error) {
-        inventory = data; // Ku rid xogta variable-ka inventory
-        renderTable(currentSelectedLocation);
-        updateDashboardStats();
-        updateCharts();
-        updateBadges();
+        const { data, error } = await db.from('inventory').select('*').order('id', { ascending: false });
+        if (!error) {
+            inventory = data;
+            renderTable(currentSelectedLocation);
+            updateDashboardStats();
+            updateCharts();
+        }
     }
-}
-        
+
         // 1. Muuji Bogga Hore (Home)
         // 2. HomePage Logic: Excel Full uun baa muuqanaya
         // 1. Muuji Bogga Hore (Home) oo leh Graphs iyo Full Table
 function showHomePage() {
-    // 1. Nadiifi dhammaan Highlights-ka Sidebar-ka (Tirtir midabka dahabka ah)
-    const allNavButtons = document.querySelectorAll('.nav-btn');
-    allNavButtons.forEach(btn => {
-        btn.classList.remove('btn-active'); // Ka saar midabka dahabka ah
-    });
-
-    // 2. Deji variable-lada meesha ay joogaan
-    currentSelectedLocation = ""; 
-    currentCategory = "";
-
-    // 3. Qari dhamaan screens-ka kale (Logs, Settings, Form)
-    hideAllScreens(); 
-
-    // 4. Muuji Dashboard-ka iyo Graphs-ka (Visuals)
-    const dashboard = document.getElementById('dashboard-content');
-    const visuals = document.getElementById('dashboard-visuals');
-    if(dashboard) dashboard.classList.remove('hidden');
-    if(visuals) visuals.classList.remove('hidden');
-    
-    // 5. Qari qaybta doorashada nambarada (Selection Area)
-    const selectionArea = document.getElementById('selection-area');
-    if(selectionArea) selectionArea.classList.add('hidden');
-
-    // 6. Cusboonaysii Table-ka (Full Inventory)
-    const tableTitle = document.getElementById('table-title');
-    if(tableTitle) tableTitle.innerText = "FULL HOTEL INVENTORY LOG"; 
-    
-    renderTable(""); // Soo saar dhamaan xogta guud
-
-    // 7. Xidh Sidebar-ka haddii mobile la joogo
-    closeSidebar();
-}
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+        currentSelectedLocation = "";
+        hideAllScreens();
+        document.getElementById('dashboard-content').classList.remove('hidden');
+        document.getElementById('dashboard-visuals').classList.remove('hidden');
+        document.getElementById('table-title').innerText = "FULL HOTEL INVENTORY LOG";
+        renderTable("");
+    }
          async function startSync() {
             db.collection("inventory").orderBy("id", "desc").onSnapshot((snapshot) => {
                 inventory = snapshot.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() }));
@@ -911,20 +882,11 @@ function showHomePage() {
 
         // 3. Xisaabi Stat-ka Dashboard-ka (Cloud Data)
         function updateDashboardStats() {
-            // Tiri dhamaan agabka Cloud-ka ku jira
-            const totalItems = inventory.length;
-            
-            // Xisaabi wadarta lacagta (Grand Total)
-            const totalValue = inventory.reduce((sum, item) => {
-                // Ka saar calaamadda $ ka dibna u beddel nambar
-                const val = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
-                return sum + val;
-            }, 0);
-
-            // Ku qor Header-ka sare
-            document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
-            document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-        }
+        const totalItems = inventory.length;
+        const totalValue = inventory.reduce((sum, item) => sum + (parseFloat(item.total?.replace(/[$,]/g, '')) || 0), 0);
+        document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
+        document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString()}`;
+    }
 
         // 4. Cusboonaysii Jaantusyada (Charts)
         function updateCharts() {
@@ -1001,13 +963,13 @@ if (ctx2) {
         }
 
         // 5. Xisaabiyaha Foomka (QTY * Price)
-        function calculate() { 
-            const q = parseFloat(document.getElementById('qty').value) || 0; 
-            const v = parseFloat(document.getElementById('uvalue').value) || 0; 
-            const res = (q * v).toFixed(2);
-            document.getElementById('total').value = `$${res}`; 
-            return res; 
-        }
+        function calculate() {
+        const q = parseFloat(document.getElementById('qty').value) || 0;
+        const v = parseFloat(document.getElementById('uvalue').value) || 0;
+        const res = (q * v).toFixed(2);
+        document.getElementById('total').value = `$${res}`;
+    }
+
 
         // 6. Cusboonaysii Nambarada Sidebar-ka (Badges)
         function updateBadges() {
@@ -1238,41 +1200,32 @@ if (ctx2) {
 
         // 2. Soo bandhigista Shaxda (Table Rendering)
         function renderTable(loc = "") {
-            const tbody = document.getElementById('inventory-tbody'); 
-            if(!tbody) return;
-            tbody.innerHTML = ''; 
-            
-            // Haddii loc ay tahay prefix (sida "Room"), soo saar dhamaan Rooms-ka
-            // Haddii ay tahay mid gaar ah (sida "Room 1"), soo saar midkaas oo keliya
-            let filtered = (loc === "" || ["Room","Hall","Kitchen","Office"].includes(loc)) 
-                           ? inventory.filter(i => i.location && i.location.startsWith(loc)) 
-                           : inventory.filter(i => i.location === loc);
-            
-            filtered.forEach((i, index) => {
-                const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-                let imageIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500 hover:text-blue-700 transition-transform hover:scale-125"><i class="fas fa-camera"></i></button>` : '';
+        const tbody = document.getElementById('inventory-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
 
-                tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b transition-colors">
-                    <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
-                    <td class="px-6 py-4 text-xs text-gray-600 font-mono">${i.code || '-'}</td>
-                    <td class="px-6 py-4 text-xs font-bold text-slate-700">
-                        <div class="flex items-center">${i.name} ${imageIcon}</div>
-                        <span class="text-[9px] text-yellow-600 uppercase font-black">${i.location}</span>
-                    </td>
-                    <td class="px-6 py-4 text-xs">
-                        <span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span>
-                    </td>
-                    <td class="px-6 py-4 text-xs font-bold text-slate-700">${i.qty}</td>
-                    <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
-                    <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end space-x-3">
-                            <button onclick="editItem(${i.id})" class="text-blue-500 hover:text-blue-700 transition"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteItem(${i.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>`;
-            });
-        }
+        let filtered = (loc === "" || ["Room", "Hall", "Kitchen", "Office"].includes(loc))
+            ? inventory.filter(i => i.location && i.location.startsWith(loc))
+            : inventory.filter(i => i.location === loc);
+
+        filtered.forEach((i, index) => {
+            const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
+            let imageIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500"><i class="fas fa-camera"></i></button>` : '';
+
+            tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b">
+                <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
+                <td class="px-6 py-4 text-xs font-mono">${i.code || '-'}</td>
+                <td class="px-6 py-4 text-xs font-bold text-slate-700">${i.name} ${imageIcon}<br><small class="text-yellow-600">${i.location}</small></td>
+                <td class="px-6 py-4 text-xs"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span></td>
+                <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
+                <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
+                <td class="px-6 py-4 text-right">
+                    <button onclick="editItem(${i.id})" class="text-blue-500 mr-2"><i class="fas fa-edit"></i></button>
+                    <button onclick="deleteItem(${i.id})" class="text-red-400"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
+        });
+    }
 
         // 3. Beddelista Qaybaha (Category Switching)
           function changeCategory(cat, count) {
@@ -1554,10 +1507,26 @@ function closeSidebar() {
             doc.save(`${titleText.replace(/\s+/g, '_')}.pdf`);
         }
    
-        const supabaseUrl = 'https://caianuiwgprgxyjevyqy.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
-        const db = supabase.createClient(supabaseUrl, supabaseKey);
-   
+        <script>
+    // --- 1. CONFIGURATION & AUTH ---
+    const supabaseUrl = 'https://caianuiwgprgxyjevyqy.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
+    const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+    let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
+        user: "admin",
+        pass: "123",
+        fullName: "Admin Maansoor"
+    };
+
+    let inventory = [];
+    let activityLogs = [];
+    let currentSelectedLocation = "";
+    let currentCategory = "room";
+    let editId = null;
+    let currentImageBase64 = null;
+    let myChart1, myChart2;
+
    </script>
 </body>
 </html>
