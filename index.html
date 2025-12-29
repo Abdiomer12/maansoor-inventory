@@ -432,7 +432,7 @@
             pass: "123",
             fullName: "Admin Maansoor",
             email: "admin@maansoorhotel.com",
-            phone: "+252 612 345678"
+            phone: "+252 634245995"
         };
 
         function handleLogin() {
@@ -441,7 +441,10 @@
 
     if(uInput === profile.user && pInput === profile.pass) {
         localStorage.setItem('maansoor_isLoggedIn', 'true');
-        addLog("Login", `User-ka ${uInput} ayaa soo galay.`); // KANI WAA MUHIIM
+        // KHADKAN KU DAR: Kaydi waqtiga login-ka hadda
+        localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
+        
+        addLog("Login", `User-ka ${uInput} ayaa soo galay.`); 
         checkAuth();
     } else {
         document.getElementById('login-error').classList.remove('hidden');
@@ -452,25 +455,29 @@
         // 1. Hubinta Login-ka iyo Soo iibinta xogta Cloud-ka
 async function checkAuth() {
     const auth = localStorage.getItem('maansoor_isLoggedIn');
-    
+    const loginTime = localStorage.getItem('maansoor_loginTime');
+    const oneHour = 3600000; // 1 saac oo milliseconds ah
+
     if(auth === 'true') {
-        // 1. Muuji App-ka
+        // 1. HUBI HADDI SAACADII DHAMAATAY
+        if (loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
+            handleLogout(); // Ka saar haddii saacad ka badatay
+            return;
+        }
+
+        // 2. Haddii saacaddu u dhiman tahay, muuji app-ka
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app-content').classList.remove('hidden');
-
-        // 2. KHADKAN WAA MUHIIM: Markaba keen boga hore (Graphs & Full Table)
         showHomePage();
-
-        // 3. Markaas ka dib xogta soo iibi
         await loadInventory(); 
         if(typeof loadLogs === 'function') await loadLogs();
+
+        const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
+        document.getElementById('header-username').innerText = savedProfile.user;
     } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('app-content').classList.add('hidden');
     }
-
-      const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
-        document.getElementById('header-username').innerText = savedProfile.user;
 
     // 1. KA SAAR HIGHLIGHT-KA BADHAMADA KALE
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
@@ -478,6 +485,24 @@ async function checkAuth() {
     renderTable("");
     closeSidebar();
 }
+
+// Hubi 1-dii daqiiqadba haddii 1-dii saac ee login-ku dhamaatay
+setInterval(() => {
+    const auth = localStorage.getItem('maansoor_isLoggedIn');
+    const loginTime = localStorage.getItem('maansoor_loginTime');
+    const oneHour = 3600000;
+    
+    if (auth === 'true' && loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
+        Swal.fire({
+            title: 'Waqtigu waa kaa dhamaaday!',
+            text: 'Fadlan dib u soo gal nidaamka.',
+            icon: 'info',
+            confirmButtonColor: '#0f172a'
+        }).then(() => {
+            handleLogout();
+        });
+    }
+}, 60000); // 60,000ms = 1 Minute
         // 3. Ka bixitaanka Nidaamka
         async function handleLogout() {
             // Log-garee ka bixitaanka ka hor intaanan tirtirin session-ka
@@ -1002,12 +1027,10 @@ if (ctx2) {
     const n = document.getElementById('name').value;
     const q = document.getElementById('qty').value;
     
-    // 1. Hubi in magaca iyo tirada la buuxiyey
     if(!n || !q) {
         return Swal.fire('Cillad!', 'Fadlan buuxi Magaca iyo Tirada agabka!', 'error');
     }
 
-    // 2. Muuji "Loading" yar inta xogtu Cloud-ka u socoto
     Swal.showLoading();
 
     const data = {
@@ -1028,33 +1051,40 @@ if (ctx2) {
     try {
         let result;
         if(editId) {
-            // Haddii uu yahay Update (wax laga beddelayo)
             result = await db.from('inventory').update(data).eq('id', editId);
         } else {
-            // Haddii uu yahay agab cusub (Insert)
             result = await db.from('inventory').insert([data]);
         }
 
-        if (result.error) {
-            throw result.error;
-        }
+        if (result.error) throw result.error;
 
-        // 3. Haddii xogtu si fiican u gashay
         Swal.fire({
-            title: 'Waa la guulaystay!',
-            text: 'Agabka waxaa lagu kaydiyey Cloud-ka Supabase',
+            title: 'Waa la kaydiyey!',
+            text: 'Agabka waa la keydiyey, waad sii wadi kartaa ku darista.',
             icon: 'success',
-            timer: 2000,
+            timer: 1500,
             showConfirmButton: false
         });
 
         addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
-        resetForm();
-        loadInventory(); // Dib u soo iibi xogta si shaxdu u cusboonaato
+        
+        // --- ISBEDDELKA MUHIIMKA AH: ---
+        // Halkii aan ka wici lahayn resetForm() oo qarinayay boggaga,
+        // Waxaan kaliya faaruqinaynaa meelaha xogta cusub laga qoro (magaca, qty, code).
+        document.getElementById('name').value = "";
+        document.getElementById('qty').value = "";
+        document.getElementById('uvalue').value = "";
+        document.getElementById('code').value = "";
+        document.getElementById('total').value = "$0.00";
+        document.getElementById('desc').value = "";
+        clearImage(); // Sawirka hadduu jiro ka saar
+        editId = null; // Reset edit mode
+        
+        loadInventory(); // Cusboonaysii shaxda hoose
 
     } catch (err) {
         console.error("Supabase Error:", err);
-        Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin. Hubi internet-ka iyo API-gaaga.', 'error');
+        Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin.', 'error');
     }
 }
 
@@ -1283,8 +1313,8 @@ if (ctx2) {
             currentSelectedLocation = `${catLabel} ${i}`; 
             document.getElementById('location').value = currentSelectedLocation; 
             document.getElementById('entry-form').classList.remove('hidden'); 
+            document.getElementById('form-header').innerText = `Geli Xogta Agabka (${currentSelectedLocation})`;
             document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`; 
-            
             document.getElementById('btn-excel-full').classList.add('hidden');
             document.getElementById('btn-excel-loc').classList.remove('hidden');
 
