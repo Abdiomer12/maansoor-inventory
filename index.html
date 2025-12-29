@@ -24,7 +24,37 @@
         body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
         .hotel-gold { color: #c5a059; }
         .bg-hotel-blue { background-color: #0f172a; }
-        .btn-active { background-color: #ca9c45 !important; color: #ffffff !important; border-color: #c5a059 !important; }
+        /* Qurxinta Badhanka Active-ka ah */
+/* 1. Naqshadda Badhanka Dahabiga ah (Active) */
+.btn-active { 
+    background: linear-gradient(135deg, #c5a059 0%, #eab308 100%) !important; 
+    color: #0f172a !important; /* Qoraalka Madow/Blue */
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 10px 20px -5px rgba(197, 160, 89, 0.5) !important;
+    transform: translateY(-2px);
+    font-weight: 800 !important;
+}
+
+/* 2. Sanduuqa Icon-ka (Box-ka yar) */
+.nav-icon-box {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08); /* Background khafiif ah */
+    margin-right: 14px;
+    transition: all 0.3s ease;
+    font-size: 14px; /* Cabbirka Icon-ka */
+}
+
+/* 3. Marka Badhanku Active yahay: Icon-ku ha caddaado ama ha noqdo madow */
+.btn-active .nav-icon-box {
+    background: #0f172a; /* Sanduuq madow */
+    color: #fbbf24;      /* Icon Dahabi ah oo ifaya */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
         .premium-border { border-bottom: 2px solid #c5a059; }
         
         .room-btn:hover {
@@ -168,6 +198,8 @@
             </button>
 
             <div id="sidebar" class="w-72 bg-hotel-blue text-white p-6 md:block mobile-sidebar shadow-2xl overflow-y-auto shrink-0 border-r border-slate-800">
+                
+                <!-- LOGO AREA -->
                 <div onclick="showHomePage()" class="mb-10 text-center border-b border-slate-700/50 pb-8 cursor-pointer hover:opacity-80 transition">
                     <div class="relative inline-block">
                         <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 logo-glow mb-4 rotate-3">
@@ -180,38 +212,78 @@
                     </h1>
                 </div>
                 
-                <nav class="space-y-2 text-left">
-                    <button onclick="changeCategory('room', 100)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-bed mr-3 text-[#0D47A1]"></i> Rooms</span>
-                        <span class="text-xs bg-blue-900 px-2 py-1 rounded">100</span>
+                <!-- NAVIGATION MENU -->
+                <nav class="space-y-3 text-left mt-6">
+                    
+                    <!-- 1. ROOMS -->
+                    <button onclick="changeCategory('room', 100)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-400">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Rooms</span>
                     </button>
-                    <button onclick="changeCategory('hall', 10)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-users mr-3 text-[#1B5E20]"></i> Halls</span>
-                        <span class="text-xs bg-green-900 px-2 py-1 rounded">10</span>
+
+                    <!-- 2. RESTAURANTS & HALLS -->
+                    <button onclick="showMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-500">
+                            <i class="fas fa-bell-concierge"></i> 
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[13px] font-bold leading-none">Restaurants</span>
+                            <span class="text-[10px] opacity-70 mt-0.5 font-normal">& Halls</span>
+                        </div>
                     </button>
-                    <button onclick="changeCategory('kitchen', 4)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-utensils mr-3 text-[#B71C1C]"></i> Kitchens</span>
-                        <span class="text-xs bg-red-900 px-2 py-1 rounded">4</span>
+
+                    <!-- 3. KITCHENS -->
+                    <!-- 3. KITCHENS, CAFETERIA & BAKERY -->
+    <button onclick="showKitchenMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+        <div class="nav-icon-box text-red-500 group-hover:bg-red-500/20 group-hover:text-red-500">
+            <i class="fas fa-fire-burner"></i>
+        </div>
+        <div class="flex flex-col">
+            <span class="text-[13px] font-bold leading-none">Kitchens</span>
+            <span class="text-[10px] opacity-70 mt-0.5 font-normal">& Cafeteria, Bakery</span>
+        </div>
+    </button>
+
+                    <!-- 4. OFFICES -->
+                    <button onclick="changeCategory('office', 2)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Offices</span>
                     </button>
-                    <button onclick="changeCategory('office', 2)" class="nav-btn w-full text-left py-3.5 px-4 rounded-xl hover:bg-gray-800 transition flex items-center justify-between group">
-                        <span><i class="fas fa-briefcase mr-3 text-[#B45309]"></i> Offices</span>
-                        <span class="text-xs bg-amber-900 px-2 py-1 rounded">2</span>    
-                    </button>
-                    <div class="pt-6 border-t border-slate-700 mt-6">
-                        <button onclick="showLogs()" class="nav-btn w-full text-left py-3 px-4 rounded-lg text-blue-400 hover:bg-slate-800 transition flex items-center mb-2">
-                            <i class="fas fa-history mr-3"></i> Activity Log
+
+                    <!-- SETTINGS & LOGOUT AREA -->
+                    <div class="pt-6 border-t border-slate-700/50 mt-6 space-y-2">
+                        <button onclick="showLogs()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
+                            <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <span class="text-xs font-medium">Activity Log</span>
                         </button>
-                        <button onclick="showSettings()" class="nav-btn w-full text-left py-3 px-4 rounded-lg text-yellow-500 hover:bg-slate-800 transition flex items-center mb-2">
-                            <i class="fas fa-cog mr-3"></i> Security Settings
+                        
+                        <button onclick="showSettings()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
+                            <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span class="text-xs font-medium">Settings</span>
                         </button>
-                         <button onclick="handleLogout()" class="w-full text-left py-3 px-4 rounded-lg text-red-400 hover:bg-red-900/20 transition flex items-center">
-                            <i class="fas fa-sign-out-alt mr-3"></i> Ka bax (Logout)
+
+                         <button onclick="handleLogout()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-red-400 hover:bg-red-900/10 hover:text-red-300 transition flex items-center">
+                            <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <span class="text-xs font-bold">Log Out</span>
                         </button>
                     </div>
                 </nav>
-            </div>
+            </div> 
+            <!-- HALKAN AYUU SIDEBAR KU XIDHMAA (Muhiim!) -->
 
-            <div class="flex-1 flex flex-col min-w-0">
+            <!-- 2. MAIN CONTENT AREA (Halkan ayay ka bilaabataa qaybta midig) -->
+
+            <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
                 <header class="bg-white shadow-sm p-4 flex flex-col md:flex-row justify-between items-center px-4 md:px-10 border-b border-gray-200">
                     <div class="relative w-full md:w-80 lg:w-96 mb-3 md:mb-0">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -239,7 +311,7 @@
                         </div>
                     </div>
                 </header>
-                <main class="flex-1 overflow-y-auto p-4 md:p-6">
+                <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 relative z-0">
                     
                     <!-- 1. LOGS SECTION (Diiwaanka) -->
                     <div id="logs-screen" class="hidden max-w-5xl mx-auto py-5">
@@ -316,22 +388,32 @@
 
                     <div id="dashboard-content">
                         <!-- Dashboard Visual Analytics -->
-                        <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                            <div class="chart-card p-8 bg-white overflow-hidden relative">
-                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center">
-                                    <i class="fas fa-layer-group text-yellow-500 mr-2 text-lg"></i> Asset Value Distribution ($)
-                                </h3>
-                                <div class="h-64"><canvas id="categoryChart"></canvas></div>
-                            </div>
-                            <div class="chart-card p-8 bg-white overflow-hidden relative">
-                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center justify-center">
-                                    <i class="fas fa-chart-pie text-blue-500 mr-2 text-lg"></i> Inventory Composition (Count)
-                                </h3>
-                                <div class="h-64 relative">
-                                    <canvas id="countChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Dashboard Charts (Mataano is le'eg) -->
+<div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+    
+    <!-- LEFT CARD: BAR CHART (Asset Value) -->
+    <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col">
+        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center">
+            <i class="fas fa-layer-group text-yellow-500 mr-2 text-lg"></i> Asset Value ($)
+        </h3>
+        <!-- Dherer Go'an (300px) -->
+        <div class="relative w-full flex-1" style="min-height: 300px; max-height: 300px;">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+    <!-- RIGHT CARD: DOUGHNUT CHART (Inventory Count) -->
+    <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col">
+        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center justify-center">
+            <i class="fas fa-chart-pie text-blue-500 mr-2 text-lg"></i> Inventory Count
+        </h3>
+        <!-- Dherer Go'an (300px) -->
+        <div class="relative w-full flex-1" style="min-height: 300px; max-height: 300px;">
+            <canvas id="countChart"></canvas>
+        </div>
+    </div>
+
+</div>
 
                         <!-- Waxaan ku daray 'hidden' dhamaadka class-ka -->
 <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200 hidden">
@@ -397,7 +479,7 @@
     <button onclick="clearAllData()" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
 </div>
                             </div>
-                            <div class="overflow-x-auto max-h-[500px]">
+                            <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200 text-left">
                                     <thead class="bg-gray-50 sticky top-0 z-10">
                                         <tr>
@@ -927,79 +1009,97 @@ function showHomePage() {
         }
 
         // 4. Cusboonaysii Jaantusyada (Charts)
-        function updateCharts() {
-            const cats = ['Room', 'Hall', 'Kitchen', 'Office'];
-            
-            // Xisaabi lacagta qayb kasta (Values)
-            const values = cats.map(c => 
-                inventory.filter(i => i.location && i.location.includes(c))
-                         .reduce((sum, i) => sum + (parseFloat(i.total?.toString().replace(/[$,]/g, '')) || 0), 0)
-            );
-
-            // Tiri inta agab ee qayb kasta ku jirta (Counts)
-            const counts = cats.map(c => 
-                inventory.filter(i => i.location && i.location.includes(c)).length
-            );
-
-            const iconColors = ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309']; 
-
-            // Hubi in jaantusyadii hore la tirtiro si looga hortago flicker
-            if(myChart1) myChart1.destroy(); 
-            if(myChart2) myChart2.destroy();
-
-            // Jaantuska Bar Chart (Value Distribution)
-            const ctx1 = document.getElementById('categoryChart')?.getContext('2d');
-            if(ctx1) {
-                myChart1 = new Chart(ctx1, { 
-                    type: 'bar', 
-                    data: { 
-                        labels: cats, 
-                        datasets: [{ data: values, backgroundColor: iconColors, borderRadius: 10 }] 
-                    }, 
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } 
-                });
-            }
-
-            // 2. Qaybta Doughnut Chart (Hoos u soo raridda Legend-ka)
-const ctx2 = document.getElementById('countChart')?.getContext('2d');
-if (ctx2) {
-    if (myChart2) myChart2.destroy(); // Tirtir kii hore si uusan isku dhex yaacin
+        // 4. Cusboonaysii Jaantusyada (Charts) - Fixed Version
+// 4. Cusboonaysii Jaantusyada (Charts) - Qoraalka Bold & Weyn
+function updateCharts() {
+    const cats = ['Room', 'Hall', 'Hodaale', 'Restaurant', 'Kitchen', 'Cafeteria', 'Bakery', 'Office'];
     
-    myChart2 = new Chart(ctx2, {
-        type: 'doughnut',
-        data: {
-            labels: ['Room', 'Hall', 'Kitchen', 'Office'], // Hubi in magacyadu halkan ku jiraan
-            datasets: [{
-                data: counts, // Hubi in variable-ka 'counts' uu jiro
-                backgroundColor: ['#0D47A1', '#1B5E20', '#B71C1C', '#B45309'],
-                borderWidth: 5,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '70%',
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom', // Kani waa kan hoos u soo raraya
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true, // Waxay ka dhigaysaa calaamadaha goobo yaryar
-                        font: {
-                            size: 11,
-                            family: 'Poppins',
-                            weight: 'bold'
-                        }
+    // Xisaabinta
+    const vals = cats.map(c => inventory.filter(i => i.location?.includes(c)).reduce((s, i) => s + (parseFloat(i.total?.replace(/[$,]/g,''))||0),0));
+    const counts = cats.map(c => inventory.filter(i => i.location?.includes(c)).length);
+    const colors = ['#0D47A1','#1B5E20','#7E22CE','#EA580C','#B71C1C','#D97706','#CA8A04','#475569'];
+
+    // Nadiifin
+    if(myChart1) { myChart1.destroy(); myChart1 = null; }
+    if(myChart2) { myChart2.destroy(); myChart2 = null; }
+
+    // --- CHART 1: BAR (Asset Value) ---
+    const ctx1 = document.getElementById('categoryChart')?.getContext('2d');
+    if(ctx1) {
+        myChart1 = new Chart(ctx1, { 
+            type: 'bar', 
+            data: { 
+                labels: cats, 
+                datasets: [{ 
+                    data: vals, 
+                    backgroundColor: colors, 
+                    borderRadius: 4,
+                    barThickness: 30, // Waan sii buuriyey
+                }] 
+            }, 
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { display: false, drawBorder: false },
+                        ticks: { font: { size: 10 } }
+                    },
+                    x: { 
+                        grid: { display: false, drawBorder: false }, 
+                        ticks: { 
+                            // --- QAYBTA LA BEDDELAY (BOLD & BIGGER) ---
+                            font: { 
+                                size: 11, // Waan weyneeyey (hore 9 ayuu ahaa)
+                                family: 'Poppins', 
+                                weight: 'bold' // Waan adkeeyey qoraalka
+                            },
+                            color: '#1e293b' // Midab madow ah (Slate-800)
+                        } 
                     }
                 }
-            }
-        }
-    });
-}
-        }
+            } 
+        });
+    }
 
+    // --- CHART 2: DOUGHNUT (Count) ---
+    const ctx2 = document.getElementById('countChart')?.getContext('2d');
+    if (ctx2) {
+        myChart2 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: cats,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: colors,
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, 
+                layout: { padding: 0 },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 10, // Wax yar baan weyneeyey sanduuqa midabka
+                            padding: 12, 
+                            color: '#1e293b', // Qoraalka Legend-kuna ha madoobaado
+                            font: { size: 11, family: 'Poppins', weight: 'bold' } // Bold Legend
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+}
         // 5. Xisaabiyaha Foomka (QTY * Price)
         function calculate() { 
             const q = parseFloat(document.getElementById('qty').value) || 0; 
@@ -1011,7 +1111,7 @@ if (ctx2) {
 
         // 6. Cusboonaysii Nambarada Sidebar-ka (Badges)
         function updateBadges() {
-            const categories = ['Room', 'Hall', 'Kitchen', 'Office'];
+            const categories = ['Room', 'Hall', 'Restaurant', 'Kitchen', 'Cafeteria', 'Bakery', 'Office'];
             categories.forEach(cat => {
                 const count = inventory.filter(i => i.location && i.location.includes(cat)).length;
                 const el = document.getElementById(`badge-${cat.toLowerCase()}`);
@@ -1420,73 +1520,143 @@ function closeSidebar() {
             return 5;
         }
 
-        // 1. Function-ka looga saaro xogta Excel
-        function exportToExcel(type) {
-            if (inventory.length === 0) {
-                return Swal.fire({ title: 'Cillad!', text: 'Xog ma jirto oo la dhoofiyo!', icon: 'warning', confirmButtonColor: '#0f172a' });
-            }
+        // 1. Function-ka lagu kala horraysiinayo Categories-ka (Sidebar Order)
+function getCategoryPriority(location) {
+    if (!location) return 99; // Haddii location madhan yahay hoos gee
+    const loc = location.toLowerCase();
 
-            let dataToExport = [];
-            let fileName = "";
+    // Sida Sidebar-ku u kala horreeyo:
+    if (loc.startsWith("room")) return 1;
+    if (loc.includes("restaurant")) return 2;
+    if (loc.includes("hall") || loc.includes("hodaale")) return 3;
+    if (loc.includes("kitchen") || loc.includes("cafeteria") || loc.includes("bakery")) return 4;
+    if (loc.includes("office")) return 5;
+    
+    return 6; // Wixii kale (Others)
+}
 
-            if (type === 'full') {
-                // Warbixinta dhamaan agabka huteelka oo habaysan
-                dataToExport = [...inventory].sort((a, b) => {
-                    let pA = getPriority(a.location);
-                    let pB = getPriority(b.location);
-                    if (pA !== pB) return pA - pB;
-                    return (a.location || "").localeCompare(b.location || "", undefined, {numeric: true});
-                });
-                fileName = "Maansoor_Full_Inventory_Report";
-            } else {
-                // Warbixinta meesha hadda kuu furan uun
-                if (currentSelectedLocation) {
-                    dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
-                    fileName = `Maansoor_Inventory_${currentSelectedLocation.replace(/\s+/g, '_')}`;
-                } else {
-                    const catLabel = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
-                    dataToExport = inventory.filter(i => i.location && i.location.startsWith(catLabel));
-                    fileName = `Maansoor_All_${catLabel}s_Report`;
-                }
-            }
+// 2. Function-ka Excel-ka (Full Professional Report)
+// --- EXCEL EXPORT LOGIC (CONTEXT AWARE) ---
+let currentExportMode = 'full'; // 'full', 'category', 'location'
 
-            if (dataToExport.length === 0) {
-                return Swal.fire({ title: 'Cillad!', text: 'Meeshan xog kuma jirto!', icon: 'warning', confirmButtonColor: '#0f172a' });
-            }
+function exportToExcel(type) {
+    // 1. Hubi xogta
+    if (inventory.length === 0) {
+        return Swal.fire({ title: 'Cillad!', text: 'Xog ma jirto!', icon: 'warning', confirmButtonColor: '#0f172a' });
+    }
 
-            // Xisaabi Wadarta Guud (Grand Total)
-            const grandTotal = dataToExport.reduce((sum, item) => {
-                const val = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
-                return sum + val;
-            }, 0);
+    let dataToExport = [];
+    let fileName = "";
 
-            // Diyaarinta safafka Excel-ka (Mapping)
-            const cleanData = dataToExport.map((i, index) => ({
-                'No.': index + 1,
-                'Location': i.location || '-',
-                'Item Code': i.code || '-',
-                'Item Name': i.name || '-',
-                'Status': i.status || 'Good',
-                'QTY': i.qty || 0,
-                'Unit Value': i.uvalue || 0,
-                'Total Value': i.total || '$0.00',
-                'Description': i.desc || '-'
-            }));
-
-            // Ku dar safka u dambeeya ee Lacagta Guud
-            cleanData.push({
-                'No.': '', 'Location': '', 'Item Code': '', 'Item Name': 'GRAND TOTAL', 
-                'Status': '', 'QTY': '', 'Unit Value': '', 'Total Value': `$${grandTotal.toFixed(2)}`, 'Description': ''
-            });
-
-            const worksheet = XLSX.utils.json_to_sheet(cleanData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
-            
-            // Soo deji faylka
-            XLSX.writeFile(workbook, `${fileName}_${new Date().toLocaleDateString()}.xlsx`);
+    // 2. Logic-ga Kala Saarista Xogta
+    if (type === 'context') {
+        // LOCATION: Xogta meesha hadda furan kaliya (Tusaale: Room 10 ama Somali Kitchen)
+        dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
+        fileName = `Inventory_${currentSelectedLocation.replace(/\s+/g, '_')}`;
+    } 
+    else if (type === 'full') {
+        
+        // --- LOGIC-GA CUSUB EE AAD RABTAY ---
+        
+        if (currentExportMode === 'full') {
+            // HOME: Full Hotel
+            dataToExport = [...inventory];
+            fileName = "Maansoor_Full_Inventory_Log";
+        } 
+        else if (currentExportMode === 'rooms_all') {
+            // ROOMS: All Rooms Only
+            dataToExport = inventory.filter(i => i.location && i.location.startsWith("Room"));
+            fileName = "Maansoor_All_Rooms_Inventory";
         }
+        else if (currentExportMode === 'rest_hall_combined') {
+            // REST/HALL MAIN: Restaurants + Halls + Hodaale
+            dataToExport = inventory.filter(i => 
+                i.location && (i.location.includes("Restaurant") || i.location.includes("Hall") || i.location.includes("Hodaale"))
+            );
+            fileName = "Maansoor_Restaurants_and_Halls_Combined";
+        }
+        else if (currentExportMode === 'rest_only') {
+            // RESTAURANT SUB: All Restaurants Only
+            dataToExport = inventory.filter(i => i.location && i.location.includes("Restaurant"));
+            fileName = "Maansoor_All_Restaurants";
+        }
+        else if (currentExportMode === 'hall_only') {
+            // HALL SUB: Halls + Hodaale Only
+            dataToExport = inventory.filter(i => i.location && (i.location.includes("Hall") || i.location.includes("Hodaale")));
+            fileName = "Maansoor_All_Halls_Hodaale";
+        }
+        else if (currentExportMode === 'kitchen_main_combined') {
+            // KITCHEN MAIN: Kitchens + Cafeteria + Bakery
+            dataToExport = inventory.filter(i => 
+                i.location && (i.location.includes("Kitchen") || i.location.includes("Cafeteria") || i.location.includes("Bakery"))
+            );
+            fileName = "Maansoor_Kitchens_Cafe_Bakery_Combined";
+        }
+        else if (currentExportMode === 'kitchen_only') {
+            // KITCHEN SUB: Kitchens Only
+            dataToExport = inventory.filter(i => i.location && i.location.includes("Kitchen"));
+            fileName = "Maansoor_All_Kitchens";
+        }
+    }
 
+    // Hubi in xog la helay filter-ka kadib
+    if (dataToExport.length === 0) {
+        return Swal.fire('Cillad', 'Qaybtan xog kuma jirto weli.', 'info');
+    }
+
+    // 3. Habaynta (Sorting Priority)
+    dataToExport.sort((a, b) => {
+        const priorityA = getCategoryPriority(a.location);
+        const priorityB = getCategoryPriority(b.location);
+        if (priorityA !== priorityB) return priorityA - priorityB;
+        return a.location.localeCompare(b.location, undefined, {numeric: true, sensitivity: 'base'});
+    });
+
+    // 4. Xisaabi Grand Total
+    let grandTotal = 0;
+    const formattedData = dataToExport.map((item, index) => {
+        const totalNum = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
+        grandTotal += totalNum;
+        return {
+            "No": index + 1,
+            "Location": item.location || "-",
+            "Item Code": item.code || "-",
+            "Item Name": item.name || "-",
+            "Status": item.status || "Good",
+            "Description": item.desc || "",
+            "Unit Value": parseFloat(item.uvalue) || 0,
+            "Total Value": totalNum
+        };
+    });
+
+    // Ku dar Safka Ugu Dambeeya
+    formattedData.push({
+        "No": "", "Location": "", "Item Code": "", "Item Name": "GRAND TOTAL",
+        "Status": "", "Description": "", "Unit Value": "", "Total Value": grandTotal
+    });
+
+    // 5. Soo Deji
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 12}, {wch: 15}];
+    worksheet['!cols'] = wscols;
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
+    XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// Helper: Kala horreysiinta
+function getCategoryPriority(location) {
+    if (!location) return 99;
+    const loc = location.toLowerCase();
+    if (loc.startsWith("room")) return 1;
+    if (loc.includes("restaurant")) return 2;
+    if (loc.includes("hall") || loc.includes("hodaale")) return 3;
+    if (loc.includes("kitchen")) return 4;
+    if (loc.includes("cafeteria")) return 5;
+    if (loc.includes("bakery")) return 6;
+    if (loc.includes("office")) return 7;
+    return 8;
+}
         // 2. Function-ka looga saaro xogta PDF
         function exportToPDF() {
             if (inventory.length === 0) {
@@ -1558,6 +1728,237 @@ function closeSidebar() {
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
         const db = supabase.createClient(supabaseUrl, supabaseKey);
    
+
+        // ==========================================
+//  NIDAAMKA CUSUB EE RESTAURANTS & HALLS
+// ==========================================
+
+// HEERKA 1: Soo saar labada doorasho (Restaurant vs Halls)
+function showMainSelection() {
+    // 1. Habee Muuqaalka (UI)
+    closeSidebar();
+    hideAllScreens();
+    document.getElementById('dashboard-content').classList.remove('hidden');
+    document.getElementById('dashboard-visuals').classList.add('hidden'); // Qari shaxda/graphs-ka
+    document.getElementById('selection-area').classList.remove('hidden'); // Muuji meesha badhamada
+    document.getElementById('entry-form').classList.add('hidden'); // Qari foomka xogta
+
+    // Nadiifi badhamada hore (Sidebar active state)
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+    // Iftiimi badhanka labaad (Restaurants & Halls)
+    const sidebarBtns = document.querySelectorAll('.nav-btn');
+    if(sidebarBtns[1]) sidebarBtns[1].classList.add('btn-active');
+
+    // 2. Qor Cinwaanka Sare
+    document.getElementById('table-title').innerText = "DOORO QAYBTA (RESTAURANT / HALL)";
+    document.getElementById('selection-label').innerHTML = '<i class="fas fa-layer-group mr-2 text-yellow-600"></i> Fadlan kala dooro :';
+    
+    // 3. Samee Labada Badhan ee Waaweyn
+    const grid = document.getElementById('grid-buttons');
+    grid.innerHTML = ''; // Nadiifi wixii hore
+
+    const mainOptions = [
+        { name: "RESTAURANT", icon: "fa-utensils", color: "text-orange-600", action: showRestaurantOptions },
+        { name: "HALLS", icon: "fa-users", color: "text-blue-600", action: showHallOptions }
+    ];
+
+    mainOptions.forEach(opt => {
+        const btn = document.createElement('button');
+        // Naqshad weyn oo qurux badan
+        btn.className = "col-span-2 sm:col-span-3 md:col-span-4 p-8 bg-white border-2 border-gray-100 rounded-2xl text-sm font-black shadow-lg transition-all hover:bg-slate-50 hover:border-yellow-500 hover:-translate-y-1 flex flex-col items-center justify-center gap-3";
+        btn.innerHTML = `<div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-2"><i class="fas ${opt.icon} ${opt.color} text-3xl"></i></div> <span>${opt.name}</span>`;
+        btn.onclick = opt.action; // U dir Heerka 2-aad
+        grid.appendChild(btn);
+    });
+
+    // Marka hore soo saar dhamaan waxa Restaurant ama Hall ah
+    renderTable("Restaurant"); 
+}
+
+// HEERKA 2 (A): Marka la doorto RESTAURANT (Soo saar 4-ta nooc)
+function showRestaurantOptions() {
+    currentCategory = "Restaurant";
+    
+    // Samee badhan yar oo "Dib u noqo" ah
+    document.getElementById('selection-label').innerHTML = `
+        <button onclick="showMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+        <span class="text-gray-400">|</span> <span class="ml-2 text-orange-600 font-bold">RESTAURANTS</span>
+    `;
+
+    const grid = document.getElementById('grid-buttons');
+    grid.innerHTML = ''; // Nadiifi
+
+    const restaurants = [
+        { name: "Somali Restaurant", icon: "fa-bowl-food" },
+        { name: "Ethiopian Restaurant", icon: "fa-utensils" },
+        { name: "Indian Restaurant", icon: "fa-pepper-hot" },
+        { name: "Kenyan Restaurant", icon: "fa-burger" }
+    ];
+
+    restaurants.forEach(rest => {
+        const btn = document.createElement('button');
+        btn.className = "col-span-2 p-5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all hover:bg-orange-50 hover:border-orange-500 hover:scale-105 flex flex-col items-center justify-center gap-2";
+        btn.innerHTML = `<i class="fas ${rest.icon} text-2xl text-orange-600"></i> <span>${rest.name}</span>`;
+        
+        btn.onclick = () => {
+            handleSelectionClick(btn, rest.name);
+        };
+        grid.appendChild(btn);
+    });
+}
+
+// HEERKA 2 (B): Marka la doorto HALLS (Soo saar Hall 1-10)
+// HEERKA 2 (B): Marka la doorto HALLS (Hall 1-5 & Hodaale 1-6)
+function showHallOptions() {
+    currentCategory = "Hall";
+
+    // Header-ka sare
+    document.getElementById('selection-label').innerHTML = `
+        <button onclick="showMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+        <span class="text-gray-400">|</span> <span class="ml-2 text-blue-600 font-bold">HALLS & HODAALE</span>
+    `;
+
+    const grid = document.getElementById('grid-buttons');
+    grid.innerHTML = ''; // Nadiifi wixii hore
+
+    // LIISKA CUSUB EE AAD RABTO
+    const halls = [
+        "Hall 1", "Hall 2", "Hall 3", "Hall 4", "Hall 5", 
+        "Hodaale 1", "Hodaale 2", "Hodaale 3", "Hodaale 4", "Hodaale 5", "Hodaale 6"
+    ];
+
+    halls.forEach(name => {
+        const btn = document.createElement('button');
+        btn.innerText = name;
+        
+        // Haddii uu yahay Hodaale, midabka yara beddel (Optional: Purple hover)
+        // Haddii uu yahay Hall caadi ah, Blue hover ha ahaado
+        const hoverColor = name.startsWith("Hodaale") ? "hover:bg-purple-50 hover:border-purple-500" : "hover:bg-blue-50 hover:border-blue-500";
+        
+        btn.className = `p-3 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all ${hoverColor} text-slate-700 h-14 uppercase`;
+        
+        btn.onclick = () => {
+            handleSelectionClick(btn, name);
+        };
+        grid.appendChild(btn);
+    });
+}
+
+// SHAQADA GUUD: Marka badhanka ugu dambeeya la riixo (Resturant gaar ah ama Hall gaar ah)
+function handleSelectionClick(btnElement, locationName) {
+    // Ka qaad highlight-ka badhamada kale
+    document.querySelectorAll('#grid-buttons button').forEach(b => {
+        b.classList.remove('bg-slate-800', 'text-white', 'border-yellow-500');
+        // Hadii ay hore u lahaayeen class-yo kale, dib u soo celi (Optional fix logic here if needed)
+    });
+
+    // Ku dar highlight badhanka la riixay
+    btnElement.classList.add('bg-slate-800', 'text-white', 'border-yellow-500');
+
+    currentSelectedLocation = locationName;
+    
+    // Muuji Foomka Xogta
+    document.getElementById('location').value = currentSelectedLocation;
+    document.getElementById('entry-form').classList.remove('hidden');
+    document.getElementById('form-header').innerText = `Geli Xogta (${currentSelectedLocation})`;
+    document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`;
+    
+    // Habee badhamada Excel-ka
+    document.getElementById('btn-excel-full').classList.add('hidden');
+    document.getElementById('btn-excel-loc').classList.remove('hidden');
+
+    // Soo saar xogta Shaxda
+    renderTable(currentSelectedLocation);
+    
+    // Foomka u soo dhaadhici (Scroll)
+    document.getElementById('entry-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ==========================================
+//  NIDAAMKA KITCHENS, CAFETERIA & BAKERY
+// ==========================================
+
+// HEERKA 1: Soo saar 3-da Qaybood ee Waaweyn
+function showKitchenMainSelection() {
+    // 1. UI Setup
+    closeSidebar();
+    hideAllScreens();
+    document.getElementById('dashboard-content').classList.remove('hidden');
+    document.getElementById('dashboard-visuals').classList.add('hidden');
+    document.getElementById('selection-area').classList.remove('hidden');
+    document.getElementById('entry-form').classList.add('hidden');
+
+    // Highlight Sidebar Button
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+    // Qiyaas ahaan waa button-ka 3-aad
+    const sidebarBtns = document.querySelectorAll('.nav-btn');
+    if(sidebarBtns[2]) sidebarBtns[2].classList.add('btn-active');
+
+    // 2. Cinwaanka
+    document.getElementById('table-title').innerText = "DOORO QAYBTA (KITCHEN / CAFETERIA / BAKERY)";
+    document.getElementById('selection-label').innerHTML = '<i class="fas fa-utensils mr-2 text-red-600"></i> Fadlan kala dooro :';
+    
+    const grid = document.getElementById('grid-buttons');
+    grid.innerHTML = ''; 
+
+    // 3. Abuur Badhamada
+    const mainOptions = [
+        { name: "KITCHENS", icon: "fa-fire-burner", color: "text-red-600", action: showKitchenSubOptions, type: "sub" },
+        { name: "CAFETERIA", icon: "fa-mug-hot", color: "text-orange-600", action: null, type: "direct" },
+        { name: "BAKERY", icon: "fa-bread-slice", color: "text-yellow-600", action: null, type: "direct" }
+    ];
+
+    mainOptions.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "col-span-2 sm:col-span-3 md:col-span-3 lg:col-span-3 p-6 bg-white border-2 border-gray-100 rounded-2xl text-xs font-black shadow-lg transition-all hover:bg-slate-50 hover:border-red-500 hover:-translate-y-1 flex flex-col items-center justify-center gap-3 h-32";
+        
+        btn.innerHTML = `<div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-1"><i class="fas ${opt.icon} ${opt.color} text-2xl"></i></div> <span>${opt.name}</span>`;
+        
+        // LOGIC: Haddii ay tahay Kitchen, fur liiska hoose. Haddii kale, toos u fur.
+        btn.onclick = () => {
+            if (opt.type === "sub") {
+                opt.action(); // Fur Kitchens-ka (Level 2)
+            } else {
+                handleSelectionClick(btn, opt.name); // Fur Cafeteria/Bakery toos
+            }
+        };
+        grid.appendChild(btn);
+    });
+
+    // Marka hore soo saar inventory-ga Kitchens
+    renderTable("Kitchen"); 
+}
+
+// HEERKA 2: KITCHENS (Somali, Indian, Ethiopian)
+function showKitchenSubOptions() {
+    currentCategory = "Kitchen";
+    
+    // Header-ka & Back Button
+    document.getElementById('selection-label').innerHTML = `
+        <button onclick="showKitchenMainSelection()" class="mr-3 text-red-600 hover:underline text-[10px] uppercase font-bold bg-red-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+        <span class="text-gray-400">|</span> <span class="ml-2 text-red-600 font-bold">KITCHENS</span>
+    `;
+
+    const grid = document.getElementById('grid-buttons');
+    grid.innerHTML = ''; 
+
+    const kitchens = [
+        { name: "Somali Kitchen", icon: "fa-bowl-rice" },
+        { name: "Indian Kitchen", icon: "fa-pepper-hot" },
+        { name: "Ethiopian Kitchen", icon: "fa-utensils" }
+    ];
+
+    kitchens.forEach(kit => {
+        const btn = document.createElement('button');
+        btn.className = "col-span-2 md:col-span-3 p-5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all hover:bg-red-50 hover:border-red-500 hover:scale-105 flex flex-col items-center justify-center gap-2 h-28";
+        btn.innerHTML = `<i class="fas ${kit.icon} text-2xl text-red-600"></i> <span>${kit.name}</span>`;
+        
+        btn.onclick = () => {
+            handleSelectionClick(btn, kit.name);
+        };
+        grid.appendChild(btn);
+    });
+}
    </script>
 </body>
 </html>
