@@ -3,59 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
-    <!-- Viewport-ka waa la habeeyay si looga hortago auto-zoom-ka mobile-ka -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Maansoor Hotel - Professional Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <!-- Maktabadaha loo baahanyahay -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- Kani waa kan saxda ah -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- Chart.js for Visual Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- SweetAlert2 for beautiful popups -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         .hotel-gold { color: #c5a059; }
         .bg-hotel-blue { background-color: #0f172a; }
-        /* Qurxinta Badhanka Active-ka ah */
-/* 1. Naqshadda Badhanka Dahabiga ah (Active) */
-.btn-active { 
-    background: linear-gradient(135deg, #c5a059 0%, #eab308 100%) !important; 
-    color: #0f172a !important; /* Qoraalka Madow/Blue */
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: 0 10px 20px -5px rgba(197, 160, 89, 0.5) !important;
-    transform: translateY(-2px);
-    font-weight: 800 !important;
-}
+        
+        .btn-active { 
+            background: linear-gradient(135deg, #c5a059 0%, #eab308 100%) !important; 
+            color: #0f172a !important; 
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            box-shadow: 0 10px 20px -5px rgba(197, 160, 89, 0.5) !important;
+            transform: translateY(-2px);
+            font-weight: 800 !important;
+        }
 
-/* 2. Sanduuqa Icon-ka (Box-ka yar) */
-.nav-icon-box {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08); /* Background khafiif ah */
-    margin-right: 14px;
-    transition: all 0.3s ease;
-    font-size: 14px; /* Cabbirka Icon-ka */
-}
+        .nav-icon-box {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08); 
+            margin-right: 14px;
+            transition: all 0.3s ease;
+            font-size: 14px; 
+        }
 
-/* 3. Marka Badhanku Active yahay: Icon-ku ha caddaado ama ha noqdo madow */
-.btn-active .nav-icon-box {
-    background: #0f172a; /* Sanduuq madow */
-    color: #fbbf24;      /* Icon Dahabi ah oo ifaya */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-}
-        .premium-border { border-bottom: 2px solid #c5a059; }
+        .btn-active .nav-icon-box {
+            background: #0f172a; 
+            color: #fbbf24;      
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
         
         .room-btn:hover {
             background-color: #c5a059 !important;
@@ -81,6 +71,11 @@
             border: 2px solid rgba(197, 160, 89, 0.4);
         }
 
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #b38f4d; }
+
         @media (max-width: 768px) {
             .mobile-sidebar {
                 position: fixed;
@@ -90,63 +85,31 @@
                 z-index: 50;
                 transition: 0.3s;
             }
-            .mobile-sidebar.open {
-                left: 0;
-            }
-            /* MOBILE ZOOM FIX: Force 16px on inputs to stop iOS/Android auto-zoom */
-            input[type="text"], 
-            input[type="number"], 
-            input[type="password"], 
-            input[type="search"],
-            select {
-                font-size: 16px !important;
-            }
+            .mobile-sidebar.open { left: 0; }
+            input[type="text"], input[type="number"], input[type="password"], input[type="search"], select { font-size: 16px !important; }
         }
 
         .chart-card {
             background: #ffffff;
             border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            border: 1px solid rgba(226, 232, 240, 0.7);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             transition: 0.3s;
         }
         .chart-card:hover {
-            box-shadow: 0 15px 45px rgba(197, 160, 89, 0.15);
-            border-color: #c5a059;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
         }
 
-        /* CUSTOM SWEETALERT STYLING */
-        .swal2-popup {
-            border-radius: 2.5rem !important;
-            padding: 2rem !important;
-            font-family: 'Poppins', sans-serif !important;
-        }
-        .swal2-title {
-            font-weight: 800 !important;
-            text-transform: uppercase !important;
-            letter-spacing: -0.05em !important;
-            font-style: italic !important;
-            color: #1e293b !important;
-        }
-        .swal2-confirm {
-            border-radius: 1rem !important;
-            padding: 12px 30px !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.1em !important;
-            font-size: 11px !important;
-        }
-        .swal2-cancel {
-            border-radius: 1rem !important;
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-        }
+        .swal2-popup { border-radius: 2.5rem !important; padding: 2rem !important; font-family: 'Poppins', sans-serif !important; }
+        .swal2-title { font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: -0.05em !important; font-style: italic !important; color: #1e293b !important; }
+        .swal2-confirm { border-radius: 1rem !important; padding: 12px 30px !important; font-weight: 700 !important; }
+        .swal2-cancel { border-radius: 1rem !important; font-size: 11px !important; font-weight: 700 !important; }
     </style>
 </head>
 <body onload="checkAuth()">
 
-    <!-- Login Screen - Hidden by default to stop flicker -->
+    <!-- Login Screen -->
     <div id="login-screen" style="display: none;">
         <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl w-full max-w-[480px] border border-white/20 mx-4">
             <div class="text-center mb-10">
@@ -215,6 +178,14 @@
                 <!-- NAVIGATION MENU -->
                 <nav class="space-y-3 text-left mt-6">
                     
+                    <!-- 0. DASHBOARD HOME LINK -->
+                    <button onclick="showHomePage()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-cyan-400 group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Dashboard</span>
+                    </button>
+
                     <!-- 1. ROOMS -->
                     <button onclick="changeCategory('room', 100)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-400">
@@ -235,19 +206,18 @@
                     </button>
 
                     <!-- 3. KITCHENS -->
-                    <!-- 3. KITCHENS, CAFETERIA & BAKERY -->
-    <button onclick="showKitchenMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
-        <div class="nav-icon-box text-red-500 group-hover:bg-red-500/20 group-hover:text-red-500">
-            <i class="fas fa-fire-burner"></i>
-        </div>
-        <div class="flex flex-col">
-            <span class="text-[13px] font-bold leading-none">Kitchens</span>
-            <span class="text-[10px] opacity-70 mt-0.5 font-normal">& Cafeteria, Bakery</span>
-        </div>
-    </button>
+                    <button onclick="showKitchenMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-red-500 group-hover:bg-red-500/20 group-hover:text-red-500">
+                            <i class="fas fa-fire-burner"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[13px] font-bold leading-none">Kitchens</span>
+                            <span class="text-[10px] opacity-70 mt-0.5 font-normal">& Cafeteria, Bakery</span>
+                        </div>
+                    </button>
 
                     <!-- 4. OFFICES -->
-                    <button onclick="changeCategory('office', 2)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button onclick="showOfficeMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
                             <i class="fas fa-briefcase"></i>
                         </div>
@@ -279,10 +249,8 @@
                     </div>
                 </nav>
             </div> 
-            <!-- HALKAN AYUU SIDEBAR KU XIDHMAA (Muhiim!) -->
 
-            <!-- 2. MAIN CONTENT AREA (Halkan ayay ka bilaabataa qaybta midig) -->
-
+            <!-- 2. MAIN CONTENT AREA -->
             <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
                 <header class="bg-white shadow-sm p-4 flex flex-col md:flex-row justify-between items-center px-4 md:px-10 border-b border-gray-200">
                     <div class="relative w-full md:w-80 lg:w-96 mb-3 md:mb-0">
@@ -303,17 +271,17 @@
                             <p id="stat-total-value" class="text-xs md:text-sm font-extrabold text-green-600">$0.00</p>
                         </div>
                         <!-- USER HEADER INFO -->
-                        <div onclick="showSettings()" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded-full transition group">
-                            <p id="header-username" class="text-[11px] font-bold text-slate-700 uppercase"></p>
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500 border-2 border-yellow-500 shadow-md group-hover:scale-105 transition">
-                                <i class="fas fa-user-shield text-xs md:text-base"></i>
+                        <div onclick="showSettings()" class="flex items-center space-x-2 cursor-pointer bg-slate-100/50 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition group border border-slate-200 shadow-sm">
+                            <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-yellow-500 border border-slate-800 shadow-md">
+                                <i class="fas fa-user text-xs"></i>
                             </div>
+                            <p id="header-username" class="text-[10px] font-black text-slate-800 uppercase tracking-wide ml-2">ADMIN</p>
                         </div>
                     </div>
                 </header>
                 <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 relative z-0">
                     
-                    <!-- 1. LOGS SECTION (Diiwaanka) -->
+                    <!-- 1. LOGS SECTION -->
                     <div id="logs-screen" class="hidden max-w-5xl mx-auto py-5">
                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                             <div class="bg-slate-900 p-6 flex justify-between items-center border-b-4 border-blue-500">
@@ -388,35 +356,66 @@
 
                     <div id="dashboard-content">
                         <!-- Dashboard Visual Analytics -->
-                        <!-- Dashboard Charts (Mataano is le'eg) -->
-<div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-    
-    <!-- LEFT CARD: BAR CHART (Asset Value) -->
-    <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col">
-        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center">
-            <i class="fas fa-layer-group text-yellow-500 mr-2 text-lg"></i> Asset Value ($)
-        </h3>
-        <!-- Dherer Go'an (300px) -->
-        <div class="relative w-full flex-1" style="min-height: 300px; max-height: 300px;">
-            <canvas id="categoryChart"></canvas>
-        </div>
-    </div>
+                        <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <!-- LEFT CARD: BAR CHART (Asset Value) -->
+                            <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col h-[400px]">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.1em] flex items-center">
+                                        <div class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></div> Asset Distribution
+                                    </h3>
+                                    <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-md text-slate-500 font-bold">Value ($)</span>
+                                </div>
+                                <div class="relative w-full flex-1">
+                                    <canvas id="categoryChart"></canvas>
+                                </div>
+                            </div>
 
-    <!-- RIGHT CARD: DOUGHNUT CHART (Inventory Count) -->
-    <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col">
-        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center justify-center">
-            <i class="fas fa-chart-pie text-blue-500 mr-2 text-lg"></i> Inventory Count
-        </h3>
-        <!-- Dherer Go'an (300px) -->
-        <div class="relative w-full flex-1" style="min-height: 300px; max-height: 300px;">
-            <canvas id="countChart"></canvas>
-        </div>
-    </div>
+                            <!-- RIGHT CARD: DOUGHNUT CHART (Inventory Count) -->
+                            <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col h-[400px]">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.1em] flex items-center">
+                                        <div class="w-2 h-2 rounded-full bg-blue-500 mr-2"></div> Inventory Count
+                                    </h3>
+                                    <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-md text-slate-500 font-bold">Items Qty</span>
+                                </div>
+                                <div class="relative w-full flex-1 flex justify-center items-center">
+                                    <canvas id="countChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
 
-</div>
+                        <!-- NEW BOTTOM CATEGORIES DASHBOARD -->
+                        <div id="bottom-categories" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 px-1">
+                            <button onclick="changeCategory('room', 100)" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-blue-200">
+                                <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 text-xl group-hover:bg-blue-500 group-hover:text-white transition">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <span class="font-bold text-slate-600 text-sm group-hover:text-blue-600">Rooms</span>
+                            </button>
+                            
+                            <button onclick="showMainSelection()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-yellow-200">
+                                <div class="w-12 h-12 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-500 text-xl group-hover:bg-yellow-500 group-hover:text-white transition">
+                                    <i class="fas fa-bell-concierge"></i>
+                                </div>
+                                <span class="font-bold text-slate-600 text-sm group-hover:text-yellow-600">Restaurants</span>
+                            </button>
+                            
+                            <button onclick="showKitchenMainSelection()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-red-200">
+                                <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 text-xl group-hover:bg-red-500 group-hover:text-white transition">
+                                    <i class="fas fa-fire-burner"></i>
+                                </div>
+                                <span class="font-bold text-slate-600 text-sm group-hover:text-red-600">Kitchens</span>
+                            </button>
+                            
+                            <button onclick="showOfficeMainSelection()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-orange-200">
+                                <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 text-xl group-hover:bg-orange-500 group-hover:text-white transition">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <span class="font-bold text-slate-600 text-sm group-hover:text-orange-600">Offices</span>
+                            </button>
+                        </div>
 
-                        <!-- Waxaan ku daray 'hidden' dhamaadka class-ka -->
-<div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200 hidden">
+                        <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200 hidden">
                             <h3 id="selection-label" class="mb-3 font-bold text-gray-700 text-xs md:text-sm uppercase flex items-center">
                                 <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha aad rabto :
                             </h3>
@@ -430,7 +429,20 @@
                                 <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Department</label><input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                                 <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Location</label><input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-sm"></div>
                                 <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Code</label><input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label><input type="text" id="name" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                                
+                                <!-- CUSTOM DROPDOWN INPUT (ITEM NAME) -->
+                                <div class="relative">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label>
+                                    <input type="text" id="name" onkeyup="filterCustomDropdown()" onfocus="filterCustomDropdown()" autocomplete="off"
+                                           class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold placeholder-gray-300 focus:ring-2 focus:ring-yellow-500 transition-all" 
+                                           placeholder="Qor ama dooro...">
+                                    
+                                    <!-- Custom Scrollable List -->
+                                    <ul id="custom-dropdown-list" class="hidden absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto custom-scroll mt-1">
+                                        <!-- Items will be populated here -->
+                                    </ul>
+                                </div>
+
                                 <div class="grid grid-cols-2 gap-2">
                                     <div><label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label><input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
                                     <div><label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label><input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
@@ -443,7 +455,6 @@
                                             <option value="Missing">Missing (Maqan)</option>
                                     </select>
                                 </div>
-                                <!-- QODOBKA SAWIRKA: Lagu kordhiyey badhanka Camera-ka -->
                                 <div>
                                     <label class="block text-[10px] font-bold text-gray-400 uppercase">Sawirka Agabka</label>
                                     <div class="flex space-x-2 mt-1">
@@ -466,18 +477,15 @@
                             </div>
                         </div>
 
-                        <!-- QODOBKA SEARCH SCROLL -->
                         <div id="inventory-section" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
                             <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
                                 <h4 id="table-title" class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
                                 <div class="flex flex-wrap gap-2">
-    <!-- Waxaan ku darnay ID-yo badhamada si loo xukumo -->
-    <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">Excel (Full)</button>
-    <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold hidden">Excel (Location)</button>
-    
-    <button onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">PDF Report</button>
-    <button onclick="clearAllData()" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
-</div>
+                                    <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">Excel (Full)</button>
+                                    <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold hidden">Excel (Location)</button>
+                                    <button onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">PDF Report</button>
+                                    <button onclick="clearAllData()" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
+                                </div>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200 text-left">
@@ -502,13 +510,11 @@
         </div>
     </div>
 
-    <!-- Video element for capturing (TRUE HIDDEN) -->
-    <video id="webcam" autoplay playsinline style="width:1px; height:1px; position: absolute; opacity: 0; pointer-events: none;"></video>
-    <canvas id="canvas" style="display:none;"></canvas>
-
     <script>
+        const supabaseUrl = 'https://caianuiwgprgxyjevyqy.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
+        const db = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // --- 1. SECURITY & USER DATA ---
         let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
             user: "admin",
             pass: "123",
@@ -518,85 +524,73 @@
         };
 
         function handleLogin() {
-    const uInput = document.getElementById('username').value.trim();
-    const pInput = document.getElementById('password').value.trim();
+            const uInput = document.getElementById('username').value.trim();
+            const pInput = document.getElementById('password').value.trim();
 
-    if(uInput === profile.user && pInput === profile.pass) {
-        localStorage.setItem('maansoor_isLoggedIn', 'true');
-        // KHADKAN KU DAR: Kaydi waqtiga login-ka hadda
-        localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
-        
-        addLog("Login", `User-ka ${uInput} ayaa soo galay.`); 
-        checkAuth();
-    } else {
-        document.getElementById('login-error').classList.remove('hidden');
-    }
-}
-
-// 1. Hubinta Login-ka iyo Soo iibinta xogta Cloud-ka
-        // 1. Hubinta Login-ka iyo Soo iibinta xogta Cloud-ka
-async function checkAuth() {
-    const auth = localStorage.getItem('maansoor_isLoggedIn');
-    const loginTime = localStorage.getItem('maansoor_loginTime');
-    const oneHour = 3600000; // 1 saac oo milliseconds ah
-
-    if(auth === 'true') {
-        // 1. HUBI HADDI SAACADII DHAMAATAY
-        if (loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
-            handleLogout(); // Ka saar haddii saacad ka badatay
-            return;
+            if(uInput === profile.user && pInput === profile.pass) {
+                localStorage.setItem('maansoor_isLoggedIn', 'true');
+                localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
+                addLog("Login", `User-ka ${uInput} ayaa soo galay.`); 
+                checkAuth();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
         }
 
-        // 2. Haddii saacaddu u dhiman tahay, muuji app-ka
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('app-content').classList.remove('hidden');
-        showHomePage();
-        await loadInventory(); 
-        if(typeof loadLogs === 'function') await loadLogs();
+        async function checkAuth() {
+            const auth = localStorage.getItem('maansoor_isLoggedIn');
+            const loginTime = localStorage.getItem('maansoor_loginTime');
+            const oneHour = 3600000; 
 
-        const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
-        document.getElementById('header-username').innerText = savedProfile.user;
-    } else {
-        document.getElementById('login-screen').style.display = 'flex';
-        document.getElementById('app-content').classList.add('hidden');
-    }
+            if(auth === 'true') {
+                if (loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
+                    handleLogout(); 
+                    return;
+                }
 
-    // 1. KA SAAR HIGHLIGHT-KA BADHAMADA KALE
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-content').classList.remove('hidden');
+                showHomePage();
+                await loadInventory(); 
+                if(typeof loadLogs === 'function') await loadLogs();
 
-    renderTable("");
-    closeSidebar();
-}
+                const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
+                document.getElementById('header-username').innerText = savedProfile.user;
+            } else {
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('app-content').classList.add('hidden');
+            }
 
-// Hubi 1-dii daqiiqadba haddii 1-dii saac ee login-ku dhamaatay
-setInterval(() => {
-    const auth = localStorage.getItem('maansoor_isLoggedIn');
-    const loginTime = localStorage.getItem('maansoor_loginTime');
-    const oneHour = 3600000;
-    
-    if (auth === 'true' && loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
-        Swal.fire({
-            title: 'Waqtigu waa kaa dhamaaday!',
-            text: 'Fadlan dib u soo gal nidaamka.',
-            icon: 'info',
-            confirmButtonColor: '#0f172a'
-        }).then(() => {
-            handleLogout();
-        });
-    }
-}, 60000); // 60,000ms = 1 Minute
-        // 3. Ka bixitaanka Nidaamka
-        async function handleLogout() {
-            // Log-garee ka bixitaanka ka hor intaanan tirtirin session-ka
-            await addLog("Logout", `User-ka ${profile.user} ayaa ka baxay nidaamka.`);
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            renderTable("");
+            closeSidebar();
+        }
+
+        setInterval(() => {
+            const auth = localStorage.getItem('maansoor_isLoggedIn');
+            const loginTime = localStorage.getItem('maansoor_loginTime');
+            const oneHour = 3600000;
             
+            if (auth === 'true' && loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
+                Swal.fire({
+                    title: 'Waqtigu waa kaa dhamaaday!',
+                    text: 'Fadlan dib u soo gal nidaamka.',
+                    icon: 'info',
+                    confirmButtonColor: '#0f172a'
+                }).then(() => {
+                    handleLogout();
+                });
+            }
+        }, 60000); 
+
+        async function handleLogout() {
+            await addLog("Logout", `User-ka ${profile.user} ayaa ka baxay nidaamka.`);
             localStorage.removeItem('maansoor_isLoggedIn');
             localStorage.removeItem('maansoor_loginTime');
             sessionStorage.clear();
             window.location.reload();
         }
 
-        // 4. Xusuusinta Password-ka
         function handleForgot() {
             Swal.fire({
                 title: 'Security Hint',
@@ -610,18 +604,15 @@ setInterval(() => {
             });
         }
 
-        // 5. Muujinta Profile Settings
         function showSettings() {
             hideAllScreens();
             document.getElementById('settings-screen').classList.remove('hidden');
             document.getElementById('set-username').value = profile.user;
             document.getElementById('set-fullname').value = profile.fullName;
-
              document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
             closeSidebar();
         }
 
-        // 6. Kaydinta Isbeddelka Profile-ka
         async function saveUserProfile() {
             const newU = document.getElementById('set-username').value.trim();
             const newFN = document.getElementById('set-fullname').value.trim();
@@ -642,10 +633,7 @@ setInterval(() => {
             profile.user = newU;
             profile.fullName = newFN;
 
-            // Kaydi Profile-ka (Local ahaan)
             localStorage.setItem('maansoor_profile', JSON.stringify(profile));
-            
-            // Log-garee isbeddelka (Cloud ahaan)
             await addLog("Profile Update", `Xogta user-ka ${profile.user} waa la beddelay.`);
             
             Swal.fire({
@@ -659,156 +647,142 @@ setInterval(() => {
             });
         }
 
-        // --- 2. ACTIVITY LOG LOGIC ---
         let activityLogs = JSON.parse(localStorage.getItem('maansoor_logs')) || [];
 
-        // 1. Function-kan wuxuu xogta u diraa Cloud-ka
-async function addLog(action, details, backupData = null) {
-    const logEntry = {
-        user: profile.user || "admin",
-        action: action,
-        details: details,
-        timestamp: new Date().toLocaleString('en-GB'),
-        backup: backupData ? JSON.parse(JSON.stringify(backupData)) : null
-    };
+        async function addLog(action, details, backupData = null) {
+            const logEntry = {
+                user: profile.user || "admin",
+                action: action,
+                details: details,
+                timestamp: new Date().toLocaleString('en-GB'),
+                backup: backupData ? JSON.parse(JSON.stringify(backupData)) : null
+            };
+            const { error } = await db.from('logs').insert([logEntry]);
+            if (!error) {
+                // Background update, no explicit reload needed unless viewing logs
+            } else {
+                console.error("Log insertion error:", error);
+            }
+        }
 
-    // Toos ugu dir Supabase
-    const { error } = await db.from('logs').insert([logEntry]);
-    
-    if (!error) {
-        loadLogs(); // Isla markaba soo iibi Logs-ka cusub si loo arko
-    } else {
-        console.error("Log insertion error:", error);
-    }
-}
-
-// 2. Function-kan wuxuu Logs-ka ka soo aqriyaa Supabase
-async function loadLogs() {
-    const { data, error } = await db.from('logs').select('*').order('id', { ascending: false }).limit(100);
-    if (!error) {
-        activityLogs = data; // Ku rid xogta variable-ka caalamiga ah
-        renderLogsTable(); // Muuji shaxda
-    }
-}
+        async function loadLogs() {
+            // No longer automatically loading on auth to prevent delay
+            // Logs are loaded when "Activity Log" is clicked
+        }
 
         async function showLogs() {
-    hideAllScreens();
-    document.getElementById('logs-screen').classList.remove('hidden');
-    closeSidebar();
-    
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
-    // TANI WAA MUHIIM: Markuu furmo Logs-ka, ka soo soo iibi Supabase
-    const { data, error } = await db.from('logs').select('*').order('timestamp', { ascending: false });
-    
-    if (!error && data) {
-        activityLogs = data; // Ku rid xogta liiska
-        renderLogsTable();   // Muuji shaxda
-    } else {
-        console.error("Logs-ka lama soo helin:", error);
-    }
-}
+            hideAllScreens();
+            document.getElementById('logs-screen').classList.remove('hidden');
+            closeSidebar();
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            
+            // Show loading state
+            const tbody = document.getElementById('logs-tbody');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin text-blue-500"></i> Loading...</td></tr>';
+            
+            const { data, error } = await db.from('logs').select('*').order('timestamp', { ascending: false });
+            
+            if (!error && data) {
+                activityLogs = data; 
+                renderLogsTable();   
+            }
+        }
 
         function renderLogsTable() {
-    const tbody = document.getElementById('logs-tbody');
-    if (!tbody) return; // Hubi in meeshu jirto
-    
-    tbody.innerHTML = '';
-    
-    activityLogs.forEach((log, index) => {
-        let actionColor = "text-gray-700";
-        let restoreBtn = "";
+            const tbody = document.getElementById('logs-tbody');
+            if (!tbody) return; 
+            
+            tbody.innerHTML = '';
+            
+            activityLogs.forEach((log, index) => {
+                let actionColor = "text-gray-700";
+                let restoreBtn = "";
 
-        // 1. Habaynta Midabada Ficilada (Colors)
-        if (log.action.includes("Ku daray")) {
-            actionColor = "text-green-600 font-bold uppercase text-[10px]";
-        } else if (log.action.includes("Tirtiray")) {
-            actionColor = "text-red-600 font-bold uppercase text-[10px]";
-            // 2. Badhanka Restore (Haddii backup jiro)
-            if (log.backup) {
-                restoreBtn = `<button onclick="restoreItem(${index})" 
-                    class="ml-2 bg-blue-600 hover:bg-blue-700 text-white text-[9px] px-2 py-1 rounded-md transition-all shadow-sm font-black uppercase">
-                    <i class="fas fa-undo mr-1"></i> Restore
-                </button>`;
-            }
-        } else if (log.action.includes("Cusboonaysiiyey")) {
-            actionColor = "text-blue-600 font-bold uppercase text-[10px]";
-        } else if (log.action.includes("Login")) {
-            actionColor = "text-indigo-600 font-bold uppercase text-[10px]";
-        } else if (log.action.includes("Logout")) {
-            actionColor = "text-orange-600 font-bold uppercase text-[10px]";
-        } else if (log.action.includes("Restore")) {
-            actionColor = "text-teal-600 font-bold uppercase text-[10px]";
+                if (log.action.includes("Ku daray")) {
+                    actionColor = "text-green-600 font-bold uppercase text-[10px]";
+                } else if (log.action.includes("Tirtiray")) {
+                    actionColor = "text-red-600 font-bold uppercase text-[10px]";
+                    if (log.backup) {
+                        restoreBtn = `<button onclick="restoreItem(${index})" 
+                            class="ml-2 bg-blue-600 hover:bg-blue-700 text-white text-[9px] px-2 py-1 rounded-md transition-all shadow-sm font-black uppercase">
+                            <i class="fas fa-undo mr-1"></i> Restore
+                        </button>`;
+                    }
+                } else if (log.action.includes("Cusboonaysiiyey")) {
+                    actionColor = "text-blue-600 font-bold uppercase text-[10px]";
+                } else if (log.action.includes("Login")) {
+                    actionColor = "text-indigo-600 font-bold uppercase text-[10px]";
+                } else if (log.action.includes("Logout")) {
+                    actionColor = "text-orange-600 font-bold uppercase text-[10px]";
+                } else if (log.action.includes("Restore")) {
+                    actionColor = "text-teal-600 font-bold uppercase text-[10px]";
+                }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-blue-50/50 transition border-b border-gray-100">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 mr-2 border border-slate-200">
+                                    <i class="fas fa-user text-[10px]"></i>
+                                </div>
+                                <span class="text-xs font-bold text-slate-800">${log.user || 'Unknown'}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="${actionColor} px-2 py-1 rounded-lg bg-opacity-10">${log.action}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center text-xs text-gray-500 italic leading-tight">
+                                ${log.details} ${restoreBtn}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-[10px] text-gray-400 font-mono flex flex-col">
+                                <span class="font-bold text-slate-500">${log.timestamp ? log.timestamp.split(',')[0] : ''}</span>
+                                <span>${log.timestamp ? log.timestamp.split(',')[1] : ''}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
         }
-
-        // 3. Dhisidda Safka (Row-ga)
-        tbody.innerHTML += `
-            <tr class="hover:bg-blue-50/50 transition border-b border-gray-100">
-                <td class="px-6 py-4">
-                    <div class="flex items-center">
-                        <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 mr-2 border border-slate-200">
-                            <i class="fas fa-user text-[10px]"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-800">${log.user || 'Unknown'}</span>
-                    </div>
-                </td>
-                <td class="px-6 py-4">
-                    <span class="${actionColor} px-2 py-1 rounded-lg bg-opacity-10">${log.action}</span>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center text-xs text-gray-500 italic leading-tight">
-                        ${log.details} ${restoreBtn}
-                    </div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="text-[10px] text-gray-400 font-mono flex flex-col">
-                        <span class="font-bold text-slate-500">${log.timestamp ? log.timestamp.split(',')[0] : ''}</span>
-                        <span>${log.timestamp ? log.timestamp.split(',')[1] : ''}</span>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-}
 
         async function restoreItem(logIndex) {
-    const log = activityLogs[logIndex];
-    if(!log || !log.backup) return Swal.fire('Cillad!', 'Xogtan lama soo celin karo!', 'error');
+            const log = activityLogs[logIndex];
+            if(!log || !log.backup) return Swal.fire('Cillad!', 'Xogtan lama soo celin karo!', 'error');
 
-    Swal.fire({
-        title: 'Ma soo celinaa?',
-        text: `Ma rabtaa in aad dib u soo celiso: ${log.backup.name}?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Haa, soo celi!'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            // 1. Dib ugu celi Inventory-ga Cloud-ka
-            const { error } = await db.from('inventory').insert([log.backup]);
+            Swal.fire({
+                title: 'Ma soo celinaa?',
+                text: `Ma rabtaa in aad dib u soo celiso: ${log.backup.name}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Haa, soo celi!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const { error } = await db.from('inventory').insert([log.backup]);
 
-            if (!error) {
-                // 2. Log garee in la soo celiyey
-                addLog("Restore", `Agabka: ${log.backup.name} waa la soo celiyey.`);
-                
-                Swal.fire({
-                    title: 'Waa la soo celiyey!',
-                    text: 'Agabkii si guul leh ayuu ugu soo laabtay liiska.',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-                
-                // 3. Cusboonaysii UI-ga
-                loadInventory();
-            } else {
-                console.error("Restore Error:", error);
-                Swal.fire('Cillad!', 'Ma suurtagelin in xogta dib loo soo celiyo.', 'error');
-            }
+                    if (!error) {
+                        addLog("Restore", `Agabka: ${log.backup.name} waa la soo celiyey.`);
+                        
+                        Swal.fire({
+                            title: 'Waa la soo celiyey!',
+                            text: 'Agabkii si guul leh ayuu ugu soo laabtay liiska.',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        loadInventory();
+                    } else {
+                        console.error("Restore Error:", error);
+                        Swal.fire('Cillad!', 'Ma suurtagelin in xogta dib loo soo celiyo.', 'error');
+                    }
+                }
+            });
         }
-    });
-}
-        // 1. Tirtirista Diiwaanka Logs-ka ee Cloud-ka
+
         async function clearLogs() {
             Swal.fire({
                 title: 'Ma hubtaa?',
@@ -820,11 +794,10 @@ async function loadLogs() {
                 confirmButtonText: 'Haa, tirtir!'
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    // Amarka tirtirista dhamaan Logs-ka Supabase
                     const { error } = await db.from('logs').delete().neq('user', 'none');
 
                     if (!error) {
-                        activityLogs = []; // Faaruqi liiska halkan kuu muuqda
+                        activityLogs = []; 
                         renderLogsTable();
                         Swal.fire({ 
                             title: 'La tirtiray!', 
@@ -839,29 +812,24 @@ async function loadLogs() {
             });
         }
 
-        // 2. Qari dhamaan screens-ka si loo furo mid cusub
         function hideAllScreens() {
-            // Liiska dhamaan qaybaha webka
             const screens = ['dashboard-content', 'settings-screen', 'logs-screen', 'entry-form', 'selection-area'];
             screens.forEach(id => {
                 const el = document.getElementById(id);
-                if(el) el.classList.add('hidden'); // Qari mid kasta
+                if(el) el.classList.add('hidden'); 
             });
         }
 
-        // --- 3. CORE LOGIC (Supabase Based) ---
-        let inventory = []; // Xogta halkan ayay ku soo dhacaysaa markay Cloud-ka ka timaado
+        let inventory = []; 
         let currentSelectedLocation = ""; 
         let currentCategory = "room"; 
         let editId = null; 
         let myChart1, myChart2;
         let currentImageBase64 = null; 
 
-        // Sawirka oo loo beddelayo qoraal (Base64) si loogu diro Supabase
         document.getElementById('itemImage')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                // Hubi in sawirku uusan aad u weynayn (Max 1MB)
                 if (file.size > 20000 * 20000) {
                     Swal.fire('Sawirku waa weyn yahay!', 'Fadlan isticmaal sawir ka yar 1MB', 'warning');
                     this.value = "";
@@ -877,7 +845,6 @@ async function loadLogs() {
             }
         });
 
-        // Ka saar sawirka la doortay
         function clearImage() {
             currentImageBase64 = null;
             const input = document.getElementById('itemImage');
@@ -885,222 +852,188 @@ async function loadLogs() {
             document.getElementById('image-preview-container').classList.add('hidden');
         }
 
-        // QODOBKA CAMERA: Function-ka lagu furayo camera-ka
-        // QODOBKA CAMERA: Function-ka la hagaajiyey si sawirka madow looga saaro
-function openCamera() {
-    const cameraInput = document.createElement('input');
-    cameraInput.type = 'file';
-    cameraInput.accept = 'image/*';
-    cameraInput.capture = 'environment';
+        function openCamera() {
+            const cameraInput = document.createElement('input');
+            cameraInput.type = 'file';
+            cameraInput.accept = 'image/*';
+            cameraInput.capture = 'environment';
 
-    cameraInput.onchange = function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            // 1. HUBI XAJMIGA (MAX 1MB)
-            const fileSizeMB = file.size / (3664 * 2748); // u beddel MB
-            if (fileSizeMB > 1) { // Haddii uu 1MB ka weyn yahay
-                return Swal.fire({
-                    title: 'Sawirka waa weyn yahay!',
-                    text: 'Fadlan soo geli sawir ka yar 1MB. Kaaga hadda waa: ' + fileSizeMB.toFixed(2) + ' MB',
-                    icon: 'warning',
-                    confirmButtonColor: '#0f172a'
-                });
-            }
+            cameraInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const fileSizeMB = file.size / (1024 * 1024); 
+                    if (fileSizeMB > 1) { 
+                        return Swal.fire({
+                            title: 'Sawirka waa weyn yahay!',
+                            text: 'Fadlan soo geli sawir ka yar 1MB. Kaaga hadda waa: ' + fileSizeMB.toFixed(2) + ' MB',
+                            icon: 'warning',
+                            confirmButtonColor: '#0f172a'
+                        });
+                    }
 
-            // 2. HADII UU SAX YAHAY SII SUDIG (PROCESS)
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                currentImageBase64 = event.target.result;
-                document.getElementById('image-preview').src = currentImageBase64;
-                document.getElementById('image-preview-container').classList.remove('hidden');
-                Swal.fire({ title: 'Waa la qabtay!', icon: 'success', timer: 1000, showConfirmButton: false });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    cameraInput.click();
-}
-        async function loadInventory() {
-    // Ka soo iibi xogta Supabase
-    const { data, error } = await db.from('inventory').select('*').order('id', { ascending: false });
-    
-    if (!error) {
-        inventory = data; // Ku rid xogta variable-ka inventory
-        renderTable(currentSelectedLocation);
-        updateDashboardStats();
-        updateCharts();
-        updateBadges();
-    }
-}
-        
-        // 1. Muuji Bogga Hore (Home)
-        // 2. HomePage Logic: Excel Full uun baa muuqanaya
-        // 1. Muuji Bogga Hore (Home) oo leh Graphs iyo Full Table
-function showHomePage() {
-    // 1. Nadiifi dhammaan Highlights-ka Sidebar-ka (Tirtir midabka dahabka ah)
-    const allNavButtons = document.querySelectorAll('.nav-btn');
-    allNavButtons.forEach(btn => {
-        btn.classList.remove('btn-active'); // Ka saar midabka dahabka ah
-    });
-
-    // 2. Deji variable-lada meesha ay joogaan
-    currentSelectedLocation = ""; 
-    currentCategory = "";
-
-    // 3. Qari dhamaan screens-ka kale (Logs, Settings, Form)
-    hideAllScreens(); 
-
-    // 4. Muuji Dashboard-ka iyo Graphs-ka (Visuals)
-    const dashboard = document.getElementById('dashboard-content');
-    const visuals = document.getElementById('dashboard-visuals');
-    if(dashboard) dashboard.classList.remove('hidden');
-    if(visuals) visuals.classList.remove('hidden');
-    
-    // 5. Qari qaybta doorashada nambarada (Selection Area)
-    const selectionArea = document.getElementById('selection-area');
-    if(selectionArea) selectionArea.classList.add('hidden');
-
-    // 6. Cusboonaysii Table-ka (Full Inventory)
-    const tableTitle = document.getElementById('table-title');
-    if(tableTitle) tableTitle.innerText = "FULL HOTEL INVENTORY LOG"; 
-    
-    renderTable(""); // Soo saar dhamaan xogta guud
-
-    // 7. Xidh Sidebar-ka haddii mobile la joogo
-    closeSidebar();
-}
-         async function startSync() {
-            db.collection("inventory").orderBy("id", "desc").onSnapshot((snapshot) => {
-                inventory = snapshot.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() }));
-                
-                // Haddii qofku joogo boga hore, ama uu hadda webka furay (Refresh)
-                if (currentSelectedLocation === "") {
-                    showHomePage(); 
-                } else {
-                    // Haddii uu qol dhex fadhiyo, cusboonaysii uun xogta hortaala
-                    renderTable(currentSelectedLocation);
-                    updateDashboardStats();
-                    updateCharts();
-                    updateBadges();
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        currentImageBase64 = event.target.result;
+                        document.getElementById('image-preview').src = currentImageBase64;
+                        document.getElementById('image-preview-container').classList.remove('hidden');
+                        Swal.fire({ title: 'Waa la qabtay!', icon: 'success', timer: 1000, showConfirmButton: false });
+                    };
+                    reader.readAsDataURL(file);
                 }
-            });
-
-            db.collection("logs").orderBy("timestamp", "desc").limit(100).onSnapshot((snapshot) => {
-                activityLogs = snapshot.docs.map(doc => doc.data());
-                renderLogsTable();
-            });
+            };
+            cameraInput.click();
         }
 
-        // 3. Xisaabi Stat-ka Dashboard-ka (Cloud Data)
+        // --- CILAD BIXIN (FIX): Ka reeb sawirada markaad soo dajinayso ---
+        async function loadInventory() {
+            // HALKAN AYAA CILADA LAGU XALIYAY: Waxaan select ku sameeyay kaliya xogta aan sawirka ahayn
+            const { data, error } = await db.from('inventory')
+                .select('id, holder, dept, location, code, name, status, qty, uvalue, total, desc') 
+                .order('id', { ascending: false });
+            
+            if (!error) {
+                inventory = data; 
+                renderTable(currentSelectedLocation);
+                updateDashboardStats();
+                updateCharts();
+            }
+        }
+
+        // --- HOMEPAGE MODIFICATION: Show Dashboard Charts & Full Table ---
+        function showHomePage() {
+            const allNavButtons = document.querySelectorAll('.nav-btn');
+            allNavButtons.forEach(btn => {
+                btn.classList.remove('btn-active'); 
+            });
+
+            currentSelectedLocation = ""; 
+            currentCategory = "";
+
+            hideAllScreens(); 
+
+            // Show Dashboard
+            const dashboard = document.getElementById('dashboard-content');
+            const visuals = document.getElementById('dashboard-visuals');
+            const bottomCats = document.getElementById('bottom-categories');
+            
+            if(dashboard) dashboard.classList.remove('hidden');
+            if(visuals) visuals.classList.remove('hidden'); // Show Charts on Home
+            if(bottomCats) bottomCats.classList.remove('hidden'); // Show Bottom Categories
+            
+            // Show Inventory Section
+            const inventorySection = document.getElementById('inventory-section');
+            if(inventorySection) inventorySection.classList.remove('hidden');
+            
+            const selectionArea = document.getElementById('selection-area');
+            if(selectionArea) selectionArea.classList.add('hidden');
+
+            const tableTitle = document.getElementById('table-title');
+            if(tableTitle) tableTitle.innerText = "FULL HOTEL INVENTORY LOG"; 
+            
+            renderTable(""); 
+            closeSidebar();
+        }
+        
         function updateDashboardStats() {
-            // Tiri dhamaan agabka Cloud-ka ku jira
             const totalItems = inventory.length;
             
-            // Xisaabi wadarta lacagta (Grand Total)
             const totalValue = inventory.reduce((sum, item) => {
-                // Ka saar calaamadda $ ka dibna u beddel nambar
                 const val = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
                 return sum + val;
             }, 0);
 
-            // Ku qor Header-ka sare
             document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
             document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
         }
 
-        // 4. Cusboonaysii Jaantusyada (Charts)
-        // 4. Cusboonaysii Jaantusyada (Charts) - Fixed Version
-// 4. Cusboonaysii Jaantusyada (Charts) - Qoraalka Bold & Weyn
-function updateCharts() {
-    const cats = ['Room', 'Hall', 'Hodaale', 'Restaurant', 'Kitchen', 'Cafeteria', 'Bakery', 'Office'];
-    
-    // Xisaabinta
-    const vals = cats.map(c => inventory.filter(i => i.location?.includes(c)).reduce((s, i) => s + (parseFloat(i.total?.replace(/[$,]/g,''))||0),0));
-    const counts = cats.map(c => inventory.filter(i => i.location?.includes(c)).length);
-    const colors = ['#0D47A1','#1B5E20','#7E22CE','#EA580C','#B71C1C','#D97706','#CA8A04','#475569'];
+        function updateCharts() {
+            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'CAFETERIA', 'BAKERY', 'Office'];
+            
+            const vals = cats.map(c => inventory.filter(i => i.location?.includes(c)).reduce((s, i) => s + (parseFloat(i.total?.replace(/[$,]/g,''))||0),0));
+            const counts = cats.map(c => inventory.filter(i => i.location?.includes(c)).length);
+            const colors = ['#0D47A1','#1B5E20','#7E22CE','#EA580C','#B71C1C','#D97706','#CA8A04','#475569'];
 
-    // Nadiifin
-    if(myChart1) { myChart1.destroy(); myChart1 = null; }
-    if(myChart2) { myChart2.destroy(); myChart2 = null; }
+            if(myChart1) { myChart1.destroy(); myChart1 = null; }
+            if(myChart2) { myChart2.destroy(); myChart2 = null; }
 
-    // --- CHART 1: BAR (Asset Value) ---
-    const ctx1 = document.getElementById('categoryChart')?.getContext('2d');
-    if(ctx1) {
-        myChart1 = new Chart(ctx1, { 
-            type: 'bar', 
-            data: { 
-                labels: cats, 
-                datasets: [{ 
-                    data: vals, 
-                    backgroundColor: colors, 
-                    borderRadius: 4,
-                    barThickness: 30, // Waan sii buuriyey
-                }] 
-            }, 
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        grid: { display: false, drawBorder: false },
-                        ticks: { font: { size: 10 } }
-                    },
-                    x: { 
-                        grid: { display: false, drawBorder: false }, 
-                        ticks: { 
-                            // --- QAYBTA LA BEDDELAY (BOLD & BIGGER) ---
-                            font: { 
-                                size: 11, // Waan weyneeyey (hore 9 ayuu ahaa)
-                                family: 'Poppins', 
-                                weight: 'bold' // Waan adkeeyey qoraalka
+            const ctx1 = document.getElementById('categoryChart')?.getContext('2d');
+            if(ctx1) {
+                // Gradient for Bar Chart
+                const gradient = ctx1.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, '#c5a059');
+                gradient.addColorStop(1, '#0f172a');
+
+                myChart1 = new Chart(ctx1, { 
+                    type: 'bar', 
+                    data: { 
+                        labels: cats, 
+                        datasets: [{ 
+                            data: vals, 
+                            backgroundColor: cats.map((_, i) => i%2===0 ? '#0f172a' : '#c5a059'), // Alternate Hotel Colors
+                            borderRadius: 6,
+                            barThickness: 25, 
+                        }] 
+                    }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { 
+                                beginAtZero: true, 
+                                grid: { display: true, drawBorder: false, color: '#f1f5f9' },
+                                ticks: { font: { size: 10, family: 'Poppins' } }
                             },
-                            color: '#1e293b' // Midab madow ah (Slate-800)
-                        } 
-                    }
-                }
-            } 
-        });
-    }
-
-    // --- CHART 2: DOUGHNUT (Count) ---
-    const ctx2 = document.getElementById('countChart')?.getContext('2d');
-    if (ctx2) {
-        myChart2 = new Chart(ctx2, {
-            type: 'doughnut',
-            data: {
-                labels: cats,
-                datasets: [{
-                    data: counts,
-                    backgroundColor: colors,
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, 
-                layout: { padding: 0 },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'right',
-                        labels: {
-                            usePointStyle: true,
-                            boxWidth: 10, // Wax yar baan weyneeyey sanduuqa midabka
-                            padding: 12, 
-                            color: '#1e293b', // Qoraalka Legend-kuna ha madoobaado
-                            font: { size: 11, family: 'Poppins', weight: 'bold' } // Bold Legend
+                            x: { 
+                                grid: { display: false, drawBorder: false }, 
+                                ticks: { 
+                                    font: { size: 10, family: 'Poppins', weight: 'bold' },
+                                    color: '#475569' 
+                                } 
+                            }
                         }
-                    }
-                },
-                cutout: '65%'
+                    } 
+                });
             }
-        });
-    }
-}
-        // 5. Xisaabiyaha Foomka (QTY * Price)
+
+            const ctx2 = document.getElementById('countChart')?.getContext('2d');
+            if (ctx2) {
+                myChart2 = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: cats,
+                        datasets: [{
+                            data: counts,
+                            backgroundColor: ['#0f172a', '#334155', '#475569', '#64748b', '#94a3b8', '#cbd5e1', '#e2e8f0', '#f1f5f9'],
+                            borderWidth: 2,
+                            borderColor: '#ffffff',
+                            hoverOffset: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, 
+                        layout: { padding: 10 },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    boxWidth: 8, 
+                                    padding: 15, 
+                                    color: '#334155', 
+                                    font: { size: 11, family: 'Poppins', weight: '600' } 
+                                }
+                            }
+                        },
+                        cutout: '75%'
+                    }
+                });
+            }
+        }
+
         function calculate() { 
             const q = parseFloat(document.getElementById('qty').value) || 0; 
             const v = parseFloat(document.getElementById('uvalue').value) || 0; 
@@ -1109,200 +1042,267 @@ function updateCharts() {
             return res; 
         }
 
-        // 6. Cusboonaysii Nambarada Sidebar-ka (Badges)
-        function updateBadges() {
-            const categories = ['Room', 'Hall', 'Restaurant', 'Kitchen', 'Cafeteria', 'Bakery', 'Office'];
-            categories.forEach(cat => {
-                const count = inventory.filter(i => i.location && i.location.includes(cat)).length;
-                const el = document.getElementById(`badge-${cat.toLowerCase()}`);
-                if(el) {
-                    el.innerText = count;
-                    // Haddii eber yahay qari badge-ka (optional)
-                    el.style.display = count > 0 ? 'inline-block' : 'none';
-                }
-            });
-        }
-        
-            async function saveData() {
-    const n = document.getElementById('name').value;
-    const q = document.getElementById('qty').value;
-    
-    if(!n || !q) {
-        return Swal.fire('Cillad!', 'Fadlan buuxi Magaca iyo Tirada agabka!', 'error');
-    }
+        // ==========================================
+        //  CUSTOM DROPDOWN LOGIC (SEPARATE DATA)
+        // ==========================================
 
-    Swal.showLoading();
+        const categoryItemsDB = {
+            "CAFETERIA": [
+                "Talagad", "Makiinada Bunka", "Computer System", "Shoolad", 
+                "Kildhi", "Koobab", "Jeegag", "Tarayaal", "Saxamo", 
+                "Makiinada Casiirka", "Microwave", "Tirmos", "Galaasyo"
+            ],
+            "BAKERY": [
+                "Foorno", "Makiinada Cajiinka", "Laayli", "Daawa", "Bur", "Saliid"
+            ]
+            // Add other categories as needed, or leave empty to have no suggestions for Rooms
+        };
 
-    const data = {
-        id: editId || Date.now(),
-        holder: document.getElementById('holder').value || '',
-        dept: document.getElementById('dept').value || '',
-        location: document.getElementById('location').value || '',
-        code: document.getElementById('code').value || '',
-        name: n,
-        status: document.getElementById('status').value,
-        qty: parseFloat(q),
-        uvalue: parseFloat(document.getElementById('uvalue').value) || 0,
-        total: document.getElementById('total').value || '$0.00',
-        image: currentImageBase64 || null,
-        desc: document.getElementById('desc').value || ''
-    };
-
-    try {
-        let result;
-        if(editId) {
-            result = await db.from('inventory').update(data).eq('id', editId);
-        } else {
-            result = await db.from('inventory').insert([data]);
+        // Determine main category key based on current location string
+        function getCurrentCategoryKey() {
+            if (!currentSelectedLocation) return "";
+            const loc = currentSelectedLocation.toUpperCase();
+            
+            if (loc.includes("CAFETERIA")) return "CAFETERIA";
+            if (loc.includes("BAKERY")) return "BAKERY";
+            if (loc.includes("KITCHEN")) return "KITCHEN";
+            if (loc.includes("ROOM")) return "ROOM";
+            if (loc.includes("RESTAURANT")) return "RESTAURANT";
+            if (loc.includes("HALL") || loc.includes("HODAALE")) return "HALL";
+            
+            return "OTHER";
         }
 
-        if (result.error) throw result.error;
+        function getItemsForCurrentLocation() {
+            const key = getCurrentCategoryKey();
+            const storageKey = `maansoor_items_${key}`;
+            
+            // Get defaults for this category if any
+            const defaults = categoryItemsDB[key] || [];
+            // Get custom saved items for this category
+            const custom = JSON.parse(localStorage.getItem(storageKey)) || [];
+            
+            // Combine unique
+            return [...new Set([...defaults, ...custom])].sort();
+        }
 
-        Swal.fire({
-            title: 'Waa la kaydiyey!',
-            text: 'Agabka waa la keydiyey, waad sii wadi kartaa ku darista.',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false
+        function filterCustomDropdown() {
+            const input = document.getElementById('name');
+            const list = document.getElementById('custom-dropdown-list');
+            const filter = input.value.toLowerCase();
+            const items = getItemsForCurrentLocation();
+
+            // Clear previous list
+            list.innerHTML = '';
+
+            // If no items for this category (e.g. Room 12), keep hidden
+            if (items.length === 0) {
+                list.classList.add('hidden');
+                return;
+            }
+
+            const filteredItems = items.filter(item => item.toLowerCase().includes(filter));
+
+            if (filteredItems.length > 0) {
+                list.classList.remove('hidden');
+                filteredItems.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm font-bold text-slate-700 border-b border-gray-100 last:border-0";
+                    li.textContent = item;
+                    li.onclick = () => selectItem(item);
+                    list.appendChild(li);
+                });
+            } else {
+                list.classList.add('hidden');
+            }
+        }
+
+        function selectItem(val) {
+            document.getElementById('name').value = val;
+            document.getElementById('custom-dropdown-list').classList.add('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const input = document.getElementById('name');
+            const list = document.getElementById('custom-dropdown-list');
+            if (!input.contains(e.target) && !list.contains(e.target)) {
+                list.classList.add('hidden');
+            }
         });
 
-        addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
-        
-        // --- ISBEDDELKA MUHIIMKA AH: ---
-        // Halkii aan ka wici lahayn resetForm() oo qarinayay boggaga,
-        // Waxaan kaliya faaruqinaynaa meelaha xogta cusub laga qoro (magaca, qty, code).
-        document.getElementById('name').value = "";
-        document.getElementById('qty').value = "";
-        document.getElementById('uvalue').value = "";
-        document.getElementById('code').value = "";
-        document.getElementById('total').value = "$0.00";
-        document.getElementById('desc').value = "";
-        clearImage(); // Sawirka hadduu jiro ka saar
-        editId = null; // Reset edit mode
-        
-        loadInventory(); // Cusboonaysii shaxda hoose
+        async function saveData() {
+            const n = document.getElementById('name').value.trim();
+            const q = document.getElementById('qty').value;
+            
+            if(!n || !q) {
+                return Swal.fire('Cillad!', 'Fadlan buuxi Magaca iyo Tirada agabka!', 'error');
+            }
 
-    } catch (err) {
-        console.error("Supabase Error:", err);
-        Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin.', 'error');
-    }
-}
+            // Save new item to Category-Specific LocalStorage
+            if (n) {
+                const key = getCurrentCategoryKey();
+                // Only save if we have a category key (e.g. don't save randomly if location is undefined)
+                if (key) {
+                    const items = getItemsForCurrentLocation();
+                    if (!items.includes(n)) {
+                        const storageKey = `maansoor_items_${key}`;
+                        const custom = JSON.parse(localStorage.getItem(storageKey)) || [];
+                        custom.push(n);
+                        localStorage.setItem(storageKey, JSON.stringify(custom));
+                    }
+                }
+            }
 
-       // 1. Function-ka wax ka beddelka (Edit Item)
-        function editItem(id) { 
-            // Ka raadi shayga xogta inventory-ga ee Cloud-ka naga soo gaadhay
+            Swal.showLoading();
+
+            const data = {
+                id: editId || Date.now(),
+                holder: document.getElementById('holder').value || '',
+                dept: document.getElementById('dept').value || '',
+                location: document.getElementById('location').value || '',
+                code: document.getElementById('code').value || '',
+                name: n,
+                status: document.getElementById('status').value,
+                qty: parseFloat(q),
+                uvalue: parseFloat(document.getElementById('uvalue').value) || 0,
+                total: document.getElementById('total').value || '$0.00',
+                image: currentImageBase64 || null,
+                desc: document.getElementById('desc').value || ''
+            };
+
+            try {
+                let result;
+                if(editId) {
+                    result = await db.from('inventory').update(data).eq('id', editId);
+                } else {
+                    result = await db.from('inventory').insert([data]);
+                }
+
+                if (result.error) throw result.error;
+
+                Swal.fire({
+                    title: 'Waa la kaydiyey!',
+                    text: 'Agabka waa la keydiyey, waad sii wadi kartaa ku darista.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
+                
+                document.getElementById('name').value = "";
+                document.getElementById('qty').value = "";
+                document.getElementById('uvalue').value = "";
+                document.getElementById('code').value = "";
+                document.getElementById('total').value = "$0.00";
+                document.getElementById('desc').value = "";
+                clearImage(); 
+                editId = null; 
+                
+                loadInventory(); 
+
+            } catch (err) {
+                console.error("Supabase Error:", err);
+                Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin.', 'error');
+            }
+        }
+
+        // --- CILAD BIXIN (FIX): Soo daji sawirka marka Edit la riixo kaliya ---
+        async function editItem(id) { 
             const i = inventory.find(x => x.id === id); 
             if(!i) return; 
 
-            // Deji editId si nidaamku u garto inay tahay Update (Cusboonaysiin)
+            // Soo daji sawirka hadda (Lazy Load)
+            Swal.showLoading();
+            const { data, error } = await db.from('inventory').select('image').eq('id', id).single();
+            Swal.close();
+
             editId = id; 
 
-            // Buuxi dhamaan meelaha foomka (Form Fields)
             const fields = ['holder','dept','location','code','name','desc','qty','uvalue','total'];
             fields.forEach(f => {
                 const el = document.getElementById(f);
                 if(el) el.value = i[f] || '';
             });
 
-            // Deji Status-ka (Good, Damaged, iwm)
             const statusEl = document.getElementById('status');
             if(statusEl) statusEl.value = i.status || 'Good';
             
-            // Maamul Sawirka: Haddii uu sawir leeyahay muuji preview-ga
             const previewContainer = document.getElementById('image-preview-container');
             const previewImg = document.getElementById('image-preview');
             
-            if(i.image) {
-                currentImageBase64 = i.image; // Kaydi sawirka hadda jira
-                if(previewImg) previewImg.src = i.image;
+            // Isticmaal sawirka aan hadda soo dajnay
+            if(data && data.image) {
+                currentImageBase64 = data.image; 
+                if(previewImg) previewImg.src = data.image;
                 if(previewContainer) previewContainer.classList.remove('hidden');
             } else {
                 currentImageBase64 = null;
                 if(previewContainer) previewContainer.classList.add('hidden');
             }
 
-            // Beddel badhanka: Halkii uu ka ahaan lahaa "Kaydi", ka dhig "Cusboonaysii"
             const saveBtn = document.getElementById('save-btn');
             if(saveBtn) {
                 saveBtn.innerHTML = '<i class="fas fa-edit mr-2"></i> CUSBOONAYSIYEY';
-                saveBtn.classList.replace('bg-slate-900', 'bg-blue-600'); // Sii midab bulug ah marka wax la beddelayo
+                saveBtn.classList.replace('bg-slate-900', 'bg-blue-600'); 
             }
 
-            // Muuji foomka (haddii uu qarsoonaa)
             const entryForm = document.getElementById('entry-form');
             if(entryForm) entryForm.classList.remove('hidden');
 
-            // Website-ka kor ugu qaad (Scroll) si uu foomku ugu muuqdo qofka
             window.scrollTo({ top: 100, behavior: 'smooth' }); 
         }
 
-        // 2. Function-ka lagu daawado sawirka (View Image Popup)
         function viewImage(imgBase64, itemName) {
             if (!imgBase64) return;
-
             Swal.fire({
                 title: itemName,
                 imageUrl: imgBase64,
                 imageWidth: 500,
                 imageAlt: 'Agabka: ' + itemName,
                 confirmButtonColor: '#0f172a',
-                confirmButtonText: 'XIDHO',
-                customClass: {
-                    popup: 'swal2-popup'
-                },
-                showClass: {
-                    popup: 'animate__animated animate__zoomIn'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__zoomOut'
-                }
+                confirmButtonText: 'XIDHO'
             });
         }
 
         async function deleteItem(id) {
-    const i = inventory.find(x => x.id === id);
-    
-    Swal.fire({
-        title: 'Ma hubtaa?',
-        text: `Ma rabtaa in aad tirtirto: ${i.name}?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0f172a',
-        confirmButtonText: 'Haa, tirtir!'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
+            const i = inventory.find(x => x.id === id);
             
-            // 1. Marka hore ka saar liiska halkan kuu muuqda (Local Delete)
-            inventory = inventory.filter(item => item.id !== id);
-            renderTable(currentSelectedLocation); 
-            updateDashboardStats();
+            Swal.fire({
+                title: 'Ma hubtaa?',
+                text: `Ma rabtaa in aad tirtirto: ${i.name}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#0f172a',
+                confirmButtonText: 'Haa, tirtir!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    
+                    inventory = inventory.filter(item => item.id !== id);
+                    renderTable(currentSelectedLocation); 
+                    updateDashboardStats();
 
-            // 2. Ka tirtir Supabase Cloud-ka (Hubi inuu magacu yahay 'db')
-            const { error } = await db.from('inventory').delete().eq('id', id);
+                    const { error } = await db.from('inventory').delete().eq('id', id);
 
-            if (!error) {
-                // 3. Ku dar Log-ka xogta la tirtiray si loo soo celin karo
-                addLog("Tirtiray", `Agabka: ${i.name} ee yaalay ${i.location}`, i);
-                
-                Swal.fire({
-                    title: 'La tirtiray!',
-                    text: 'Agabkii si rasmi ah ayaa looga saaray Cloud-ka.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            } else {
-                console.error("Supabase Delete Error:", error);
-                // Haddii uu error dhaco, dib u soo celi xogtii halkan (Safety net)
-                loadInventory(); 
-                Swal.fire('Cillad!', 'Database-ka ayaa diiday inuu tirtiro. Hubi Rules-ka Supabase.', 'error');
-            }
+                    if (!error) {
+                        addLog("Tirtiray", `Agabka: ${i.name} ee yaalay ${i.location}`, i);
+                        Swal.fire({
+                            title: 'La tirtiray!',
+                            text: 'Agabkii si rasmi ah ayaa looga saaray Cloud-ka.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        loadInventory(); 
+                        Swal.fire('Cillad!', 'Database-ka ayaa diiday inuu tirtiro.', 'error');
+                    }
+                }
+            });
         }
-    });
-}
         
-        // 1. Tirtirista Dhamaan Xogta (Cloud Reset)
         async function clearAllData() { 
             Swal.fire({
                 title: 'aad u hubi!',
@@ -1316,7 +1316,6 @@ function updateCharts() {
                 if (result.isConfirmed) {
                     Swal.showLoading();
                     
-                    // Supabase: Tirtir dhamaan safaf xogta ah (id > 0)
                     const { error } = await db.from('inventory').delete().gt('id', 0);
 
                     if (!error) {
@@ -1325,7 +1324,6 @@ function updateCharts() {
                         renderTable("");
                         updateDashboardStats();
                         updateCharts();
-                        updateBadges();
                         
                         Swal.fire('La tirtiray!', 'Xogta huteelka hadda waa madhan tahay.', 'success');
                     } else {
@@ -1336,27 +1334,33 @@ function updateCharts() {
             });
         }
 
-        // 2. Soo bandhigista Shaxda (Table Rendering)
         function renderTable(loc = "") {
             const tbody = document.getElementById('inventory-tbody'); 
             if(!tbody) return;
             tbody.innerHTML = ''; 
             
-            // Haddii loc ay tahay prefix (sida "Room"), soo saar dhamaan Rooms-ka
-            // Haddii ay tahay mid gaar ah (sida "Room 1"), soo saar midkaas oo keliya
-            let filtered = (loc === "" || ["Room","Hall","Kitchen","Office"].includes(loc)) 
-                           ? inventory.filter(i => i.location && i.location.startsWith(loc)) 
-                           : inventory.filter(i => i.location === loc);
+            let filtered;
+
+            // HANDLE SPECIAL GROUP LOGIC
+            if (loc === "Hall_And_Hodaale") {
+                filtered = inventory.filter(i => i.location && (i.location.includes("Hall") || i.location.includes("Hodaale")));
+            } 
+            else if (loc === "" || ["Room", "Kitchen", "Office", "Restaurant"].includes(loc)) {
+                // Modified to use includes for Restaurant/Kitchen to catch "Somali Restaurant" etc.
+                filtered = inventory.filter(i => i.location && i.location.includes(loc));
+            } 
+            else {
+                filtered = inventory.filter(i => i.location === loc);
+            }
             
             filtered.forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-                let imageIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500 hover:text-blue-700 transition-transform hover:scale-125"><i class="fas fa-camera"></i></button>` : '';
-
+                
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b transition-colors">
                     <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
                     <td class="px-6 py-4 text-xs text-gray-600 font-mono">${i.code || '-'}</td>
                     <td class="px-6 py-4 text-xs font-bold text-slate-700">
-                        <div class="flex items-center">${i.name} ${imageIcon}</div>
+                        <div class="flex items-center">${i.name}</div>
                         <span class="text-[9px] text-yellow-600 uppercase font-black">${i.location}</span>
                     </td>
                     <td class="px-6 py-4 text-xs">
@@ -1366,7 +1370,7 @@ function updateCharts() {
                     <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex justify-end space-x-3">
-                            <button onclick="editItem(${i.id})" class="text-blue-500 hover:text-blue-700 transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="editItem(${i.id})" class="text-blue-500 hover:text-blue-700 transition" title="Edit & View Image"><i class="fas fa-edit"></i></button>
                             <button onclick="deleteItem(${i.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
                         </div>
                     </td>
@@ -1374,86 +1378,79 @@ function updateCharts() {
             });
         }
 
-        // 3. Beddelista Qaybaha (Category Switching)
-          function changeCategory(cat, count) {
-    currentCategory = cat; 
-    currentSelectedLocation = ""; 
-    const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
+        function changeCategory(cat, count) {
+            currentCategory = cat; 
+            currentSelectedLocation = ""; 
+            const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
 
-     closeSidebar();
-    
-    hideAllScreens();
-    document.getElementById('dashboard-content').classList.remove('hidden');
-    
-    // 1. QARI GRAPHS-KA (Visuals) marka gudaha qaybaha la galo
-    document.getElementById('dashboard-visuals').classList.add('hidden');
-    
-    // 2. MUUJI Selection Area (Nambarada 1-100)
-    document.getElementById('selection-area').classList.remove('hidden');
-    document.getElementById('entry-form').classList.add('hidden');
-
-    // Active Sidebar logic
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
-    if(event) event.currentTarget.classList.add('btn-active');
-
-    const grid = document.getElementById('grid-buttons'); 
-    grid.innerHTML = ''; 
-    resetForm(); 
-
-    document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
-
-    for (let i = 1; i <= count; i++) {
-        const btn = document.createElement('button'); 
-        btn.innerText = i; 
-        btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
-        btn.onclick = (e) => { 
-            document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active')); 
-            e.currentTarget.classList.add('btn-active'); 
+            closeSidebar();
             
-            currentSelectedLocation = `${catLabel} ${i}`; 
-            document.getElementById('location').value = currentSelectedLocation; 
-            document.getElementById('entry-form').classList.remove('hidden'); 
-            document.getElementById('form-header').innerText = `Geli Xogta Agabka (${currentSelectedLocation})`;
-            document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`; 
-            document.getElementById('btn-excel-full').classList.add('hidden');
-            document.getElementById('btn-excel-loc').classList.remove('hidden');
+            hideAllScreens();
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            
+            document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
+            
+            document.getElementById('selection-area').classList.remove('hidden');
+            document.getElementById('entry-form').classList.add('hidden');
 
-            renderTable(currentSelectedLocation); 
-        };
-        grid.appendChild(btn);
-    }
-    renderTable(catLabel); 
-}
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            if(event) event.currentTarget.classList.add('btn-active');
 
-// Function-ka maamula Sidebar-ka marka Mobile-ka la joogo
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const menuIcon = document.getElementById('menu-icon');
+            // Reset grid class for standard buttons
+            document.getElementById('grid-buttons').className = "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2";
+            const grid = document.getElementById('grid-buttons'); 
+            grid.innerHTML = ''; 
+            resetForm(); 
 
-    // Bedel booska sidebar-ka (Open/Close)
-    sidebar.classList.toggle('open');
+            document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
+            
+            // Show table for other categories
+            document.getElementById('inventory-section').classList.remove('hidden');
 
-    // Bedel icon-ka (hadii uu bars ahaa ka dhig X, hadii uu X ahaa ka dhig bars)
-    if (sidebar.classList.contains('open')) {
-        menuIcon.classList.replace('fa-bars', 'fa-times');
-    } else {
-        menuIcon.classList.replace('fa-times', 'fa-bars');
-    }
-}
+            for (let i = 1; i <= count; i++) {
+                const btn = document.createElement('button'); 
+                btn.innerText = i; 
+                btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
+                btn.onclick = (e) => { 
+                    document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active')); 
+                    e.currentTarget.classList.add('btn-active'); 
+                    
+                    currentSelectedLocation = `${catLabel} ${i}`; 
+                    document.getElementById('location').value = currentSelectedLocation; 
+                    document.getElementById('entry-form').classList.remove('hidden'); 
+                    document.getElementById('form-header').innerText = `Geli Xogta Agabka (${currentSelectedLocation})`;
+                    document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`; 
+                    document.getElementById('btn-excel-full').classList.add('hidden');
+                    document.getElementById('btn-excel-loc').classList.remove('hidden');
 
-// Function-ka xidha Sidebar-ka
-function closeSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const menuIcon = document.getElementById('menu-icon');
-    
-    // Haddii uu sidebar-ku furan yahay (open), ka saar class-kaas
-    if (sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-        // Icon-ka dib ugu celi "bars"
-        if (menuIcon) menuIcon.classList.replace('fa-times', 'fa-bars');
-    }
-}
-        // 4. Faaruqinta Foomka (Reset Form)
+                    renderTable(currentSelectedLocation); 
+                };
+                grid.appendChild(btn);
+            }
+            renderTable(catLabel); 
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const menuIcon = document.getElementById('menu-icon');
+            sidebar.classList.toggle('open');
+            if (sidebar.classList.contains('open')) {
+                menuIcon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                menuIcon.classList.replace('fa-times', 'fa-bars');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const menuIcon = document.getElementById('menu-icon');
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                if (menuIcon) menuIcon.classList.replace('fa-times', 'fa-bars');
+            }
+        }
+
         function resetForm() { 
             editId = null; 
             currentImageBase64 = null;
@@ -1473,191 +1470,127 @@ function closeSidebar() {
             document.getElementById('entry-form').classList.add('hidden'); 
         }
 
-        // 5. Baadhista Agabka (Search Logic)
         function filterInventory() {
-    const q = document.getElementById('searchInput').value.toLowerCase().trim();
-    const tbody = document.getElementById('inventory-tbody'); 
-    if(!tbody) return;
-    tbody.innerHTML = '';
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            const tbody = document.getElementById('inventory-tbody'); 
+            if(!tbody) return;
+            tbody.innerHTML = '';
 
-    if(q === "") { 
-        renderTable(currentSelectedLocation); 
-        return; 
-    }
+            if(q === "") { 
+                renderTable(currentSelectedLocation); 
+                return; 
+            }
 
-    // UX: website-ka hoos ugu dhaadhici shaxda (inventory log list)
-    document.getElementById('inventory-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('inventory-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    const filtered = inventory.filter(i => {
-        const code = (i.code || "").toLowerCase();
-        const name = (i.name || "").toLowerCase();
-        const loc = (i.location || "").toLowerCase();
-        const status = (i.status || "Good").toLowerCase();
-        return code.includes(q) || name.includes(q) || loc.includes(q) || status.includes(q);
-    });
-    
-    filtered.forEach((i, index) => {
-        const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-        let imgIcon = i.image ? `<button onclick="viewImage('${i.image}', '${i.name}')" class="ml-2 text-blue-500"><i class="fas fa-camera"></i></button>` : '';
-        tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
-            <td class="px-6 py-4 text-xs font-bold text-gray-400">${index + 1}.</td>
-            <td class="px-6 py-4 text-xs font-mono">${i.code || '-'}</td>
-            <td class="px-6 py-4 text-xs font-bold text-slate-700">${i.name} ${imgIcon} <br><small class="text-yellow-600">${i.location}</small></td>
-            <td class="px-6 py-4 text-xs"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span></td>
-            <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
-            <td class="px-6 py-4 text-xs font-extrabold">${i.total}</td>
-            <td class="px-6 py-4 flex gap-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-500"><i class="fas fa-trash"></i></button></td>
-        </tr>`;
-    });
-}
-        // 6. Kala-horreynta Warbixinta (Report Priority)
-        function getPriority(loc) {
-            if (!loc) return 5;
-            if (loc.startsWith("Room")) return 1;
-            if (loc.startsWith("Hall")) return 2;
-            if (loc.startsWith("Kitchen")) return 3;
-            if (loc.startsWith("Office")) return 4;
-            return 5;
+            const filtered = inventory.filter(i => {
+                const code = (i.code || "").toLowerCase();
+                const name = (i.name || "").toLowerCase();
+                const loc = (i.location || "").toLowerCase();
+                const status = (i.status || "Good").toLowerCase();
+                return code.includes(q) || name.includes(q) || loc.includes(q) || status.includes(q);
+            });
+            
+            filtered.forEach((i, index) => {
+                const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
+                
+                tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
+                    <td class="px-6 py-4 text-xs font-bold text-gray-400">${index + 1}.</td>
+                    <td class="px-6 py-4 text-xs font-mono">${i.code || '-'}</td>
+                    <td class="px-6 py-4 text-xs font-bold text-slate-700">${i.name} <br><small class="text-yellow-600">${i.location}</small></td>
+                    <td class="px-6 py-4 text-xs"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span></td>
+                    <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
+                    <td class="px-6 py-4 text-xs font-extrabold">${i.total}</td>
+                    <td class="px-6 py-4 flex gap-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-500"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
+            });
         }
 
-        // 1. Function-ka lagu kala horraysiinayo Categories-ka (Sidebar Order)
-function getCategoryPriority(location) {
-    if (!location) return 99; // Haddii location madhan yahay hoos gee
-    const loc = location.toLowerCase();
-
-    // Sida Sidebar-ku u kala horreeyo:
-    if (loc.startsWith("room")) return 1;
-    if (loc.includes("restaurant")) return 2;
-    if (loc.includes("hall") || loc.includes("hodaale")) return 3;
-    if (loc.includes("kitchen") || loc.includes("cafeteria") || loc.includes("bakery")) return 4;
-    if (loc.includes("office")) return 5;
-    
-    return 6; // Wixii kale (Others)
-}
-
-// 2. Function-ka Excel-ka (Full Professional Report)
-// --- EXCEL EXPORT LOGIC (CONTEXT AWARE) ---
-let currentExportMode = 'full'; // 'full', 'category', 'location'
-
-function exportToExcel(type) {
-    // 1. Hubi xogta
-    if (inventory.length === 0) {
-        return Swal.fire({ title: 'Cillad!', text: 'Xog ma jirto!', icon: 'warning', confirmButtonColor: '#0f172a' });
-    }
-
-    let dataToExport = [];
-    let fileName = "";
-
-    // 2. Logic-ga Kala Saarista Xogta
-    if (type === 'context') {
-        // LOCATION: Xogta meesha hadda furan kaliya (Tusaale: Room 10 ama Somali Kitchen)
-        dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
-        fileName = `Inventory_${currentSelectedLocation.replace(/\s+/g, '_')}`;
-    } 
-    else if (type === 'full') {
-        
-        // --- LOGIC-GA CUSUB EE AAD RABTAY ---
-        
-        if (currentExportMode === 'full') {
-            // HOME: Full Hotel
-            dataToExport = [...inventory];
-            fileName = "Maansoor_Full_Inventory_Log";
-        } 
-        else if (currentExportMode === 'rooms_all') {
-            // ROOMS: All Rooms Only
-            dataToExport = inventory.filter(i => i.location && i.location.startsWith("Room"));
-            fileName = "Maansoor_All_Rooms_Inventory";
+        function getCategoryPriority(location) {
+            if (!location) return 99;
+            const loc = location.toLowerCase();
+            if (loc.startsWith("room")) return 1;
+            if (loc.includes("restaurant")) return 2;
+            if (loc.includes("hall") || loc.includes("hodaale")) return 3;
+            if (loc.includes("kitchen") || loc.includes("cafeteria") || loc.includes("bakery")) return 4;
+            if (loc.includes("office")) return 5;
+            return 6; 
         }
-        else if (currentExportMode === 'rest_hall_combined') {
-            // REST/HALL MAIN: Restaurants + Halls + Hodaale
-            dataToExport = inventory.filter(i => 
-                i.location && (i.location.includes("Restaurant") || i.location.includes("Hall") || i.location.includes("Hodaale"))
-            );
-            fileName = "Maansoor_Restaurants_and_Halls_Combined";
+
+        let currentExportMode = 'full';
+
+        function exportToExcel(type) {
+            if (inventory.length === 0) {
+                return Swal.fire({ title: 'Cillad!', text: 'Xog ma jirto!', icon: 'warning', confirmButtonColor: '#0f172a' });
+            }
+
+            let dataToExport = [];
+            let fileName = "";
+
+            if (type === 'context') {
+                dataToExport = inventory.filter(i => i.location === currentSelectedLocation);
+                fileName = `Inventory_${currentSelectedLocation.replace(/\s+/g, '_')}`;
+            } 
+            else if (type === 'full') {
+                 // --- UPDATED EXPORT LOGIC FOR SUB-CATEGORIES ---
+                 if (currentExportMode === 'rest_only') {
+                     dataToExport = inventory.filter(i => i.location.includes("Restaurant"));
+                     fileName = "Maansoor_All_Restaurants";
+                 } else if (currentExportMode === 'hall_only') {
+                     dataToExport = inventory.filter(i => i.location.includes("Hall") || i.location.includes("Hodaale"));
+                     fileName = "Maansoor_All_Halls";
+                 } else if (currentExportMode === 'kitchen_only') {
+                     dataToExport = inventory.filter(i => i.location.includes("Kitchen"));
+                     fileName = "Maansoor_All_Kitchens";
+                 } else if (currentExportMode === 'office_only') {
+                     dataToExport = inventory.filter(i => i.location.includes("Office"));
+                     fileName = "Maansoor_All_Offices";
+                 } else {
+                     dataToExport = [...inventory];
+                     fileName = "Maansoor_Full_Inventory_Log";
+                 }
+            }
+
+            if (dataToExport.length === 0) {
+                return Swal.fire('Cillad', 'Qaybtan xog kuma jirto weli.', 'info');
+            }
+
+            dataToExport.sort((a, b) => {
+                const priorityA = getCategoryPriority(a.location);
+                const priorityB = getCategoryPriority(b.location);
+                if (priorityA !== priorityB) return priorityA - priorityB;
+                return a.location.localeCompare(b.location, undefined, {numeric: true, sensitivity: 'base'});
+            });
+
+            let grandTotal = 0;
+            const formattedData = dataToExport.map((item, index) => {
+                const totalNum = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
+                grandTotal += totalNum;
+                return {
+                    "No": index + 1,
+                    "Location": item.location || "-",
+                    "Item Code": item.code || "-",
+                    "Item Name": item.name || "-",
+                    "Status": item.status || "Good",
+                    "Description": item.desc || "",
+                    "Unit Value": parseFloat(item.uvalue) || 0,
+                    "Total Value": totalNum
+                };
+            });
+
+            formattedData.push({
+                "No": "", "Location": "", "Item Code": "", "Item Name": "GRAND TOTAL",
+                "Status": "", "Description": "", "Unit Value": "", "Total Value": grandTotal
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(formattedData);
+            const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 12}, {wch: 15}];
+            worksheet['!cols'] = wscols;
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
+            XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
-        else if (currentExportMode === 'rest_only') {
-            // RESTAURANT SUB: All Restaurants Only
-            dataToExport = inventory.filter(i => i.location && i.location.includes("Restaurant"));
-            fileName = "Maansoor_All_Restaurants";
-        }
-        else if (currentExportMode === 'hall_only') {
-            // HALL SUB: Halls + Hodaale Only
-            dataToExport = inventory.filter(i => i.location && (i.location.includes("Hall") || i.location.includes("Hodaale")));
-            fileName = "Maansoor_All_Halls_Hodaale";
-        }
-        else if (currentExportMode === 'kitchen_main_combined') {
-            // KITCHEN MAIN: Kitchens + Cafeteria + Bakery
-            dataToExport = inventory.filter(i => 
-                i.location && (i.location.includes("Kitchen") || i.location.includes("Cafeteria") || i.location.includes("Bakery"))
-            );
-            fileName = "Maansoor_Kitchens_Cafe_Bakery_Combined";
-        }
-        else if (currentExportMode === 'kitchen_only') {
-            // KITCHEN SUB: Kitchens Only
-            dataToExport = inventory.filter(i => i.location && i.location.includes("Kitchen"));
-            fileName = "Maansoor_All_Kitchens";
-        }
-    }
 
-    // Hubi in xog la helay filter-ka kadib
-    if (dataToExport.length === 0) {
-        return Swal.fire('Cillad', 'Qaybtan xog kuma jirto weli.', 'info');
-    }
-
-    // 3. Habaynta (Sorting Priority)
-    dataToExport.sort((a, b) => {
-        const priorityA = getCategoryPriority(a.location);
-        const priorityB = getCategoryPriority(b.location);
-        if (priorityA !== priorityB) return priorityA - priorityB;
-        return a.location.localeCompare(b.location, undefined, {numeric: true, sensitivity: 'base'});
-    });
-
-    // 4. Xisaabi Grand Total
-    let grandTotal = 0;
-    const formattedData = dataToExport.map((item, index) => {
-        const totalNum = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
-        grandTotal += totalNum;
-        return {
-            "No": index + 1,
-            "Location": item.location || "-",
-            "Item Code": item.code || "-",
-            "Item Name": item.name || "-",
-            "Status": item.status || "Good",
-            "Description": item.desc || "",
-            "Unit Value": parseFloat(item.uvalue) || 0,
-            "Total Value": totalNum
-        };
-    });
-
-    // Ku dar Safka Ugu Dambeeya
-    formattedData.push({
-        "No": "", "Location": "", "Item Code": "", "Item Name": "GRAND TOTAL",
-        "Status": "", "Description": "", "Unit Value": "", "Total Value": grandTotal
-    });
-
-    // 5. Soo Deji
-    const worksheet = XLSX.utils.json_to_sheet(formattedData);
-    const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 12}, {wch: 15}];
-    worksheet['!cols'] = wscols;
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
-    XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
-
-// Helper: Kala horreysiinta
-function getCategoryPriority(location) {
-    if (!location) return 99;
-    const loc = location.toLowerCase();
-    if (loc.startsWith("room")) return 1;
-    if (loc.includes("restaurant")) return 2;
-    if (loc.includes("hall") || loc.includes("hodaale")) return 3;
-    if (loc.includes("kitchen")) return 4;
-    if (loc.includes("cafeteria")) return 5;
-    if (loc.includes("bakery")) return 6;
-    if (loc.includes("office")) return 7;
-    return 8;
-}
-        // 2. Function-ka looga saaro xogta PDF
         function exportToPDF() {
             if (inventory.length === 0) {
                 return Swal.fire({ title: 'Cillad!', text: 'Xog ma jirto oo PDF loo beddelo!', icon: 'warning', confirmButtonColor: '#0f172a' });
@@ -1675,29 +1608,27 @@ function getCategoryPriority(location) {
                 titleText = `INVENTORY LOG: ${currentSelectedLocation.toUpperCase()}`;
             } else {
                 dataToExport = [...inventory].sort((a, b) => {
-                    let pA = getPriority(a.location);
-                    let pB = getPriority(b.location);
+                    let pA = getCategoryPriority(a.location);
+                    let pB = getCategoryPriority(b.location);
                     if (pA !== pB) return pA - pB;
                     return (a.location || "").localeCompare(b.location || "", undefined, {numeric: true});
                 });
                 titleText = "FULL HOTEL INVENTORY REPORT";
             }
 
-            // Madax-ka PDF-ka (Header)
             doc.setFontSize(22);
-            doc.setTextColor(15, 23, 42); // Hotel Blue
+            doc.setTextColor(15, 23, 42); 
             doc.text("MAANSOOR HOTEL & RESORT", 14, 20);
             
             doc.setFontSize(12);
-            doc.setTextColor(197, 160, 89); // Gold color
+            doc.setTextColor(197, 160, 89); 
             doc.text(titleText, 14, 28);
             
             doc.setFontSize(9);
             doc.setTextColor(100);
             doc.text(`Report Generated: ${date}`, 14, 35);
-            doc.line(14, 37, 196, 37); // Line yar
+            doc.line(14, 37, 196, 37); 
 
-            // Shaxda PDF-ka
             const tableData = dataToExport.map((i, idx) => [
                 idx + 1,
                 i.location || '-',
@@ -1716,151 +1647,187 @@ function getCategoryPriority(location) {
                 headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255], fontStyle: 'bold' },
                 styles: { fontSize: 8, font: 'helvetica' },
                 columnStyles: {
-                    6: { fontStyle: 'bold', halign: 'right' } // Total column
+                    6: { fontStyle: 'bold', halign: 'right' } 
                 }
             });
 
-            // Soo deji PDF-ka
             doc.save(`${titleText.replace(/\s+/g, '_')}.pdf`);
         }
-   
-        const supabaseUrl = 'https://caianuiwgprgxyjevyqy.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
-        const db = supabase.createClient(supabaseUrl, supabaseKey);
-   
 
-        // ==========================================
-//  NIDAAMKA CUSUB EE RESTAURANTS & HALLS
-// ==========================================
+        // --- UPDATED MAIN SELECTION LOGIC (Centered, Larger, No Table Initially) ---
+        function showMainSelection() {
+            closeSidebar();
+            hideAllScreens();
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.add('hidden'); 
+            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
+            document.getElementById('selection-area').classList.remove('hidden'); 
+            document.getElementById('entry-form').classList.add('hidden'); 
+            
+            // HIDE TABLE INITIALLY FOR THIS VIEW
+            document.getElementById('inventory-section').classList.add('hidden');
 
-// HEERKA 1: Soo saar labada doorasho (Restaurant vs Halls)
-function showMainSelection() {
-    // 1. Habee Muuqaalka (UI)
-    closeSidebar();
-    hideAllScreens();
-    document.getElementById('dashboard-content').classList.remove('hidden');
-    document.getElementById('dashboard-visuals').classList.add('hidden'); // Qari shaxda/graphs-ka
-    document.getElementById('selection-area').classList.remove('hidden'); // Muuji meesha badhamada
-    document.getElementById('entry-form').classList.add('hidden'); // Qari foomka xogta
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            const sidebarBtns = document.querySelectorAll('.nav-btn');
+            if(sidebarBtns[2]) sidebarBtns[2].classList.add('btn-active'); // Index 2 is Restaurants
 
-    // Nadiifi badhamada hore (Sidebar active state)
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
-    // Iftiimi badhanka labaad (Restaurants & Halls)
-    const sidebarBtns = document.querySelectorAll('.nav-btn');
-    if(sidebarBtns[1]) sidebarBtns[1].classList.add('btn-active');
+            document.getElementById('table-title').innerText = "DOORO QAYBTA (RESTAURANT / HALL)";
+            // Add Back Button Logic
+            document.getElementById('selection-label').innerHTML = `
+                 <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                 <span class="text-gray-400">|</span> <span class="ml-2">Fadlan kala dooro :</span>
+            `;
+            
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = ''; 
+            
+            // Override Grid Class to Flex for Centering and Sizing
+            grid.className = "flex flex-col md:flex-row justify-center gap-8 px-4";
 
-    // 2. Qor Cinwaanka Sare
-    document.getElementById('table-title').innerText = "DOORO QAYBTA (RESTAURANT / HALL)";
-    document.getElementById('selection-label').innerHTML = '<i class="fas fa-layer-group mr-2 text-yellow-600"></i> Fadlan kala dooro :';
-    
-    // 3. Samee Labada Badhan ee Waaweyn
-    const grid = document.getElementById('grid-buttons');
-    grid.innerHTML = ''; // Nadiifi wixii hore
+            const mainOptions = [
+                { name: "RESTAURANT", icon: "fa-utensils", color: "text-orange-600", action: showRestaurantOptions },
+                { name: "HALLS", icon: "fa-users", color: "text-blue-600", action: showHallOptions }
+            ];
 
-    const mainOptions = [
-        { name: "RESTAURANT", icon: "fa-utensils", color: "text-orange-600", action: showRestaurantOptions },
-        { name: "HALLS", icon: "fa-users", color: "text-blue-600", action: showHallOptions }
-    ];
+            mainOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                // Larger button classes
+                btn.className = "w-full md:w-1/2 h-40 p-8 bg-white border-2 border-gray-100 rounded-3xl text-xl font-black shadow-lg transition-all hover:bg-slate-50 hover:border-yellow-500 hover:-translate-y-2 flex flex-col items-center justify-center gap-4 group";
+                btn.innerHTML = `<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-2 group-hover:bg-slate-200 transition"><i class="fas ${opt.icon} ${opt.color} text-4xl"></i></div> <span>${opt.name}</span>`;
+                btn.onclick = opt.action; 
+                grid.appendChild(btn);
+            });
+        }
 
-    mainOptions.forEach(opt => {
-        const btn = document.createElement('button');
-        // Naqshad weyn oo qurux badan
-        btn.className = "col-span-2 sm:col-span-3 md:col-span-4 p-8 bg-white border-2 border-gray-100 rounded-2xl text-sm font-black shadow-lg transition-all hover:bg-slate-50 hover:border-yellow-500 hover:-translate-y-1 flex flex-col items-center justify-center gap-3";
-        btn.innerHTML = `<div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-2"><i class="fas ${opt.icon} ${opt.color} text-3xl"></i></div> <span>${opt.name}</span>`;
-        btn.onclick = opt.action; // U dir Heerka 2-aad
-        grid.appendChild(btn);
-    });
+        function showRestaurantOptions() {
+            currentCategory = "Restaurant";
+            
+            // SHOW TABLE & SET EXPORT MODE
+            document.getElementById('inventory-section').classList.remove('hidden');
+            document.getElementById('table-title').innerText = "ALL RESTAURANT INVENTORY LOGS";
+            currentExportMode = 'rest_only'; // Set mode for Excel export
+            
+            // Update Buttons for Excel
+            document.getElementById('btn-excel-full').classList.remove('hidden');
+            document.getElementById('btn-excel-loc').classList.add('hidden');
+            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL RESTAURANTS)";
 
-    // Marka hore soo saar dhamaan waxa Restaurant ama Hall ah
-    renderTable("Restaurant"); 
-}
+            // Render All Restaurants
+            renderTable("Restaurant");
 
-// HEERKA 2 (A): Marka la doorto RESTAURANT (Soo saar 4-ta nooc)
-function showRestaurantOptions() {
-    currentCategory = "Restaurant";
-    
-    // Samee badhan yar oo "Dib u noqo" ah
-    document.getElementById('selection-label').innerHTML = `
-        <button onclick="showMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
-        <span class="text-gray-400">|</span> <span class="ml-2 text-orange-600 font-bold">RESTAURANTS</span>
-    `;
+            // Reset Grid Class
+            document.getElementById('grid-buttons').className = "grid grid-cols-2 md:grid-cols-4 gap-4";
+            
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2 text-orange-600 font-bold">RESTAURANTS</span>
+            `;
 
-    const grid = document.getElementById('grid-buttons');
-    grid.innerHTML = ''; // Nadiifi
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = ''; 
 
-    const restaurants = [
-        { name: "Somali Restaurant", icon: "fa-bowl-food" },
-        { name: "Ethiopian Restaurant", icon: "fa-utensils" },
-        { name: "Indian Restaurant", icon: "fa-pepper-hot" },
-        { name: "Kenyan Restaurant", icon: "fa-burger" }
-    ];
+            const restaurants = [
+                { name: "Somali Restaurant", icon: "fa-bowl-food" },
+                { name: "Ethiopian Restaurant", icon: "fa-utensils" },
+                { name: "Indian Restaurant", icon: "fa-pepper-hot" },
+                { name: "Kenyan Restaurant", icon: "fa-burger" }
+            ];
 
-    restaurants.forEach(rest => {
-        const btn = document.createElement('button');
-        btn.className = "col-span-2 p-5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all hover:bg-orange-50 hover:border-orange-500 hover:scale-105 flex flex-col items-center justify-center gap-2";
-        btn.innerHTML = `<i class="fas ${rest.icon} text-2xl text-orange-600"></i> <span>${rest.name}</span>`;
-        
-        btn.onclick = () => {
-            handleSelectionClick(btn, rest.name);
-        };
-        grid.appendChild(btn);
-    });
-}
+            restaurants.forEach(rest => {
+                const btn = document.createElement('button');
+                btn.className = "p-6 bg-white border border-gray-200 rounded-2xl text-sm font-bold shadow-sm transition-all hover:bg-orange-50 hover:border-orange-500 hover:scale-105 flex flex-col items-center justify-center gap-3 h-32";
+                btn.innerHTML = `<i class="fas ${rest.icon} text-3xl text-orange-600"></i> <span>${rest.name}</span>`;
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, rest.name);
+                };
+                grid.appendChild(btn);
+            });
+        }
 
-// HEERKA 2 (B): Marka la doorto HALLS (Soo saar Hall 1-10)
-// HEERKA 2 (B): Marka la doorto HALLS (Hall 1-5 & Hodaale 1-6)
-function showHallOptions() {
-    currentCategory = "Hall";
+        function showHallOptions() {
+            currentCategory = "Hall";
 
-    // Header-ka sare
-    document.getElementById('selection-label').innerHTML = `
-        <button onclick="showMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
-        <span class="text-gray-400">|</span> <span class="ml-2 text-blue-600 font-bold">HALLS & HODAALE</span>
-    `;
+            // SHOW TABLE & SET EXPORT MODE
+            document.getElementById('inventory-section').classList.remove('hidden');
+            document.getElementById('table-title').innerText = "ALL HALLS INVENTORY LOGS";
+            currentExportMode = 'hall_only'; // Set mode for Excel export
+            
+            // Update Buttons for Excel
+            document.getElementById('btn-excel-full').classList.remove('hidden');
+            document.getElementById('btn-excel-loc').classList.add('hidden');
+            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL HALLS)";
 
-    const grid = document.getElementById('grid-buttons');
-    grid.innerHTML = ''; // Nadiifi wixii hore
+            // Render All Halls + Hodaale
+            renderTable("Hall_And_Hodaale");
 
-    // LIISKA CUSUB EE AAD RABTO
-    const halls = [
-        "Hall 1", "Hall 2", "Hall 3", "Hall 4", "Hall 5", 
-        "Hodaale 1", "Hodaale 2", "Hodaale 3", "Hodaale 4", "Hodaale 5", "Hodaale 6"
-    ];
+            // Reset Grid Class
+            document.getElementById('grid-buttons').className = "grid grid-cols-4 sm:grid-cols-6 gap-2";
 
-    halls.forEach(name => {
-        const btn = document.createElement('button');
-        btn.innerText = name;
-        
-        // Haddii uu yahay Hodaale, midabka yara beddel (Optional: Purple hover)
-        // Haddii uu yahay Hall caadi ah, Blue hover ha ahaado
-        const hoverColor = name.startsWith("Hodaale") ? "hover:bg-purple-50 hover:border-purple-500" : "hover:bg-blue-50 hover:border-blue-500";
-        
-        btn.className = `p-3 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all ${hoverColor} text-slate-700 h-14 uppercase`;
-        
-        btn.onclick = () => {
-            handleSelectionClick(btn, name);
-        };
-        grid.appendChild(btn);
-    });
-}
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2 text-blue-600 font-bold">HALLS & HODAALE</span>
+            `;
 
-// SHAQADA GUUD: Marka badhanka ugu dambeeya la riixo (Resturant gaar ah ama Hall gaar ah)
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = ''; 
+
+            const halls = [
+                "Hall 1", "Hall 2", "Hall 3", "Hall 4", "Hall 5", 
+                "Hodaale 1", "Hodaale 2", "Hodaale 3", "Hodaale 4", "Hodaale 5", "Hodaale 6"
+            ];
+
+            halls.forEach(name => {
+                const btn = document.createElement('button');
+                btn.innerText = name;
+                
+                const hoverColor = name.startsWith("Hodaale") ? "hover:bg-purple-50 hover:border-purple-500" : "hover:bg-blue-50 hover:border-blue-500";
+                
+                btn.className = `p-3 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all ${hoverColor} text-slate-700 h-14 uppercase`;
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, name);
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        // Function-kan wuxuu maamulaa midabka marka la riixo (Active State)
 function handleSelectionClick(btnElement, locationName) {
-    // Ka qaad highlight-ka badhamada kale
+    // 1. Marka hore nadiifi dhammaan badhamada kale (ka dhig caddaan)
     document.querySelectorAll('#grid-buttons button').forEach(b => {
-        b.classList.remove('bg-slate-800', 'text-white', 'border-yellow-500');
-        // Hadii ay hore u lahaayeen class-yo kale, dib u soo celi (Optional fix logic here if needed)
+        // Ka saar Style-ka Active-ka ah
+        b.classList.remove('bg-slate-900', 'text-yellow-400', 'border-yellow-500', 'ring-2', 'ring-yellow-500', 'shadow-2xl', 'scale-105', 'z-10');
+        
+        // Ku celi Style-kii caadiga ahaa (White & Gray)
+        b.classList.add('bg-white', 'border-gray-200');
+        
+        // Hadii uu lahaa text colors gaar ah (sida red/orange) dib u soo celi (Optional safety)
+        // b.style.color = ""; 
     });
 
-    // Ku dar highlight badhanka la riixay
-    btnElement.classList.add('bg-slate-800', 'text-white', 'border-yellow-500');
+    // 2. Qurxi badhanka hadda la riixay (Active Style - Maansoor Theme)
+    btnElement.classList.remove('bg-white', 'border-gray-200'); // Ka saar caddaanka
+    
+    btnElement.classList.add(
+        'bg-slate-900',      // Background Madow/Blue (Royal Blue)
+        'text-yellow-400',   // Qoraal Dahabi ah
+        'border-yellow-500', // Xarriiq Dahabi ah
+        'ring-2',            // Xarriiq labaad oo ifaysa
+        'ring-yellow-500',   // Midabka iftiinka
+        'shadow-2xl',        // Hoos (Shadow) weyn
+        'scale-105',         // Inyar weynee
+        'z-10',              // Soo sara mari kuwa kale
+        'transition-all',    // Dhaqdhaqaaq fudud
+        'duration-300'       // Waqtiga dhaqdhaqaaqa
+    );
 
+    // 3. Logic-ga caadiga ahaa ee xogta
     currentSelectedLocation = locationName;
     
-    // Muuji Foomka Xogta
     document.getElementById('location').value = currentSelectedLocation;
     document.getElementById('entry-form').classList.remove('hidden');
-    document.getElementById('form-header').innerText = `Geli Xogta (${currentSelectedLocation})`;
+    document.getElementById('form-header').innerHTML = `Geli Xogta <span class="text-yellow-600 italic">(${currentSelectedLocation})</span>`;
     document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`;
     
     // Habee badhamada Excel-ka
@@ -1868,97 +1835,205 @@ function handleSelectionClick(btnElement, locationName) {
     document.getElementById('btn-excel-loc').classList.remove('hidden');
 
     // Soo saar xogta Shaxda
+    document.getElementById('inventory-section').classList.remove('hidden');
     renderTable(currentSelectedLocation);
     
+    // Reset inputs
+    document.getElementById('name').value = "";
+    document.getElementById('custom-dropdown-list').classList.add('hidden');
+
     // Foomka u soo dhaadhici (Scroll)
     document.getElementById('entry-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+        // --- KITCHEN UPDATE START ---
+        function showKitchenMainSelection() {
+            closeSidebar();
+            hideAllScreens();
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
+            document.getElementById('selection-area').classList.remove('hidden');
+            document.getElementById('entry-form').classList.add('hidden');
+            
+            // HIDE TABLE INITIALLY FOR THIS VIEW
+            document.getElementById('inventory-section').classList.add('hidden');
 
-// ==========================================
-//  NIDAAMKA KITCHENS, CAFETERIA & BAKERY
-// ==========================================
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            const sidebarBtns = document.querySelectorAll('.nav-btn');
+            if(sidebarBtns[3]) sidebarBtns[3].classList.add('btn-active'); // Correct index for Kitchens (check your sidebar index)
+            
+            // Use same layout as Restaurant Main (Flex/Centered)
+            document.getElementById('grid-buttons').className = "flex flex-col md:flex-row justify-center gap-8 px-4";
 
-// HEERKA 1: Soo saar 3-da Qaybood ee Waaweyn
-function showKitchenMainSelection() {
-    // 1. UI Setup
-    closeSidebar();
-    hideAllScreens();
-    document.getElementById('dashboard-content').classList.remove('hidden');
-    document.getElementById('dashboard-visuals').classList.add('hidden');
-    document.getElementById('selection-area').classList.remove('hidden');
-    document.getElementById('entry-form').classList.add('hidden');
+            document.getElementById('table-title').innerText = "DOORO QAYBTA (KITCHEN / CAFETERIA / BAKERY)";
+            document.getElementById('selection-label').innerHTML = `
+                 <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                 <span class="text-gray-400">|</span> <span class="ml-2">Fadlan kala dooro :</span>
+            `;
+            
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = ''; 
 
-    // Highlight Sidebar Button
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
-    // Qiyaas ahaan waa button-ka 3-aad
-    const sidebarBtns = document.querySelectorAll('.nav-btn');
-    if(sidebarBtns[2]) sidebarBtns[2].classList.add('btn-active');
+            const mainOptions = [
+                { name: "KITCHENS", icon: "fa-fire-burner", color: "text-red-600", action: showKitchenSubOptions, type: "sub" },
+                { name: "CAFETERIA", icon: "fa-mug-hot", color: "text-orange-600", action: null, type: "direct" },
+                { name: "BAKERY", icon: "fa-bread-slice", color: "text-yellow-600", action: null, type: "direct" }
+            ];
 
-    // 2. Cinwaanka
-    document.getElementById('table-title').innerText = "DOORO QAYBTA (KITCHEN / CAFETERIA / BAKERY)";
-    document.getElementById('selection-label').innerHTML = '<i class="fas fa-utensils mr-2 text-red-600"></i> Fadlan kala dooro :';
-    
-    const grid = document.getElementById('grid-buttons');
-    grid.innerHTML = ''; 
+            mainOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                // Same Large Styling as Restaurants
+                btn.className = "w-full md:w-1/3 h-40 p-8 bg-white border-2 border-gray-100 rounded-3xl text-xl font-black shadow-lg transition-all hover:bg-slate-50 hover:border-yellow-500 hover:-translate-y-2 flex flex-col items-center justify-center gap-4 group";
+                
+                btn.innerHTML = `<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-2 group-hover:bg-slate-200 transition"><i class="fas ${opt.icon} ${opt.color} text-4xl"></i></div> <span>${opt.name}</span>`;
+                
+                btn.onclick = () => {
+                    if (opt.type === "sub") {
+                        opt.action(); 
+                    } else {
+                        handleSelectionClick(btn, opt.name); 
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
 
-    // 3. Abuur Badhamada
-    const mainOptions = [
-        { name: "KITCHENS", icon: "fa-fire-burner", color: "text-red-600", action: showKitchenSubOptions, type: "sub" },
-        { name: "CAFETERIA", icon: "fa-mug-hot", color: "text-orange-600", action: null, type: "direct" },
-        { name: "BAKERY", icon: "fa-bread-slice", color: "text-yellow-600", action: null, type: "direct" }
-    ];
+        function showKitchenSubOptions() {
+            currentCategory = "Kitchen";
+            
+            // SHOW TABLE & SET EXPORT MODE
+            document.getElementById('inventory-section').classList.remove('hidden');
+            document.getElementById('table-title').innerText = "ALL KITCHENS INVENTORY LOGS";
+            currentExportMode = 'kitchen_only';
+            
+            // Update Buttons for Excel
+            document.getElementById('btn-excel-full').classList.remove('hidden');
+            document.getElementById('btn-excel-loc').classList.add('hidden');
+            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL KITCHENS)";
 
-    mainOptions.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = "col-span-2 sm:col-span-3 md:col-span-3 lg:col-span-3 p-6 bg-white border-2 border-gray-100 rounded-2xl text-xs font-black shadow-lg transition-all hover:bg-slate-50 hover:border-red-500 hover:-translate-y-1 flex flex-col items-center justify-center gap-3 h-32";
-        
-        btn.innerHTML = `<div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-1"><i class="fas ${opt.icon} ${opt.color} text-2xl"></i></div> <span>${opt.name}</span>`;
-        
-        // LOGIC: Haddii ay tahay Kitchen, fur liiska hoose. Haddii kale, toos u fur.
-        btn.onclick = () => {
-            if (opt.type === "sub") {
-                opt.action(); // Fur Kitchens-ka (Level 2)
-            } else {
-                handleSelectionClick(btn, opt.name); // Fur Cafeteria/Bakery toos
+            // Render All Kitchens
+            renderTable("Kitchen");
+
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showKitchenMainSelection()" class="mr-3 text-red-600 hover:underline text-[10px] uppercase font-bold bg-red-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2 text-red-600 font-bold">KITCHENS</span>
+            `;
+
+            // Reset grid for sub options
+            document.getElementById('grid-buttons').className = "grid grid-cols-2 md:grid-cols-3 gap-4";
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = ''; 
+
+            const kitchens = [
+                { name: "Somali Kitchen", icon: "fa-bowl-rice" },
+                { name: "Indian Kitchen", icon: "fa-pepper-hot" },
+                { name: "Ethiopian Kitchen", icon: "fa-utensils" }
+            ];
+
+            kitchens.forEach(kit => {
+                const btn = document.createElement('button');
+                // Use white background with red hover accents
+                btn.className = "col-span-1 p-6 bg-white border border-gray-200 rounded-2xl text-sm font-bold shadow-sm transition-all hover:bg-red-50 hover:border-red-500 hover:scale-105 flex flex-col items-center justify-center gap-3 h-32";
+                btn.innerHTML = `<i class="fas ${kit.icon} text-3xl text-red-600"></i> <span>${kit.name}</span>`;
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, kit.name);
+                };
+                grid.appendChild(btn);
+            });
+        }
+        // --- KITCHEN UPDATE END ---
+
+        // ==========================================
+        //  OFFICES (GROUND, FLOOR 1, FLOOR 2) - CUSUB
+        // ==========================================
+
+        function showOfficeMainSelection() {
+            closeSidebar();
+            hideAllScreens();
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.add('hidden'); 
+            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
+            document.getElementById('selection-area').classList.remove('hidden'); 
+            document.getElementById('entry-form').classList.add('hidden'); 
+            
+            // SHOW TABLE INITIALLY FOR THIS VIEW
+            document.getElementById('inventory-section').classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            const sidebarBtns = document.querySelectorAll('.nav-btn');
+            if(sidebarBtns[4]) sidebarBtns[4].classList.add('btn-active'); // Correct index for Offices
+
+            // Title & Header
+            document.getElementById('table-title').innerText = "ALL OFFICES INVENTORY LOGS";
+            document.getElementById('selection-label').innerHTML = `
+                 <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                 <span class="text-gray-400">|</span> <span class="ml-2">Dooro Dabaqa (Floor) :</span>
+            `;
+
+            // Excel Logic
+            currentExportMode = 'office_only';
+            document.getElementById('btn-excel-full').classList.remove('hidden');
+            document.getElementById('btn-excel-loc').classList.add('hidden');
+            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL OFFICES)";
+
+            renderTable("Office"); // Show all offices in table
+
+            // Grid Layout (Flex/Centered like Kitchens)
+            const grid = document.getElementById('grid-buttons');
+            grid.className = "flex flex-col md:flex-row justify-center gap-6 px-4";
+            grid.innerHTML = '';
+
+            const floors = [
+                { name: "GROUND FLOOR", id: "Ground", icon: "fa-door-open", color: "text-emerald-600", hover: "hover:border-emerald-500 hover:bg-emerald-50" },
+                { name: "FLOOR 1", id: "Floor 1", icon: "fa-stairs", color: "text-blue-600", hover: "hover:border-blue-500 hover:bg-blue-50" },
+                { name: "FLOOR 2", id: "Floor 2", icon: "fa-layer-group", color: "text-purple-600", hover: "hover:border-purple-500 hover:bg-purple-50" }
+            ];
+
+            floors.forEach(f => {
+                const btn = document.createElement('button');
+                btn.className = `w-full md:w-1/3 h-40 p-8 bg-white border-2 border-gray-100 rounded-3xl text-xl font-black shadow-lg transition-all ${f.hover} hover:-translate-y-2 flex flex-col items-center justify-center gap-4 group`;
+                btn.innerHTML = `<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-2 group-hover:bg-white transition shadow-sm"><i class="fas ${f.icon} ${f.color} text-4xl"></i></div> <span class="${f.color}">${f.name}</span>`;
+                
+                btn.onclick = () => showOfficeSubMenu(f.id);
+                grid.appendChild(btn);
+            });
+        }
+
+        function showOfficeSubMenu(floorName) {
+            // Update Header
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showOfficeMainSelection()" class="mr-3 text-emerald-600 hover:underline text-[10px] uppercase font-bold bg-emerald-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2 text-emerald-600 font-bold uppercase">${floorName} OFFICES</span>
+            `;
+
+            // Reset Grid to small buttons
+            const grid = document.getElementById('grid-buttons');
+            grid.className = "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3";
+            grid.innerHTML = '';
+            
+            // HIDE TABLE FOR SELECTION
+            document.getElementById('inventory-section').classList.add('hidden');
+
+            // Generate pseudo-offices based on floor
+            let prefix = "";
+            let count = 12; // 12 Offices per floor
+            if(floorName === "Ground") prefix = "G-";
+            if(floorName === "Floor 1") prefix = "10";
+            if(floorName === "Floor 2") prefix = "20";
+
+            for(let i=1; i<=count; i++) {
+                const officeName = `Office ${prefix}${i}`;
+                const btn = document.createElement('button');
+                btn.innerText = officeName;
+                btn.className = "p-3 bg-white border border-gray-200 rounded-xl text-[10px] font-bold shadow-sm transition-all hover:bg-emerald-50 hover:border-emerald-500 text-slate-700 h-14 uppercase";
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, officeName);
+                };
+                grid.appendChild(btn);
             }
-        };
-        grid.appendChild(btn);
-    });
-
-    // Marka hore soo saar inventory-ga Kitchens
-    renderTable("Kitchen"); 
-}
-
-// HEERKA 2: KITCHENS (Somali, Indian, Ethiopian)
-function showKitchenSubOptions() {
-    currentCategory = "Kitchen";
-    
-    // Header-ka & Back Button
-    document.getElementById('selection-label').innerHTML = `
-        <button onclick="showKitchenMainSelection()" class="mr-3 text-red-600 hover:underline text-[10px] uppercase font-bold bg-red-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
-        <span class="text-gray-400">|</span> <span class="ml-2 text-red-600 font-bold">KITCHENS</span>
-    `;
-
-    const grid = document.getElementById('grid-buttons');
-    grid.innerHTML = ''; 
-
-    const kitchens = [
-        { name: "Somali Kitchen", icon: "fa-bowl-rice" },
-        { name: "Indian Kitchen", icon: "fa-pepper-hot" },
-        { name: "Ethiopian Kitchen", icon: "fa-utensils" }
-    ];
-
-    kitchens.forEach(kit => {
-        const btn = document.createElement('button');
-        btn.className = "col-span-2 md:col-span-3 p-5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all hover:bg-red-50 hover:border-red-500 hover:scale-105 flex flex-col items-center justify-center gap-2 h-28";
-        btn.innerHTML = `<i class="fas ${kit.icon} text-2xl text-red-600"></i> <span>${kit.name}</span>`;
-        
-        btn.onclick = () => {
-            handleSelectionClick(btn, kit.name);
-        };
-        grid.appendChild(btn);
-    });
-}
+        }
    </script>
 </body>
 </html>
