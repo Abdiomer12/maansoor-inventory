@@ -106,6 +106,16 @@
             }
             .mobile-sidebar.open { left: 0; }
             input[type="text"], input[type="number"], input[type="password"], input[type="search"], select { font-size: 16px !important; }
+            
+            /* Mobile Chart Fixes */
+            .chart-card {
+                height: 350px !important; /* Fixed height for mobile charts */
+                padding: 15px !important;
+            }
+            #dashboard-visuals {
+                grid-template-columns: 1fr !important; /* Stack charts */
+                gap: 20px !important;
+            }
         }
 
         .chart-card {
@@ -114,10 +124,20 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
             border: 1px solid rgba(241, 245, 249, 1);
             transition: 0.3s;
+            height: 420px; /* Default height */
+            display: flex;
+            flex-direction: column;
         }
         .chart-card:hover {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             transform: translateY(-4px);
+        }
+
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            flex: 1;
+            min-height: 0; /* Important for flex child */
         }
 
         .swal2-popup { border-radius: 2.5rem !important; padding: 2rem !important; font-family: 'Poppins', sans-serif !important; }
@@ -141,13 +161,13 @@
             
             <div class="space-y-6">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">USERNAME</label>
-                    <input type="text" id="username" placeholder=" Gali Username" 
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">Username</label>
+                    <input type="text" id="username" placeholder="Username" 
                            class="w-full p-4 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
                 
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">PASSWORD</label>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">Password</label>
                     <input type="password" id="password" placeholder="••••••••" 
                            class="w-full p-4 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
@@ -377,27 +397,27 @@
                         <!-- Dashboard Visual Analytics -->
                         <div id="dashboard-visuals" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                             <!-- LEFT CARD: BAR CHART (Asset Value) -->
-                            <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col h-[400px]">
+                            <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col">
                                 <div class="flex justify-between items-center mb-4">
                                     <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.1em] flex items-center">
                                         <div class="w-2 h-2 rounded-full bg-green-600 mr-2"></div> Asset Distribution
                                     </h3>
                                     <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-md text-slate-500 font-bold">Value ($)</span>
                                 </div>
-                                <div class="relative w-full flex-1">
+                                <div class="chart-container">
                                     <canvas id="categoryChart"></canvas>
                                 </div>
                             </div>
 
                             <!-- RIGHT CARD: DOUGHNUT CHART (Inventory Count) -->
-                            <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col h-[400px]">
+                            <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col">
                                 <div class="flex justify-between items-center mb-4">
                                     <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.1em] flex items-center">
                                         <div class="w-2 h-2 rounded-full bg-blue-500 mr-2"></div> Inventory Count
                                     </h3>
                                     <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-md text-slate-500 font-bold">Items Qty</span>
                                 </div>
-                                <div class="relative w-full flex-1 flex justify-center items-center">
+                                <div class="chart-container flex justify-center items-center">
                                     <canvas id="countChart"></canvas>
                                 </div>
                             </div>
@@ -549,7 +569,10 @@
                 document.getElementById('app-content').classList.add('hidden');
             }
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
             renderTable("");
             closeSidebar();
         }
@@ -1028,6 +1051,7 @@
                 return inventory.filter(i => {
                     const loc = (i.location || "").toLowerCase();
                     const cat = category.toLowerCase();
+                    // Special logic for Office: Include "Floor" and "Ground"
                     if(cat === 'office') {
                         return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
                     }
