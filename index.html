@@ -19,11 +19,22 @@
         .hotel-gold { color: #c5a059; }
         .bg-hotel-blue { background-color: #0f172a; }
         
+        /* Gold Active Style (Main Menu: Dashboard, Rooms, etc.) */
         .btn-active { 
             background: linear-gradient(135deg, #c5a059 0%, #eab308 100%) !important; 
             color: #0f172a !important; 
             border: 1px solid rgba(255, 255, 255, 0.4) !important;
             box-shadow: 0 10px 20px -5px rgba(197, 160, 89, 0.5) !important;
+            transform: translateY(-2px);
+            font-weight: 800 !important;
+        }
+
+        /* Red Active Style (Logs & Settings ONLY when clicked) */
+        .btn-active-red {
+            background: linear-gradient(135deg, #991b1b 0%, #ef4444 100%) !important; 
+            color: #ffffff !important; 
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4) !important;
             transform: translateY(-2px);
             font-weight: 800 !important;
         }
@@ -41,12 +52,20 @@
             font-size: 14px; 
         }
 
+        /* Icon style when Gold Active */
         .btn-active .nav-icon-box {
             background: #0f172a; 
             color: #fbbf24;      
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
-        
+
+        /* Icon style when Red Active */
+        .btn-active-red .nav-icon-box {
+            background: rgba(255, 255, 255, 0.2); 
+            color: #ffffff;      
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
         .room-btn:hover {
             background-color: #c5a059 !important;
             color: #0f172a !important;
@@ -92,13 +111,13 @@
         .chart-card {
             background: #ffffff;
             border-radius: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(241, 245, 249, 1);
             transition: 0.3s;
         }
         .chart-card:hover {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
         }
 
         .swal2-popup { border-radius: 2.5rem !important; padding: 2rem !important; font-family: 'Poppins', sans-serif !important; }
@@ -122,13 +141,13 @@
             
             <div class="space-y-6">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">Username</label>
-                    <input type="text" id="username" placeholder="Username" 
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">USERNAME</label>
+                    <input type="text" id="username" placeholder=" Gali Username" 
                            class="w-full p-4 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
                 
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">Password</label>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2">PASSWORD</label>
                     <input type="password" id="password" placeholder="••••••••" 
                            class="w-full p-4 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm bg-slate-50 transition-all">
                 </div>
@@ -179,7 +198,7 @@
                 <nav class="space-y-3 text-left mt-6">
                     
                     <!-- 0. DASHBOARD HOME LINK -->
-                    <button onclick="showHomePage()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-dashboard" onclick="showHomePage()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-cyan-400 group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
                             <i class="fas fa-chart-pie"></i>
                         </div>
@@ -226,14 +245,14 @@
 
                     <!-- SETTINGS & LOGOUT AREA -->
                     <div class="pt-6 border-t border-slate-700/50 mt-6 space-y-2">
-                        <button onclick="showLogs()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
+                        <button id="nav-logs" onclick="showLogs()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
                             <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
                                 <i class="fas fa-history"></i>
                             </div>
                             <span class="text-xs font-medium">Activity Log</span>
                         </button>
                         
-                        <button onclick="showSettings()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
+                        <button id="nav-settings" onclick="showSettings()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
                             <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
                                 <i class="fas fa-cog"></i>
                             </div>
@@ -361,7 +380,7 @@
                             <div class="chart-card p-6 bg-white overflow-hidden relative flex flex-col h-[400px]">
                                 <div class="flex justify-between items-center mb-4">
                                     <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.1em] flex items-center">
-                                        <div class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></div> Asset Distribution
+                                        <div class="w-2 h-2 rounded-full bg-green-600 mr-2"></div> Asset Distribution
                                     </h3>
                                     <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-md text-slate-500 font-bold">Value ($)</span>
                                 </div>
@@ -382,37 +401,6 @@
                                     <canvas id="countChart"></canvas>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- NEW BOTTOM CATEGORIES DASHBOARD -->
-                        <div id="bottom-categories" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 px-1">
-                            <button onclick="changeCategory('room', 100)" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-blue-200">
-                                <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 text-xl group-hover:bg-blue-500 group-hover:text-white transition">
-                                    <i class="fas fa-bed"></i>
-                                </div>
-                                <span class="font-bold text-slate-600 text-sm group-hover:text-blue-600">Rooms</span>
-                            </button>
-                            
-                            <button onclick="showMainSelection()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-yellow-200">
-                                <div class="w-12 h-12 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-500 text-xl group-hover:bg-yellow-500 group-hover:text-white transition">
-                                    <i class="fas fa-bell-concierge"></i>
-                                </div>
-                                <span class="font-bold text-slate-600 text-sm group-hover:text-yellow-600">Restaurants</span>
-                            </button>
-                            
-                            <button onclick="showKitchenMainSelection()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-red-200">
-                                <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 text-xl group-hover:bg-red-500 group-hover:text-white transition">
-                                    <i class="fas fa-fire-burner"></i>
-                                </div>
-                                <span class="font-bold text-slate-600 text-sm group-hover:text-red-600">Kitchens</span>
-                            </button>
-                            
-                            <button onclick="showOfficeMainSelection()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:-translate-y-1 transition-all group hover:border-orange-200">
-                                <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 text-xl group-hover:bg-orange-500 group-hover:text-white transition">
-                                    <i class="fas fa-briefcase"></i>
-                                </div>
-                                <span class="font-bold text-slate-600 text-sm group-hover:text-orange-600">Offices</span>
-                            </button>
                         </div>
 
                         <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200 hidden">
@@ -609,7 +597,15 @@
             document.getElementById('settings-screen').classList.remove('hidden');
             document.getElementById('set-username').value = profile.user;
             document.getElementById('set-fullname').value = profile.fullName;
-             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            
+            // RESET ALL BUTTON STYLES
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
+            // APPLY RED TO SETTINGS
+            document.getElementById('nav-settings').classList.add('btn-active-red');
+            
             closeSidebar();
         }
 
@@ -675,7 +671,13 @@
             document.getElementById('logs-screen').classList.remove('hidden');
             closeSidebar();
             
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            // RESET ALL BUTTON STYLES
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
+            // APPLY RED TO LOGS
+            document.getElementById('nav-logs').classList.add('btn-active-red');
             
             // Show loading state
             const tbody = document.getElementById('logs-tbody');
@@ -707,6 +709,14 @@
                         restoreBtn = `<button onclick="restoreItem(${index})" 
                             class="ml-2 bg-blue-600 hover:bg-blue-700 text-white text-[9px] px-2 py-1 rounded-md transition-all shadow-sm font-black uppercase">
                             <i class="fas fa-undo mr-1"></i> Restore
+                        </button>`;
+                    }
+                } else if (log.action.includes("Reset All")) {
+                    actionColor = "text-red-600 font-black uppercase text-[10px]";
+                    if (log.backup) {
+                        restoreBtn = `<button onclick="restoreAllData(${index})" 
+                            class="ml-2 bg-red-600 hover:bg-red-700 text-white text-[9px] px-2 py-1 rounded-md transition-all shadow-sm font-black uppercase">
+                            <i class="fas fa-history mr-1"></i> RESTORE ALL
                         </button>`;
                     }
                 } else if (log.action.includes("Cusboonaysiiyey")) {
@@ -778,6 +788,44 @@
                     } else {
                         console.error("Restore Error:", error);
                         Swal.fire('Cillad!', 'Ma suurtagelin in xogta dib loo soo celiyo.', 'error');
+                    }
+                }
+            });
+        }
+
+        async function restoreAllData(logIndex) {
+            const log = activityLogs[logIndex];
+            if(!log || !log.backup || !Array.isArray(log.backup) || log.backup.length === 0) {
+                return Swal.fire('Cillad!', 'Xogtan lama soo celin karo (Empty Backup)!', 'error');
+            }
+
+            Swal.fire({
+                title: 'Ma hubtaa?',
+                text: `Ma rabtaa in aad dib u soo celiso dhamaan ${log.backup.length} shay? Tani waxay qaadan kartaa waqti yar.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Haa, soo celi dhamaan!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.showLoading();
+                    
+                    const { error } = await db.from('inventory').insert(log.backup);
+
+                    if (!error) {
+                        await addLog("Restore All", `Dhamaan xogtii (${log.backup.length} items) dib ayaa loo soo celiyey.`);
+                        await loadInventory();
+                        
+                        Swal.fire({
+                            title: 'Guul!',
+                            text: 'Xogtii oo dhamaystiran dib ayaa loo soo celiyey.',
+                            icon: 'success',
+                            confirmButtonColor: '#0f172a'
+                        });
+                    } else {
+                        console.error("Bulk Restore Error:", error);
+                        Swal.fire('Cillad!', 'Waxaa dhacay qalad soo celinta xogta.', 'error');
                     }
                 }
             });
@@ -904,7 +952,12 @@
             const allNavButtons = document.querySelectorAll('.nav-btn');
             allNavButtons.forEach(btn => {
                 btn.classList.remove('btn-active'); 
+                btn.classList.remove('btn-active-red');
             });
+
+            // CILAD BIXIN: Iftiimi badhanka Dashboard-ka
+            const dashBtn = document.getElementById('nav-dashboard');
+            if(dashBtn) dashBtn.classList.add('btn-active');
 
             currentSelectedLocation = ""; 
             currentCategory = "";
@@ -914,11 +967,9 @@
             // Show Dashboard
             const dashboard = document.getElementById('dashboard-content');
             const visuals = document.getElementById('dashboard-visuals');
-            const bottomCats = document.getElementById('bottom-categories');
             
             if(dashboard) dashboard.classList.remove('hidden');
             if(visuals) visuals.classList.remove('hidden'); // Show Charts on Home
-            if(bottomCats) bottomCats.classList.remove('hidden'); // Show Bottom Categories
             
             // Show Inventory Section
             const inventorySection = document.getElementById('inventory-section');
@@ -946,43 +997,117 @@
             document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
         }
 
+        // ---------- UPDATE: CHARTS WITH GRADIENTS & HOVER ----------
         function updateCharts() {
             const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'CAFETERIA', 'BAKERY', 'Office'];
             
-            const vals = cats.map(c => inventory.filter(i => i.location?.includes(c)).reduce((s, i) => s + (parseFloat(i.total?.replace(/[$,]/g,''))||0),0));
-            const counts = cats.map(c => inventory.filter(i => i.location?.includes(c)).length);
-            const colors = ['#0D47A1','#1B5E20','#7E22CE','#EA580C','#B71C1C','#D97706','#CA8A04','#475569'];
+            // Colors: Base (Darker)
+            const baseColors = [
+                '#0f766e', // Teal
+                '#0f172a', // Dark Blue
+                '#15803d', // Emerald
+                '#0369a1', // Sky Blue
+                '#be185d', // Rose
+                '#b91c1c', // Red
+                '#b45309'  // Amber
+            ];
 
+            // Colors: Light (For Gradient Top)
+            const lightColors = [
+                '#2dd4bf', // Lighter Teal
+                '#334155', // Lighter Slate
+                '#4ade80', // Lighter Green
+                '#38bdf8', // Lighter Sky
+                '#fb7185', // Lighter Rose
+                '#f87171', // Lighter Red
+                '#fbbf24'  // Lighter Amber
+            ];
+
+            // Helper function to calculate values handling the "OFFICE" exception
+            const calculateValue = (category) => {
+                return inventory.filter(i => {
+                    const loc = (i.location || "").toLowerCase();
+                    const cat = category.toLowerCase();
+                    if(cat === 'office') {
+                        return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                    }
+                    return loc.includes(cat);
+                }).reduce((sum, i) => sum + (parseFloat(i.total?.toString().replace(/[$,]/g,''))||0), 0);
+            };
+
+            const calculateCount = (category) => {
+                return inventory.filter(i => {
+                    const loc = (i.location || "").toLowerCase();
+                    const cat = category.toLowerCase();
+                    if(cat === 'office') {
+                        return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                    }
+                    return loc.includes(cat);
+                }).length;
+            };
+
+            const vals = cats.map(c => calculateValue(c));
+            const counts = cats.map(c => calculateCount(c));
+            
             if(myChart1) { myChart1.destroy(); myChart1 = null; }
             if(myChart2) { myChart2.destroy(); myChart2 = null; }
 
+            // 1. BAR CHART (Asset Value)
             const ctx1 = document.getElementById('categoryChart')?.getContext('2d');
             if(ctx1) {
-                // Gradient for Bar Chart
-                const gradient = ctx1.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, '#c5a059');
-                gradient.addColorStop(1, '#0f172a');
+                // Create Gradients for Bars
+                const barGradients = baseColors.map((c, i) => {
+                    let gradient = ctx1.createLinearGradient(0, 0, 0, 400);
+                    gradient.addColorStop(0, lightColors[i]); // Top (Light)
+                    gradient.addColorStop(1, c); // Bottom (Dark)
+                    return gradient;
+                });
 
                 myChart1 = new Chart(ctx1, { 
                     type: 'bar', 
                     data: { 
                         labels: cats, 
                         datasets: [{ 
+                            label: 'Total Value ($)',
                             data: vals, 
-                            backgroundColor: cats.map((_, i) => i%2===0 ? '#0f172a' : '#c5a059'), // Alternate Hotel Colors
-                            borderRadius: 6,
-                            barThickness: 25, 
+                            backgroundColor: barGradients, 
+                            hoverBackgroundColor: lightColors, // Solid Light on Hover
+                            borderRadius: 8,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.8,
+                            borderWidth: 0
                         }] 
                     }, 
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
-                        plugins: { legend: { display: false } },
+                        plugins: { 
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f172a',
+                                titleColor: '#fbbf24',
+                                bodyColor: '#fff',
+                                padding: 12,
+                                cornerRadius: 8,
+                                callbacks: {
+                                    label: function(context) {
+                                        return '$ ' + context.parsed.y.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
                         scales: {
                             y: { 
                                 beginAtZero: true, 
-                                grid: { display: true, drawBorder: false, color: '#f1f5f9' },
-                                ticks: { font: { size: 10, family: 'Poppins' } }
+                                grid: { 
+                                    borderDash: [5, 5], 
+                                    color: '#f1f5f9',
+                                    drawBorder: false 
+                                },
+                                ticks: { 
+                                    font: { size: 10, family: 'Poppins' },
+                                    callback: function(value) { return '$' + value; } 
+                                }
                             },
                             x: { 
                                 grid: { display: false, drawBorder: false }, 
@@ -991,29 +1116,44 @@
                                     color: '#475569' 
                                 } 
                             }
+                        },
+                        animation: {
+                            duration: 1500,
+                            easing: 'easeOutQuart'
                         }
                     } 
                 });
             }
 
+            // 2. DOUGHNUT CHART (Inventory Count)
             const ctx2 = document.getElementById('countChart')?.getContext('2d');
             if (ctx2) {
+                // Create Gradients for Doughnut
+                const doughnutGradients = baseColors.map((c, i) => {
+                    let gradient = ctx2.createLinearGradient(0, 0, 200, 200);
+                    gradient.addColorStop(0, lightColors[i]); 
+                    gradient.addColorStop(1, c); 
+                    return gradient;
+                });
+
                 myChart2 = new Chart(ctx2, {
                     type: 'doughnut',
                     data: {
                         labels: cats,
                         datasets: [{
                             data: counts,
-                            backgroundColor: ['#0f172a', '#334155', '#475569', '#64748b', '#94a3b8', '#cbd5e1', '#e2e8f0', '#f1f5f9'],
+                            backgroundColor: doughnutGradients,
+                            hoverBackgroundColor: lightColors,
                             borderWidth: 2,
                             borderColor: '#ffffff',
-                            hoverOffset: 15
+                            hoverOffset: 15 // Pop out effect on hover
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false, 
-                        layout: { padding: 10 },
+                        layout: { padding: 20 },
+                        cutout: '65%', 
                         plugins: {
                             legend: {
                                 display: true,
@@ -1026,13 +1166,23 @@
                                     color: '#334155', 
                                     font: { size: 11, family: 'Poppins', weight: '600' } 
                                 }
+                            },
+                            tooltip: {
+                                backgroundColor: '#0f172a',
+                                bodyColor: '#fff',
+                                padding: 12,
+                                cornerRadius: 8
                             }
                         },
-                        cutout: '75%'
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
                     }
                 });
             }
         }
+        // ------------------------------------------------------------------
 
         function calculate() { 
             const q = parseFloat(document.getElementById('qty').value) || 0; 
@@ -1054,8 +1204,13 @@
             ],
             "BAKERY": [
                 "Foorno", "Makiinada Cajiinka", "Laayli", "Daawa", "Bur", "Saliid"
+            ],
+            // UPDATE: ADDED ROOM ITEMS HERE
+            "ROOM": [
+                "Sariir", "TV", "AC", "Talaagad Yar", "Kursi", 
+                "Miis", "Muraayad", "Telephone", "Remote", 
+                "Busteyaal", "Barkimo", "Tuwaal", "Sabun", "Shampoo"
             ]
-            // Add other categories as needed, or leave empty to have no suggestions for Rooms
         };
 
         // Determine main category key based on current location string
@@ -1073,17 +1228,25 @@
             return "OTHER";
         }
 
+        // --- CILAD BIXIN: Dropdown items now fetch from CLOUD (Supabase Inventory) ---
         function getItemsForCurrentLocation() {
             const key = getCurrentCategoryKey();
-            const storageKey = `maansoor_items_${key}`;
             
-            // Get defaults for this category if any
+            // 1. Get defaults for this category if any
             const defaults = categoryItemsDB[key] || [];
-            // Get custom saved items for this category
-            const custom = JSON.parse(localStorage.getItem(storageKey)) || [];
             
-            // Combine unique
-            return [...new Set([...defaults, ...custom])].sort();
+            // 2. Extract unique names from the LOADED INVENTORY (Cloud Data)
+            // This ensures if someone added "Special Cake" in Bakery on another device,
+            // it appears in the list here because it exists in the inventory array.
+            const cloudItems = inventory.filter(i => {
+                 const loc = (i.location || "").toUpperCase();
+                 // Matching logic identical to category key logic
+                 if(key === 'HALL') return loc.includes('HALL') || loc.includes('HODAALE');
+                 return loc.includes(key);
+            }).map(i => i.name);
+            
+            // 3. Combine unique & Sort
+            return [...new Set([...defaults, ...cloudItems])].sort();
         }
 
         function filterCustomDropdown() {
@@ -1139,10 +1302,10 @@
                 return Swal.fire('Cillad!', 'Fadlan buuxi Magaca iyo Tirada agabka!', 'error');
             }
 
-            // Save new item to Category-Specific LocalStorage
+            // Save new item to Category-Specific LocalStorage (OPTIONAL/BACKUP NOW)
+            // We rely on Cloud Inventory for dropdowns now, but keeping this doesn't hurt.
             if (n) {
                 const key = getCurrentCategoryKey();
-                // Only save if we have a category key (e.g. don't save randomly if location is undefined)
                 if (key) {
                     const items = getItemsForCurrentLocation();
                     if (!items.includes(n)) {
@@ -1316,10 +1479,13 @@
                 if (result.isConfirmed) {
                     Swal.showLoading();
                     
+                    const backupInventory = [...inventory]; // Copy current data for backup
                     const { error } = await db.from('inventory').delete().gt('id', 0);
 
                     if (!error) {
-                        await addLog("Reset All", "Dhamaan xogta huteelka waa laga tirtiray Cloud-ka.");
+                        // Pass backupInventory to addLog so it can be restored
+                        await addLog("Reset All", "Dhamaan xogta huteelka waa laga tirtiray Cloud-ka.", backupInventory);
+                        
                         inventory = []; 
                         renderTable("");
                         updateDashboardStats();
@@ -1345,7 +1511,18 @@
             if (loc === "Hall_And_Hodaale") {
                 filtered = inventory.filter(i => i.location && (i.location.includes("Hall") || i.location.includes("Hodaale")));
             } 
-            else if (loc === "" || ["Room", "Kitchen", "Office", "Restaurant"].includes(loc)) {
+            // ----- FIX: UPDATE FOR OFFICES LOGIC ------
+            else if (loc === "Office") {
+                // If viewing all offices, include the specific floor names
+                filtered = inventory.filter(i => i.location && (
+                    i.location === "Ground Floor" || 
+                    i.location === "Floor 1" || 
+                    i.location === "Floor 2" ||
+                    i.location.toLowerCase().includes("office")
+                ));
+            }
+            // ------------------------------------------
+            else if (loc === "" || ["Room", "Kitchen", "Restaurant"].includes(loc)) {
                 // Modified to use includes for Restaurant/Kitchen to catch "Somali Restaurant" etc.
                 filtered = inventory.filter(i => i.location && i.location.includes(loc));
             } 
@@ -1389,7 +1566,6 @@
             document.getElementById('dashboard-content').classList.remove('hidden');
             
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
             
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
@@ -1425,6 +1601,12 @@
                     document.getElementById('btn-excel-loc').classList.remove('hidden');
 
                     renderTable(currentSelectedLocation); 
+                    
+                    // UPDATE: AUTO FOCUS & SCROLL FOR ROOMS
+                    setTimeout(() => {
+                        document.getElementById('name').focus();
+                        document.getElementById('entry-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
                 };
                 grid.appendChild(btn);
             }
@@ -1542,10 +1724,19 @@
                  } else if (currentExportMode === 'kitchen_only') {
                      dataToExport = inventory.filter(i => i.location.includes("Kitchen"));
                      fileName = "Maansoor_All_Kitchens";
-                 } else if (currentExportMode === 'office_only') {
-                     dataToExport = inventory.filter(i => i.location.includes("Office"));
+                 } 
+                 // ----- FIX: UPDATE FOR OFFICES EXPORT ------
+                 else if (currentExportMode === 'office_only') {
+                     dataToExport = inventory.filter(i => i.location && (
+                        i.location === "Ground Floor" || 
+                        i.location === "Floor 1" || 
+                        i.location === "Floor 2" ||
+                        i.location.toLowerCase().includes("office")
+                     ));
                      fileName = "Maansoor_All_Offices";
-                 } else {
+                 } 
+                 // ------------------------------------------
+                 else {
                      dataToExport = [...inventory];
                      fileName = "Maansoor_Full_Inventory_Log";
                  }
@@ -1660,7 +1851,7 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden'); 
-            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
+            
             document.getElementById('selection-area').classList.remove('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
             
@@ -1851,7 +2042,7 @@ function handleSelectionClick(btnElement, locationName) {
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
+            
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
             
@@ -1953,11 +2144,10 @@ function handleSelectionClick(btnElement, locationName) {
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden'); 
-            document.getElementById('bottom-categories').classList.add('hidden'); // Hide bottom categories
             document.getElementById('selection-area').classList.remove('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
             
-            // SHOW TABLE INITIALLY FOR THIS VIEW
+            // SHOW TABLE INITIALLY FOR THIS VIEW (FULL LIST)
             document.getElementById('inventory-section').classList.remove('hidden');
 
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
@@ -1985,7 +2175,7 @@ function handleSelectionClick(btnElement, locationName) {
             grid.innerHTML = '';
 
             const floors = [
-                { name: "GROUND FLOOR", id: "Ground", icon: "fa-door-open", color: "text-emerald-600", hover: "hover:border-emerald-500 hover:bg-emerald-50" },
+                { name: "GROUND FLOOR", id: "Ground Floor", icon: "fa-door-open", color: "text-emerald-600", hover: "hover:border-emerald-500 hover:bg-emerald-50" },
                 { name: "FLOOR 1", id: "Floor 1", icon: "fa-stairs", color: "text-blue-600", hover: "hover:border-blue-500 hover:bg-blue-50" },
                 { name: "FLOOR 2", id: "Floor 2", icon: "fa-layer-group", color: "text-purple-600", hover: "hover:border-purple-500 hover:bg-purple-50" }
             ];
@@ -1995,44 +2185,12 @@ function handleSelectionClick(btnElement, locationName) {
                 btn.className = `w-full md:w-1/3 h-40 p-8 bg-white border-2 border-gray-100 rounded-3xl text-xl font-black shadow-lg transition-all ${f.hover} hover:-translate-y-2 flex flex-col items-center justify-center gap-4 group`;
                 btn.innerHTML = `<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-2 group-hover:bg-white transition shadow-sm"><i class="fas ${f.icon} ${f.color} text-4xl"></i></div> <span class="${f.color}">${f.name}</span>`;
                 
-                btn.onclick = () => showOfficeSubMenu(f.id);
-                grid.appendChild(btn);
-            });
-        }
-
-        function showOfficeSubMenu(floorName) {
-            // Update Header
-            document.getElementById('selection-label').innerHTML = `
-                <button onclick="showOfficeMainSelection()" class="mr-3 text-emerald-600 hover:underline text-[10px] uppercase font-bold bg-emerald-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
-                <span class="text-gray-400">|</span> <span class="ml-2 text-emerald-600 font-bold uppercase">${floorName} OFFICES</span>
-            `;
-
-            // Reset Grid to small buttons
-            const grid = document.getElementById('grid-buttons');
-            grid.className = "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3";
-            grid.innerHTML = '';
-            
-            // HIDE TABLE FOR SELECTION
-            document.getElementById('inventory-section').classList.add('hidden');
-
-            // Generate pseudo-offices based on floor
-            let prefix = "";
-            let count = 12; // 12 Offices per floor
-            if(floorName === "Ground") prefix = "G-";
-            if(floorName === "Floor 1") prefix = "10";
-            if(floorName === "Floor 2") prefix = "20";
-
-            for(let i=1; i<=count; i++) {
-                const officeName = `Office ${prefix}${i}`;
-                const btn = document.createElement('button');
-                btn.innerText = officeName;
-                btn.className = "p-3 bg-white border border-gray-200 rounded-xl text-[10px] font-bold shadow-sm transition-all hover:bg-emerald-50 hover:border-emerald-500 text-slate-700 h-14 uppercase";
-                
+                // USE HANDLE SELECTION CLICK DIRECTLY (NO SUB MENU)
                 btn.onclick = () => {
-                    handleSelectionClick(btn, officeName);
+                    handleSelectionClick(btn, f.id);
                 };
                 grid.appendChild(btn);
-            }
+            });
         }
    </script>
 </body>
