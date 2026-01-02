@@ -142,7 +142,9 @@
                 padding: 15px !important;
                 margin-bottom: 15px; 
             }
-            #dashboard-visuals {
+            
+            /* CILAD XALIN: Waxan ku daray :not(.hidden) si graph-ku u qarsoomo marka hidden class lagu daro */
+            #dashboard-visuals:not(.hidden) {
                 display: flex !important;
                 flex-direction: column !important; 
                 gap: 20px !important;
@@ -380,9 +382,10 @@
                 </header>
                 <main class="flex-1 overflow-y-auto p-4 md:p-6 relative z-0">
                     
-                    <!-- 1. LOGS SECTION (IMPROVED) -->
+                    <!-- 1. LOGS SECTION -->
                     <div id="logs-screen" class="hidden max-w-5xl mx-auto py-5">
-                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <!-- Same Logs Code -->
+                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                             <div class="bg-slate-900 p-6 flex justify-between items-center border-b-4 border-blue-500">
                                 <h2 class="text-white font-black uppercase italic tracking-tighter text-sm md:text-lg">
                                     <i class="fas fa-history mr-2 text-yellow-500"></i> Activity Log (Diiwaanka)
@@ -401,9 +404,7 @@
                                             <th class="px-6 py-4 text-left text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="logs-tbody" class="bg-white divide-y divide-gray-100">
-                                        <!-- Rows added by JS -->
-                                    </tbody>
+                                    <tbody id="logs-tbody" class="bg-white divide-y divide-gray-100"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -496,58 +497,134 @@
                             <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2" id="grid-buttons"></div>
                         </div>
 
+                        <!-- MODIFIED ENTRY FORM (SPLIT INTO 2 SECTIONS) -->
                         <div id="entry-form" class="bg-white p-5 md:p-8 rounded-2xl shadow-lg mb-10 border-t-4 border-yellow-600 hidden">
                             <h3 id="form-header" class="text-lg md:text-xl font-extrabold mb-6 text-slate-800 border-b pb-2 tracking-tight uppercase italic text-center">Geli Xogta Agabka</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Holder</label><input type="text" id="holder" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Department</label><input type="text" id="dept" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Location</label><input type="text" id="location" class="mt-1 block w-full p-2.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-sm"></div>
-                                <div><label class="block text-[10px] font-bold text-gray-400 uppercase">Item Code</label><input type="text" id="code" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
+                            
+                            <!-- FLEX CONTAINER FOR 2 COLUMNS -->
+                            <div class="flex flex-col lg:flex-row gap-6">
                                 
-                                <!-- CUSTOM DROPDOWN INPUT (ITEM NAME) -->
-                                <div class="relative">
-                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Item Name</label>
-                                    <input type="text" id="name" onkeyup="filterCustomDropdown()" onfocus="filterCustomDropdown()" autocomplete="off"
-                                           class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold placeholder-gray-300 focus:ring-2 focus:ring-yellow-500 transition-all" 
-                                           placeholder="Qor ama dooro...">
+                                <!-- SECTION 1: ITEM INFORMATION -->
+                                <div class="flex-1 bg-gray-50/50 p-6 rounded-2xl border border-gray-200">
+                                    <div class="flex items-center mb-6 border-b border-gray-200 pb-2">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-900 text-yellow-500 flex items-center justify-center mr-3 shadow-md">
+                                            <i class="fas fa-info-circle text-sm"></i>
+                                        </div>
+                                        <h4 class="text-sm font-black text-slate-800 uppercase tracking-wide">Item Information</h4>
+                                    </div>
                                     
-                                    <!-- Custom Scrollable List -->
-                                    <ul id="custom-dropdown-list" class="hidden absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto custom-scroll mt-1">
-                                        <!-- Items will be populated here -->
-                                    </ul>
+                                    <div class="space-y-4">
+                                        <!-- Custom Dropdown (Item Name) -->
+                                        <div class="relative">
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Item Name</label>
+                                            <input type="text" id="name" onkeyup="filterCustomDropdown()" onfocus="filterCustomDropdown()" autocomplete="off"
+                                                   class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-bold placeholder-gray-300 focus:ring-2 focus:ring-yellow-500 transition-all shadow-sm" 
+                                                   placeholder="Qor ama dooro...">
+                                            <ul id="custom-dropdown-list" class="hidden absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto custom-scroll mt-1"></ul>
+                                        </div>
+
+                                        <!-- Item ID (Code) -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Item ID (Code)</label>
+                                            <input type="text" id="code" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-mono shadow-sm">
+                                        </div>
+
+                                        <!-- Location -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Location</label>
+                                            <input type="text" id="location" class="mt-1 block w-full p-3.5 bg-yellow-50 border border-yellow-200 rounded-xl font-bold text-sm shadow-sm" readonly>
+                                        </div>
+
+                                        <!-- Description -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Description</label>
+                                            <textarea id="desc" rows="2" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm shadow-sm"></textarea>
+                                        </div>
+
+                                        <!-- Status -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Status (Xaaladda)</label>
+                                            <select id="status" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:border-yellow-600 shadow-sm cursor-pointer">
+                                                <option value="Good">Good (Hagaagsan)</option>
+                                                <option value="Damaged">Damaged (Jaban)</option>
+                                                <option value="Missing">Missing (Maqan)</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Hidden/Extra Fields kept for data integrity but visually simplified -->
+                                        <div class="grid grid-cols-2 gap-4 hidden">
+                                            <input type="text" id="holder" placeholder="Holder">
+                                            <input type="text" id="dept" placeholder="Dept">
+                                        </div>
+                                        
+                                        <!-- Image Upload -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Sawirka Agabka</label>
+                                            <div class="flex space-x-2 mt-1">
+                                                <input type="file" id="itemImage" accept="image/*" class="flex-1 text-[10px] bg-white border border-gray-200 rounded-xl p-2.5 shadow-sm">
+                                                <button onclick="openCamera()" class="bg-blue-600 text-white p-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md" title="Toos u sawir">
+                                                    <i class="fas fa-camera"></i>
+                                                </button>
+                                            </div>
+                                            <div id="image-preview-container" class="mt-3 hidden flex items-center space-x-3 bg-white p-2 rounded-xl border border-dashed border-gray-300">
+                                                <img id="image-preview" src="" class="h-16 w-16 object-cover rounded-lg border border-gray-200">
+                                                <button onclick="clearImage()" class="text-red-500 text-xs font-bold hover:underline">Ka saar</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div><label class="block text-[10px] font-bold text-gray-400 uppercase">QTY</label><input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                    <div><label class="block text-[10px] font-bold text-gray-400 uppercase">U.VALUE ($)</label><input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Status (Xaaladda)</label>
-                                    <select id="status" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-yellow-600">
-                                            <option value="Good">Good (Hagaagsan)</option>
-                                            <option value="Damaged">Damaged (Jaban)</option>
-                                            <option value="Missing">Missing (Maqan)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-gray-400 uppercase">Sawirka Agabka</label>
-                                    <div class="flex space-x-2 mt-1">
-                                        <input type="file" id="itemImage" accept="image/*" class="flex-1 text-[10px] bg-gray-50 border border-gray-200 rounded-xl p-2">
-                                        <button onclick="openCamera()" class="bg-blue-600 text-white p-2 rounded-xl text-sm hover:bg-blue-700 transition" title="Toos u sawir">
-                                            <i class="fas fa-camera"></i>
-                                        </button>
+                                <!-- SECTION 2: ITEM VALUE -->
+                                <div class="flex-1 bg-gray-50/50 p-6 rounded-2xl border border-gray-200 flex flex-col">
+                                    <div class="flex items-center mb-6 border-b border-gray-200 pb-2">
+                                        <div class="w-8 h-8 rounded-lg bg-green-600 text-white flex items-center justify-center mr-3 shadow-md">
+                                            <i class="fas fa-dollar-sign text-sm"></i>
+                                        </div>
+                                        <h4 class="text-sm font-black text-slate-800 uppercase tracking-wide">Item Value</h4>
                                     </div>
-                                    <div id="image-preview-container" class="mt-2 hidden flex items-center space-x-2">
-                                        <img id="image-preview" src="" class="h-12 w-12 object-cover rounded-lg border-2 border-yellow-500">
-                                        <button onclick="clearImage()" class="text-red-500 text-xs font-bold hover:underline">Ka saar</button>
+
+                                    <div class="space-y-4 flex-1">
+                                        <!-- Qty & Unit Price -->
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">QTY</label>
+                                                <input type="number" id="qty" oninput="calculate()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-bold shadow-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Unit Price ($)</label>
+                                                <input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-bold shadow-sm">
+                                            </div>
+                                        </div>
+
+                                        <!-- Depreciation Value -->
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Depreciation Value ($)</label>
+                                            <input type="number" id="depreciation" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm shadow-sm" placeholder="0.00">
+                                        </div>
+
+                                        <!-- Purchase Date & Item Age -->
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Purchase Date</label>
+                                                <input type="date" id="purchase_date" onchange="calculateAge()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm shadow-sm text-gray-600">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Item Age</label>
+                                                <input type="text" id="item_age" class="mt-1 block w-full p-3.5 bg-slate-100 border border-gray-200 rounded-xl text-sm shadow-sm font-bold text-slate-500" readonly placeholder="Auto calc">
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-auto pt-6">
+                                            <label class="block text-[10px] font-bold text-green-600 uppercase ml-1 mb-1">Total Value ($)</label>
+                                            <input type="text" id="total" disabled class="block w-full p-4 bg-slate-900 text-yellow-400 rounded-xl font-black text-2xl text-center shadow-lg border border-slate-800">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="sm:col-span-1"><label class="block text-[10px] font-bold text-gray-400 uppercase">Description</label><input type="text" id="desc" class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></div>
-                                <div><label class="block text-[10px] font-bold text-yellow-600 uppercase">Total Value ($)</label><input type="text" id="total" disabled class="mt-1 block w-full p-2.5 bg-slate-900 text-yellow-400 rounded-xl font-bold text-lg"></div>
                             </div>
+
                             <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                                <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-3.5 rounded-xl font-bold uppercase text-xs transition active:scale-95 shadow-xl"><i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka</button>
-                                <button onclick="resetForm()" class="flex-1 bg-gray-400 text-white px-8 py-3.5 rounded-xl font-bold uppercase text-xs">Close</button>
+                                <button id="save-btn" onclick="saveData()" class="flex-1 bg-slate-900 text-yellow-400 border border-yellow-500 px-8 py-4 rounded-xl font-bold uppercase text-xs transition active:scale-95 shadow-xl hover:bg-slate-800 tracking-widest"><i class="fas fa-plus-circle mr-2"></i> Kaydi Agabka</button>
+                                <button onclick="resetForm()" class="flex-1 bg-gray-200 text-gray-500 px-8 py-4 rounded-xl font-bold uppercase text-xs hover:bg-gray-300 transition tracking-widest">Close</button>
                             </div>
                         </div>
 
@@ -597,6 +674,108 @@
             email: "admin@maansoorhotel.com",
             phone: "+252 634245995"
         };
+        
+        // --- 1. NEW DATA STRUCTURE FOR ROOMS (Fixed Spelling & Auto Data) ---
+        const roomItemsDB = {
+            "Bed Single": { code: "B1", price: 550.00, year: "2018", desc: "Sariir Hal Nafar ah" },
+            "Bed Double": { code: "B1", price: 1100.00, year: "2018", desc: "Sariir laba Nafar ah" },
+            "Bed Singal Sheets": { code: "B10", price: 5.00, year: "2016", desc: "Goyaasha Nafarka ee Sariirta la saaro" },
+            "Bed pillow": { code: "B6", price: 5.00, year: "2016", desc: "Barkimo Sariirta" },
+            "Bathroom towel": { code: "B15", price: 8.00, year: "2018", desc: "Tuwaal la isku qalajiyo" },
+            "Bed Double Mattress": { code: "B2", price: 200.00, year: "2018", desc: "Furaash laba nafar ah" },
+            "Bed Double Cover Mattress": { code: "B3", price: 25.00, year: "2018", desc: "Xalaafka Furaashka (waterproof)" },
+            "Bed Double Linen Cover": { code: "B4", price: 35.00, year: "2018", desc: "Xalaaf la huwado ee laba nafar" },
+            "Bed Double Sheets": { code: "B5", price: 10.00, year: "2018", desc: "Goyaasha laba nafar ee sariirta" },
+            "Bed Singal Mattress": { code: "B7", price: 120.00, year: "2018", desc: "Furaash Nafar kaliya" },
+            "Bed Singal Cover Mattress": { code: "B8", price: 18.00, year: "2018", desc: "Xalaaf Sariirta la saaro ee nafarka ah" },
+            "Chair Coffee": { code: "C1", price: 50.00, year: "2018", desc: "Kuraasta Qolalka ee Shaaha" },
+            "Chair Wooden": { code: "C3", price: 40.00, year: "2012", desc: "Kuraasta Qolalka ee Shaaha" },
+            "Dustbin small": { code: "D1", price: 2.00, year: "2018", desc: "for waste papers" },
+            "Dustbin Middle": { code: "D2", price: 5.00, year: "2018", desc: "Basket Laundry" },
+            "Fan Small": { code: "F2", price: 35.00, year: "2018", desc: "Maraxwadaha Qolka" },
+            "Dressing mirror cupboard": { code: "K1", price: 250.00, year: "2018", desc: "Tawaleetka Hurdada" },
+            "Cupboards with 2 shelves": { code: "K2", price: 200.00, year: "2018", desc: "Kabadhka dharka ee labada Fardadood" },
+            "Cupboards with 3 shelves": { code: "K3", price: 290.00, year: "2018", desc: "Kabadhka dharka ee sadexda Fardadood" },
+            "Lights, for bedroom": { code: "L1", price: 35.00, year: "2018", desc: "Leedhka Hurdada ee Miiska la saaro" },
+            "Landline Phone": { code: "L3", price: 7.00, year: "2012", desc: "Madax Telephone Qolalka" },
+            "Mosquito net": { code: "MN", price: 12.00, year: "2018", desc: "Maro kaneeco" },
+            "Rugs Bedroom": { code: "R1", price: 20.00, year: "2018", desc: "Rooga Hurdada" },
+            "Rugs Doormats": { code: "R3", price: 7.00, year: "2018", desc: "Dacsadaha Albaabada" },
+            "Rugs for Prayers": { code: "R4", price: 6.00, year: "2018", desc: "Sijaayado" },
+            "Rugs Plastic for Toilets": { code: "R5", price: 5.00, year: "2018", desc: "Dacsadaha Suuliga ee rabadhka ah" },
+            "Refrigerator Mini Fridge": { code: "R6", price: 120.00, year: "2018", desc: "Talagadaha Maqsinada yar yar" },
+            "Bath Shower Box": { code: "SH", price: 50.00, year: "2020", desc: "Shower Quruurad" },
+            "TV screen wall mounted": { code: "T10", price: 200.00, year: "2017", desc: "Murayad LG 32\" iyo Birta Gidaarka" },
+            "Table Coffee small": { code: "T4", price: 50.00, year: "2018", desc: "Miiska Shaaha Qolalka" },
+            "Table TV": { code: "T5", price: 60.00, year: "2018", desc: "Miiska TV-ga la saaro" },
+            "Table for Briefcase": { code: "T7", price: 60.00, year: "2018", desc: "Miiska Shandadaha la saarto ee Qolalka" },
+            "Curtains bedroom window": { code: "W1", price: 65.00, year: "2020", desc: "Daahyo Daqadii -2Jeex" },
+            "Curtains Toilet window": { code: "W3", price: 18.00, year: "2020", desc: "Daaha Shower ee Plastic" },
+            "Wall art Pictures": { code: "W4", price: 15.00, year: "2012", desc: "Sawirka Gidaarka ku xidhan" },
+            "Wall mounted Electric heater": { code: "W5", price: 125.00, year: "2012", desc: "Electric Heater 50Ltr" },
+            "Wall mounted Air-condition": { code: "W6", price: 350.00, year: "2018", desc: "Aircondition - Qolalka" }
+        };
+
+        // --- NEW: HALL ITEMS DB (From OCR) ---
+        const hallItemsDB = {
+            "Speakers Large Audio Concert": { code: "A1", price: 300.00, year: "2018", desc: "Sameecadaha Hoolasha" },
+            "Speakers Small": { code: "A1", price: 150.00, year: "2012", desc: "Small Speaker" },
+            "Audio Mixer & Assoceies": { code: "A2", price: 250.00, year: "2018", desc: "Mixer-ka & Microphones" },
+            "Chair VIP": { code: "C1", price: 60.00, year: "2012", desc: "Kuraasta Meherada" },
+            "Chair Red Bush with Iron legs": { code: "C2", price: 32.00, year: "2012", desc: "Kuraasta Hoolasha" },
+            "Chair for dining": { code: "C3", price: 30.00, year: "2012", desc: "Kuraasta Cuntada" },
+            "Chair Brown rubbed with iron legs": { code: "C4", price: 35.00, year: "2020", desc: "Kuraasta Caaga adag ee Turkey" },
+            "Chairs gold plastic for dining": { code: "C5", price: 30.00, year: "2020", desc: "Kuraasta Qadada Siminaarada" },
+            "Chairs Fibre White outdoor": { code: "C6", price: 11.00, year: "2018", desc: "Kuraasta Caaga Cadcad" },
+            "Chair Iron for outdoor": { code: "C7", price: 25.00, year: "2012", desc: "Kursiga Birta" },
+            "Chairs cover clothes": { code: "C8", price: 7.00, year: "2012", desc: "Marada Kuraasta Different Colors" },
+            "Chair Excutive meeting room": { code: "C9", price: 60.00, year: "2008", desc: "Kuraasida Shirarka ee VIP-da sare" },
+            "Dustbin small for Waste papers": { code: "D1", price: 2.00, year: "2020", desc: "Dusbin waraaqaha ee hoolasha" },
+            "Dustbin Middle (Basket Laundry)": { code: "D2", price: 5.00, year: "2018", desc: "Baaldiyada Khashinka" },
+            "Dustbin Large for waste": { code: "D3", price: 10.00, year: "2018", desc: "Baaldiyada Duskpinka waaweyn" },
+            "Dustbin for cigarettes": { code: "D4", price: 8.00, year: "2018", desc: "Sigaarka lagu bakhtiiyo" },
+            "Plug extension socket": { code: "D5", price: 12.00, year: "2020", desc: "Dabqaybisada Hoolasha ku samaysan" },
+            "Fan Wall mounted": { code: "F3", price: 35.00, year: "2018", desc: "Maraxwado" },
+            "Modern indoor plant pots": { code: "FL", price: 15.00, year: "2012", desc: "Floweradda Gudaha Hoteelka" },
+            "Flip Chart stand": { code: "P1", price: 45.00, year: "2018", desc: "Flip Chart" },
+            "Eurolite Projection Screen W/stand": { code: "P2", price: 70.00, year: "2018", desc: "Projector Stand" },
+            "Rug for hallway entrance red plastic": { code: "RG", price: 500.00, year: "2018", desc: "Roog cas ee Madaxda loo dhigo 80M" },
+            "Sofa seat for Wedding": { code: "S1", price: 400.00, year: "2018", desc: "Kurasida Caruuska SET (2pcs+1Table)" },
+            "Sofa seat complete (7 chairs)": { code: "S2", price: 1100.00, year: "2018", desc: "Fadhiyada" },
+            "Sofa seat complete (4 chairs)": { code: "S2", price: 600.00, year: "2018", desc: "Fadhiyada" },
+            "Sofa seat cover clothes": { code: "S5", price: 4.00, year: "2018", desc: "Gogosha Fadhiyada Sofa Seatka" },
+            "Glass portable stage speech": { code: "SS", price: 300.00, year: "2018", desc: "Stege-ka Quruurada" },
+            "Wooden portable stage speech": { code: "SS", price: 120.00, year: "2016", desc: "Steage Looxa ah" },
+            "Table Coffee small": { code: "T1", price: 50.00, year: "2012", desc: "Miisaska meherada ee yaryar" },
+            "Table Excutive meeting room": { code: "T10", price: 2000.00, year: "2012", desc: "Miiska Shirarka Dabaqa3aad" },
+            "Table Mirror": { code: "T11", price: 120.00, year: "2012", desc: "Miiska Quruurada" },
+            "Table With Iron legs/ Circle": { code: "T2", price: 80.00, year: "2012", desc: "Miisaska Goolka ah" },
+            "Table wooden for holls": { code: "T2", price: 150.00, year: "2017", desc: "Miisaska Hoolasha 150x80x75cm" },
+            "Table for Dining": { code: "T3", price: 120.00, year: "2017", desc: "Miisaska Qadada Looxa ah" },
+            "Table Outdoor Plastic Brown": { code: "T5", price: 45.00, year: "2018", desc: "Misaska Caaga Adag" },
+            "Table beefy Outdoor": { code: "T6", price: 200.00, year: "2018", desc: "Table beefy Seminaar 200x80x80 cm" },
+            "Table beefy Indoor Wooden 300x80x80": { code: "T6", price: 300.00, year: "2016", desc: "Table restaurant beefy" },
+            "Table beefy Indoor": { code: "T6", price: 160.00, year: "2016", desc: "Table restaurant beefy" },
+            "Table Outdoor Plastic White": { code: "T7", price: 26.00, year: "2017", desc: "Miisaska cadcad ee banaanka" },
+            "Table cover clothes": { code: "T8", price: 7.00, year: "2012", desc: "Different Colors" },
+            "Table cover Diamond clothes": { code: "T8", price: 5.00, year: "2012", desc: "Different Colors" },
+            "Wall art Pictures": { code: "W1", price: 15.00, year: "2012", desc: "Sawiro Gidaar" },
+            "TV Flat Screen": { code: "W1", price: 720.00, year: "2018", desc: "Tv 52Inch LG" },
+            "Wall art Pictures Large": { code: "W2", price: 15.00, year: "2012", desc: "Sawiro Gidaar" },
+            "Wall mounted Air-condition": { code: "W3", price: 350.00, year: "2018", desc: "LG AIR CONDITIONER" },
+            "Curtains, Living room Window": { code: "W7", price: 35.00, year: "2020", desc: "Daahyo Daqadii -1Jeex" },
+            "Fire Dry Powder wall mounted": { code: "F1", price: 33.00, year: "2020", desc: "Haanta Dabdamiska" },
+            "Dry Powder with wheels": { code: "F1", price: 63.00, year: "2020", desc: "Haanta Dabdamiska, Taayarada leh" },
+            "Curtains for Hools, Cafateria": { code: "W8", price: 85.00, year: "2020", desc: "Hools, Cafateria & restuarent" },
+            "Restaurant chines decoration": { code: "HA", price: 80.00, year: "2020", desc: "Sitaarada restuerent-ka" },
+            "Floor standing menu poster display": { code: "HA", price: 100.00, year: "2020", desc: "Birta Menu ee Quraarada ah" },
+            "Hotel suitcase wheels bags": { code: "HA", price: 200.00, year: "2020", desc: "Birta Shanadadaha la saaro" },
+            "Alaabta Hidaha & Dhaqanka": { code: "HA", price: 2000.00, year: "2020", desc: "Buulka Banaanka Qalabka Dhex-yaala" },
+            "Hotel Housekeeping / Maids Carts": { code: "HA", price: 300.00, year: "2020", desc: "Baabuurka Caaga ee Hablaha Nadaafada" },
+            "Hotel cleaning kits": { code: "HA", price: 25.00, year: "2020", desc: "Agabka ay ku shaqeeyaan Hablaha" }
+        };
+
+        let activeRoomNumber = "0000"; // Holds current active room code
 
         function handleLogin() {
             const uInput = document.getElementById('username').value.trim();
@@ -734,7 +913,6 @@
         let activityLogs = JSON.parse(localStorage.getItem('maansoor_logs')) || [];
 
         async function addLog(action, details, backupData = null) {
-            // FIX: Uses Date() formatting but we will sort by ID for better accuracy
             const logEntry = {
                 user: profile.user || "admin",
                 action: action,
@@ -763,10 +941,8 @@
             document.getElementById('nav-logs').classList.add('btn-active-red');
             
             const tbody = document.getElementById('logs-tbody');
-            // IMPROVED LOADING SPINNER
             tbody.innerHTML = `<tr><td colspan="4" class="text-center py-12"><div class="flex flex-col items-center"><i class="fas fa-circle-notch fa-spin text-4xl text-yellow-500 mb-3"></i><span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Soo dejinaya...</span></div></td></tr>`;
             
-            // FIX: ORDER BY ID DESCENDING (LATEST FIRST) - Much safer than string date
             const { data, error } = await db.from('logs').select('*').order('id', { ascending: false }).limit(50);
             
             if (!error && data) {
@@ -792,7 +968,6 @@
                 let actionBadge = "";
                 let restoreBtn = "";
                 
-                // COLOR CODED ACTIONS
                 if (log.action.includes("Ku daray") || log.action.includes("Add")) {
                     actionBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-green-200"><i class="fas fa-plus-circle mr-1"></i> ADDED</span>`;
                 } else if (log.action.includes("Tirtiray") || log.action.includes("Delete")) {
@@ -1027,9 +1202,8 @@
         }
 
         async function loadInventory() {
-            // FIX: REMOVED 'image' from select to fix Mobile Delay
             const { data, error } = await db.from('inventory')
-                .select('id, holder, dept, location, code, name, status, qty, uvalue, total, desc') 
+                .select('*') 
                 .order('id', { ascending: false });
             
             if (!error) {
@@ -1040,7 +1214,6 @@
             }
         }
 
-        // --- FIXED DASHBOARD RESET LOGIC ---
         function showHomePage() {
             const allNavButtons = document.querySelectorAll('.nav-btn');
             allNavButtons.forEach(btn => {
@@ -1051,27 +1224,24 @@
             const dashBtn = document.getElementById('nav-dashboard');
             if(dashBtn) dashBtn.classList.add('btn-active');
 
-            // RESET ALL STATES
             currentSelectedLocation = ""; 
             currentCategory = "";
-            currentExportMode = "full"; // Important Reset
+            currentExportMode = "full"; 
 
             hideAllScreens(); 
 
-            // SHOW DASHBOARD ELEMENTS
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.remove('hidden');
             document.getElementById('inventory-section').classList.remove('hidden');
             document.getElementById('selection-area').classList.add('hidden');
             document.getElementById('entry-form').classList.add('hidden');
 
-            // RESET BUTTONS
             document.getElementById('table-title').innerText = "FULL HOTEL INVENTORY LOG";
             const btnFull = document.getElementById('btn-excel-full');
             const btnLoc = document.getElementById('btn-excel-loc');
             
             btnFull.classList.remove('hidden');
-            btnFull.innerText = "Excel (Full)"; // Reset Text
+            btnFull.innerText = "Excel (Full)"; 
             btnLoc.classList.add('hidden');
             
             renderTable(""); 
@@ -1227,10 +1397,54 @@
             return res; 
         }
 
+        // NEW FUNCTION: Calculate Age
+        function calculateAge() {
+            const purchaseDateVal = document.getElementById('purchase_date').value;
+            const ageInput = document.getElementById('item_age');
+            
+            if(!purchaseDateVal) {
+                ageInput.value = "";
+                return;
+            }
+
+            const purchaseDate = new Date(purchaseDateVal);
+            const today = new Date();
+            
+            let years = today.getFullYear() - purchaseDate.getFullYear();
+            let months = today.getMonth() - purchaseDate.getMonth();
+            
+            if (months < 0 || (months === 0 && today.getDate() < purchaseDate.getDate())) {
+                years--;
+                months += 12;
+            }
+            
+            // Adjust months if days are negative
+            if (today.getDate() < purchaseDate.getDate()) {
+                 months--;
+                 if (months < 0) {
+                     months += 12;
+                     // Don't double subtract year as it's handled by logic above
+                 }
+            }
+
+            let ageString = "";
+            if (years > 0) ageString += `${years} Year${years > 1 ? 's' : ''} `;
+            if (months > 0) ageString += `${months} Month${months > 1 ? 's' : ''}`;
+            
+            if (years === 0 && months === 0) {
+                const diffTime = Math.abs(today - purchaseDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                ageString = `${diffDays} Days`;
+            }
+
+            ageInput.value = ageString.trim();
+        }
+
         const categoryItemsDB = {
+            "ROOM": Object.keys(roomItemsDB),
+            "HALL": Object.keys(hallItemsDB),
             "CAFETERIA": ["Talagad", "Makiinada Bunka", "Computer System", "Shoolad", "Kildhi", "Koobab", "Jeegag", "Tarayaal", "Saxamo"],
             "BAKERY": ["Foorno", "Makiinada Cajiinka", "Laayli", "Daawa", "Bur", "Saliid"],
-            "ROOM": ["Sariir", "TV", "AC", "Talaagad Yar", "Kursi", "Miis", "Muraayad", "Telephone", "Remote", "Busteyaal"],
             "OFFICE": ["Xafiis (Desk)", "Kursi (Chair)", "Computer", "Printer", "File Cabinet", "AC", "Telephone", "Shelf"]
         };
 
@@ -1293,6 +1507,46 @@
         function selectItem(val) {
             document.getElementById('name').value = val;
             document.getElementById('custom-dropdown-list').classList.add('hidden');
+
+            // --- 2. NEW ID GENERATION LOGIC ---
+            // If we are in "ROOMS" category and the item exists in our DB
+            if (currentCategory.toLowerCase() === 'room' && roomItemsDB[val]) {
+                const data = roomItemsDB[val]; // e.g. B1
+                // Generate: RA + ShortCode + RoomNumber
+                const fullID = `RA-${data.code}-${activeRoomNumber}`;
+                document.getElementById('code').value = fullID;
+                
+                // Auto Fill Price
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                
+                // Auto Fill Purchase Date (YYYY-01-01)
+                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+
+                // Auto Fill Description
+                document.getElementById('desc').value = data.desc;
+                
+                // Trigger calculations
+                calculate(); 
+                calculateAge();
+            } else if (currentCategory.toLowerCase() === 'hall' && hallItemsDB[val]) {
+                const data = hallItemsDB[val]; // e.g. A1
+                // Generate: H + ShortCode + HallNumber (activeRoomNumber holds both room and hall IDs)
+                const fullID = `H-${data.code}-${activeRoomNumber}`;
+                document.getElementById('code').value = fullID;
+                
+                // Auto Fill Price
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                
+                // Auto Fill Purchase Date
+                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                
+                // Auto Fill Description
+                document.getElementById('desc').value = data.desc;
+                
+                // Trigger calculations
+                calculate(); 
+                calculateAge();
+            }
         }
 
         document.addEventListener('click', function(e) {
@@ -1323,6 +1577,11 @@
                 status: document.getElementById('status').value,
                 qty: parseFloat(q),
                 uvalue: parseFloat(document.getElementById('uvalue').value) || 0,
+                // New Fields
+                depreciation: parseFloat(document.getElementById('depreciation').value) || 0,
+                purchase_date: document.getElementById('purchase_date').value || null,
+                item_age: document.getElementById('item_age').value || '',
+                
                 total: document.getElementById('total').value || '$0.00',
                 image: currentImageBase64 || null,
                 desc: document.getElementById('desc').value || ''
@@ -1348,40 +1607,63 @@
 
                 addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
                 
-                document.getElementById('name').value = "";
-                document.getElementById('qty').value = "";
-                document.getElementById('uvalue').value = "";
-                document.getElementById('code').value = "";
-                document.getElementById('total').value = "$0.00";
-                document.getElementById('desc').value = "";
-                clearImage(); 
-                editId = null; 
+                // Reset Fields
+                resetFormInputsOnly();
                 
                 loadInventory(); 
 
             } catch (err) {
                 console.error("Supabase Error:", err);
-                Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin.', 'error');
+                Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin. Hubi in DB-ga columns-ka cusub lagu daray.', 'error');
+            }
+        }
+        
+        function resetFormInputsOnly() {
+            document.getElementById('name').value = "";
+            document.getElementById('qty').value = "";
+            document.getElementById('uvalue').value = "";
+            document.getElementById('code').value = "";
+            document.getElementById('depreciation').value = "";
+            document.getElementById('purchase_date').value = "";
+            document.getElementById('item_age').value = "";
+            document.getElementById('total').value = "$0.00";
+            document.getElementById('desc').value = "";
+            clearImage(); 
+            editId = null;
+            const saveBtn = document.getElementById('save-btn');
+            if(saveBtn) {
+                saveBtn.innerHTML = '<i class="fas fa-plus-circle mr-2"></i> KAYDI AGABKA'; 
+                saveBtn.classList.remove('bg-blue-600');
+                saveBtn.classList.add('bg-slate-900');
             }
         }
 
-        // --- FIXED EDIT ITEM (FORCE SCROLL) ---
         async function editItem(id) { 
             const i = inventory.find(x => x.id === id); 
             if(!i) return; 
 
-            // FETCH IMAGE ON DEMAND WHEN EDITING
             Swal.showLoading();
             const { data, error } = await db.from('inventory').select('image').eq('id', id).single();
             Swal.close();
 
             editId = id; 
 
+            // Old Fields
             const fields = ['holder','dept','location','code','name','desc','qty','uvalue','total'];
             fields.forEach(f => {
                 const el = document.getElementById(f);
                 if(el) el.value = i[f] || '';
             });
+
+            // New Fields
+            if(document.getElementById('depreciation')) document.getElementById('depreciation').value = i.depreciation || '';
+            if(document.getElementById('purchase_date')) document.getElementById('purchase_date').value = i.purchase_date || '';
+            if(document.getElementById('item_age')) document.getElementById('item_age').value = i.item_age || '';
+            
+            // Recalculate age if date exists but age is empty (legacy data)
+            if(i.purchase_date && !i.item_age) {
+                 calculateAge();
+            }
 
             const statusEl = document.getElementById('status');
             if(statusEl) statusEl.value = i.status || 'Good';
@@ -1407,21 +1689,17 @@
             const entryForm = document.getElementById('entry-form');
             if(entryForm) {
                 entryForm.classList.remove('hidden');
-                // FORCE SCROLL
                 setTimeout(() => {
                     entryForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 100);
             }
         }
 
-        // NEW FUNCTION: Fetch image on click (Lazy Loading for Table)
-        // Qodobka 4: Inline image view (Showing the picture IN THE ROW)
         async function fetchViewImage(id, name, btnElement) {
             btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             const { data, error } = await db.from('inventory').select('image').eq('id', id).single();
             
             if(data && data.image) {
-                // Replace button with the actual image
                 const parentTd = btnElement.parentElement;
                 parentTd.innerHTML = `
                     <button onclick="viewImageFull('${data.image}', '${name}')" class="relative group">
@@ -1538,8 +1816,6 @@
             filtered.forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
                 
-                // Qodobka 4: Inline image fetch trigger (Lazy load button inside the row)
-                // This satisfies "kuwa sawirku jiro ha muuqdo" by letting user click to reveal
                 let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}', this)" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
                     <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
@@ -1572,7 +1848,6 @@
             currentSelectedLocation = ""; 
             const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
 
-            // FIX: If category is room, set export mode to 'room_only'
             if (cat === 'room') {
                 currentExportMode = 'room_only';
             } else {
@@ -1599,7 +1874,6 @@
             document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            // Set Correct Button Text
             if(currentExportMode === 'room_only') {
                  document.getElementById('btn-excel-full').innerText = "Excel (All Rooms)";
             } else {
@@ -1612,11 +1886,13 @@
                 const btn = document.createElement('button'); 
                 btn.innerText = i; 
                 btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
-                // APPLIED BLACK ACTIVE HERE TOO FOR CONSISTENCY
                 btn.onclick = (e) => { 
                     document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('black-active')); 
                     e.currentTarget.classList.add('black-active'); 
                     
+                    // --- 3. AUTO ROOM ID LOGIC ---
+                    activeRoomNumber = i.toString().padStart(4, '0'); // e.g. "0001", "0100"
+
                     currentSelectedLocation = `${catLabel} ${i}`; 
                     document.getElementById('location').value = currentSelectedLocation; 
                     document.getElementById('entry-form').classList.remove('hidden'); 
@@ -1637,25 +1913,20 @@
             renderTable(catLabel); 
         }
 
-        // --- NEW FUNCTION: DIRECT ENTRY FOR SPECIAL CATEGORIES ---
         function showDirectCategory(catName, event) {
             closeSidebar();
             hideAllScreens();
             
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            
             document.getElementById('selection-area').classList.add('hidden');
             
-            // Show Form & Table Immediately
             document.getElementById('entry-form').classList.remove('hidden');
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            // Highlight the clicked button
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
             if(event && event.currentTarget) event.currentTarget.classList.add('btn-active');
 
-            // Set Location Logic
             currentSelectedLocation = catName;
             currentCategory = catName.toLowerCase();
 
@@ -1663,10 +1934,8 @@
             document.getElementById('form-header').innerHTML = `Geli Xogta <span class="text-yellow-600 italic">(${currentSelectedLocation})</span>`;
             document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`;
 
-            // Reset inputs
             resetFormOnlyInputs();
             
-            // Excel Buttons
             document.getElementById('btn-excel-full').classList.add('hidden');
             document.getElementById('btn-excel-loc').classList.remove('hidden');
 
@@ -1682,7 +1951,8 @@
                 saveBtn.classList.remove('bg-blue-600');
                 saveBtn.classList.add('bg-slate-900');
             }
-            ['holder','dept','code','name','desc','qty','uvalue','total'].forEach(f => {
+            // Reset both old and new fields
+            ['holder','dept','code','name','desc','qty','uvalue','total','depreciation','purchase_date','item_age'].forEach(f => {
                 const el = document.getElementById(f);
                 if(el) el.value = '';
             });
@@ -1694,9 +1964,7 @@
        function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const menuIcon = document.getElementById('menu-icon');
-            
             sidebar.classList.toggle('open');
-            
             if (sidebar.classList.contains('open')) {
                 if(menuIcon) menuIcon.classList.replace('fa-bars', 'fa-times');
             } else {
@@ -1707,8 +1975,6 @@
         function closeSidebar() {
             const sidebar = document.getElementById('sidebar');
             const menuIcon = document.getElementById('menu-icon');
-            
-            // Si khasab ah uga qaad class-ka 'open'
             sidebar.classList.remove('open');
             if (menuIcon) menuIcon.classList.replace('fa-times', 'fa-bars');
         }
@@ -1726,21 +1992,7 @@
         });
 
         function resetForm() { 
-            editId = null; 
-            currentImageBase64 = null;
-            const saveBtn = document.getElementById('save-btn');
-            if(saveBtn) {
-                saveBtn.innerHTML = '<i class="fas fa-plus-circle mr-2"></i> KAYDI AGABKA'; 
-                saveBtn.classList.remove('bg-blue-600');
-                saveBtn.classList.add('bg-slate-900');
-            }
-            ['holder','dept','location','code','name','desc','qty','uvalue','total'].forEach(f => {
-                const el = document.getElementById(f);
-                if(el) el.value = '';
-            }); 
-            document.getElementById('status').value = 'Good';
-            document.getElementById('itemImage').value = '';
-            document.getElementById('image-preview-container').classList.add('hidden');
+            resetFormOnlyInputs();
             document.getElementById('entry-form').classList.add('hidden'); 
         }
 
@@ -1768,7 +2020,6 @@
             filtered.forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
                 
-                // NEW: Use fetchViewImage because i.image is not loaded initially
                 let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}', this)" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
                     <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
@@ -1817,13 +2068,13 @@
             } 
             else if (type === 'full') {
                  if (currentExportMode === 'rest_only') {
-                     dataToExport = inventory.filter(i => i.location.includes("Restaurant"));
+                     dataToExport = inventory.filter(i => (i.location || "").includes("Restaurant"));
                      fileName = "Maansoor_All_Restaurants";
                  } else if (currentExportMode === 'hall_only') {
-                     dataToExport = inventory.filter(i => i.location.includes("Hall") || i.location.includes("Hodaale"));
+                     dataToExport = inventory.filter(i => (i.location || "").includes("Hall") || (i.location || "").includes("Hodaale"));
                      fileName = "Maansoor_All_Halls";
                  } else if (currentExportMode === 'kitchen_only') {
-                     dataToExport = inventory.filter(i => i.location.includes("Kitchen"));
+                     dataToExport = inventory.filter(i => (i.location || "").includes("Kitchen"));
                      fileName = "Maansoor_All_Kitchens";
                  } 
                  else if (currentExportMode === 'office_only') {
@@ -1833,9 +2084,8 @@
                      ));
                      fileName = "Maansoor_All_Offices";
                  } 
-                 // FIX: Added 'room_only' mode for FULL ROOM DOWNLOAD
                  else if (currentExportMode === 'room_only') {
-                     dataToExport = inventory.filter(i => i.location.toLowerCase().startsWith("room"));
+                     dataToExport = inventory.filter(i => (i.location || "").toLowerCase().startsWith("room"));
                      fileName = "Maansoor_All_Rooms";
                  }
                  else {
@@ -1852,11 +2102,14 @@
                 const priorityA = getCategoryPriority(a.location);
                 const priorityB = getCategoryPriority(b.location);
                 if (priorityA !== priorityB) return priorityA - priorityB;
-                return a.location.localeCompare(b.location, undefined, {numeric: true, sensitivity: 'base'});
+                // Safe compare
+                const locA = a.location || "";
+                const locB = b.location || "";
+                return locA.localeCompare(locB, undefined, {numeric: true, sensitivity: 'base'});
             });
 
             let grandTotal = 0;
-            let grandTotalQty = 0; // Added Grand Total Qty
+            let grandTotalQty = 0;
 
             const formattedData = dataToExport.map((item, index) => {
                 const totalNum = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
@@ -1864,7 +2117,6 @@
                 grandTotal += totalNum;
                 grandTotalQty += qtyNum;
 
-                // FIX: Added Qty Column before Unit Value
                 return {
                     "No": index + 1,
                     "Location": item.location || "-",
@@ -1874,28 +2126,26 @@
                     "Description": item.desc || "",
                     "Qty": qtyNum,
                     "Unit Value": parseFloat(item.uvalue) || 0,
+                    "Depreciation": item.depreciation || 0,
+                    "Age": item.item_age || "-",
                     "Total Value": totalNum
                 };
             });
 
-            // FIX: Added Qty to Grand Total Row
             formattedData.push({
                 "No": "", "Location": "", "Item Code": "", "Item Name": "GRAND TOTAL",
                 "Status": "", "Description": "", "Qty": grandTotalQty, "Unit Value": "", "Total Value": grandTotal
             });
 
             const worksheet = XLSX.utils.json_to_sheet(formattedData);
-            // FIX: Adjusted column widths for Qty
-            const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 8}, {wch: 12}, {wch: 15}];
+            const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 8}, {wch: 12}, {wch: 12}, {wch: 15}, {wch: 15}];
             worksheet['!cols'] = wscols;
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
             XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
 
-        // --- CILAD BIXIN IYO PDF SUMMARY (UPDATED TO LOOK LIKE PRO PDF) ---
         function exportToPDF() {
-            // Check libraries
             if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
                 return Swal.fire('Error', 'PDF Library not loaded.', 'error');
             }
@@ -1906,21 +2156,17 @@
 
             try {
                 const { jsPDF } = window.jspdf;
-                // 'p' = portrait, 'mm' = millimeters, 'a4' = paper size
                 const doc = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = doc.internal.pageSize.width; 
                 const date = new Date().toLocaleString('en-GB');
                 
-                // 1. KALA SUUS QAYBAHA (FILTER DATA)
                 let dataToProcess = [];
                 let titleText = "";
 
-                // Hadii Location gaar ah la doortay (Sida Room 101)
                 if (currentSelectedLocation) {
                     dataToProcess = inventory.filter(i => i.location === currentSelectedLocation);
                     titleText = `INVENTORY REPORT: ${currentSelectedLocation.toUpperCase()}`;
                 } 
-                // Hadii Category gaar ah la doortay (Sida Kitchens only)
                 else if (currentCategory) {
                     if (currentCategory === 'kitchen') {
                         dataToProcess = inventory.filter(i => {
@@ -1945,7 +2191,6 @@
                         titleText = `INVENTORY REPORT: ALL ${currentCategory.toUpperCase()}S`;
                     }
                 } 
-                // Hadii "Dashboard" la joogo (FULL HOTEL)
                 else {
                     dataToProcess = [...inventory];
                     titleText = "FULL HOTEL INVENTORY SUMMARY REPORT";
@@ -1955,7 +2200,6 @@
                     return Swal.fire('Cillad', 'Qaybtan xog kuma jirto.', 'info');
                 }
 
-                // 2. ISKU GEYN (GROUPING LOGIC - SUMMARY)
                 let summaryData = {};
 
                 dataToProcess.forEach(item => {
@@ -1972,7 +2216,7 @@
                             name: displayName.charAt(0).toUpperCase() + displayName.slice(1), 
                             totalQty: 0,
                             totalValue: 0,
-                            status: item.status // Keep last known status
+                            status: item.status 
                         };
                     }
 
@@ -1980,7 +2224,6 @@
                     summaryData[normalizedName].totalValue += totalVal;
                 });
 
-                // 3. U BEDDEL ARRAY TABLE-KA PDF-KA AH
                 let tableBody = [];
                 let grandTotalQty = 0;
                 let grandTotalValue = 0;
@@ -2007,20 +2250,16 @@
                     ]);
                 });
 
-                // 4. DESIGN HEADER (CENTERED & PROFESSIONAL)
-                // Company Name
                 doc.setFontSize(22);
                 doc.setFont("helvetica", "bold");
-                doc.setTextColor(44, 62, 80); // Dark Blue/Grey
+                doc.setTextColor(44, 62, 80); 
                 doc.text("MAANSOOR HOTEL & RESORT", pageWidth / 2, 20, { align: 'center' });
                 
-                // Report Title
                 doc.setFontSize(14);
                 doc.setFont("helvetica", "bold");
-                doc.setTextColor(197, 160, 89); // Gold Color
+                doc.setTextColor(197, 160, 89); 
                 doc.text(titleText, pageWidth / 2, 30, { align: 'center' });
                 
-                // Metadata (Date & Generator)
                 doc.setFontSize(10);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(100);
@@ -2030,14 +2269,13 @@
                 doc.setDrawColor(200);
                 doc.line(14, 45, pageWidth - 14, 45); 
 
-                // 5. GENERATE TABLE
                 doc.autoTable({
                     startY: 50,
                     head: [['#', 'Item Name', 'Code', 'Status', 'Qty', 'Unit Value', 'Total Value']],
                     body: tableBody,
-                    theme: 'striped', // Clean striped look
+                    theme: 'striped', 
                     headStyles: { 
-                        fillColor: [15, 23, 42], // Slate-900 like your theme
+                        fillColor: [15, 23, 42], 
                         textColor: [255, 255, 255], 
                         fontStyle: 'bold',
                         halign: 'center',
@@ -2049,18 +2287,17 @@
                         cellPadding: 3
                     },
                     alternateRowStyles: {
-                        fillColor: [248, 250, 252] // Very light grey
+                        fillColor: [248, 250, 252] 
                     },
                     columnStyles: {
-                        0: { halign: 'center', cellWidth: 10 }, // #
-                        1: { halign: 'left', fontStyle: 'bold' }, // Name
-                        2: { halign: 'center' }, // Code
-                        3: { halign: 'center' }, // Status
-                        4: { halign: 'center', fontStyle: 'bold' }, // Qty
-                        5: { halign: 'right' }, // Unit
-                        6: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } // Total (Greenish)
+                        0: { halign: 'center', cellWidth: 10 }, 
+                        1: { halign: 'left', fontStyle: 'bold' }, 
+                        2: { halign: 'center' }, 
+                        3: { halign: 'center' }, 
+                        4: { halign: 'center', fontStyle: 'bold' }, 
+                        5: { halign: 'right' }, 
+                        6: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } 
                     },
-                    // FOOTER ROW FOR GRAND TOTAL
                     foot: [[
                         '', 
                         'GRAND TOTAL', 
@@ -2074,10 +2311,9 @@
                         fillColor: [241, 245, 249],
                         textColor: [0, 0, 0],
                         fontStyle: 'bold',
-                        halign: 'right' // Default right for money
+                        halign: 'right' 
                     },
                     didParseCell: function(data) {
-                        // Align Grand Total Text to Center
                         if (data.section === 'foot' && data.column.index === 1) {
                             data.cell.styles.halign = 'left';
                         }
@@ -2087,7 +2323,6 @@
                     }
                 });
 
-                // 6. PAGE NUMBERS FOOTER
                 const pageCount = doc.internal.getNumberOfPages();
                 for(let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
@@ -2220,14 +2455,11 @@
             });
         }
 
-        // QODOBKA 3: Handle Selection Click (Apply Black Background)
         function handleSelectionClick(btnElement, locationName) {
-            // Remove previous active classes
             document.querySelectorAll('#grid-buttons button').forEach(b => {
                 b.classList.remove('black-active');
             });
 
-            // Add new active class (Black BG defined in CSS)
             btnElement.classList.add('black-active');
 
             currentSelectedLocation = locationName;
@@ -2337,12 +2569,10 @@
             });
         }
 
-          // Kani wuxuu dhageysanayaa dhamaan button-ada ku jira Sidebar-ka
         document.querySelectorAll('#sidebar button').forEach(btn => {
             btn.addEventListener('click', () => {
-                // Haddii shaashadu tahay Mobile (ka yar 768px)
                 if (window.innerWidth < 768) {
-                    closeSidebar(); // Xir Sidebar-ka isla marka la riixo
+                    closeSidebar();
                 }
             });
         });
