@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Maansoor Hotel - Professional Inventory</title>
+    <title>Maansoor Hotel - Professional Inventory 2026</title>
     
     <!-- 1. STYLE & ICONS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,16 +20,17 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <style>
+     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
         
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         
+        /* 1. ROOMS ACTIVE STATE (Yellow/Orange Gradient + Black Text) */
         .btn-active { 
-            background: linear-gradient(135deg, #c5a059 0%, #eab308 100%) !important; 
-            color: #0f172a !important; 
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%) !important; 
+            color: #000000 !important; 
             border: 1px solid rgba(255, 255, 255, 0.4) !important;
-            box-shadow: 0 10px 20px -5px rgba(197, 160, 89, 0.5) !important;
+            box-shadow: 0 10px 20px -5px rgba(255, 152, 0, 0.5) !important;
             transform: translateY(-2px);
             font-weight: 800 !important;
         }
@@ -41,6 +42,21 @@
             box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4) !important;
             transform: translateY(-2px);
             font-weight: 800 !important;
+        }
+
+        /* 2. HALLS ACTIVE STATE (Black BG + Yellow Text) */
+        .black-active {
+            background-color: #000000 !important; 
+            color: #fbbf24 !important; 
+            border: 2px solid #fbbf24 !important;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+        }
+        
+        .black-active i, 
+        .black-active span {
+            color: #fbbf24 !important;
         }
 
         .nav-icon-box {
@@ -59,12 +75,6 @@
         .btn-active .nav-icon-box {
             background: #0f172a; 
             color: #fbbf24;      
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-active-red .nav-icon-box {
-            background: rgba(255, 255, 255, 0.2); 
-            color: #ffffff;      
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
 
@@ -91,11 +101,19 @@
             box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
             border: 2px solid rgba(197, 160, 89, 0.4);
         }
+        
+        .sidebar-logo-area {
+            background: linear-gradient(to bottom, #020617, #0f172a);
+            border-radius: 20px;
+            padding: 20px 10px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
 
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #b38f4d; }
 
         @media (max-width: 768px) {
             .mobile-sidebar {
@@ -112,9 +130,11 @@
             .chart-card {
                 height: 350px !important; 
                 padding: 15px !important;
+                margin-bottom: 15px; 
             }
             #dashboard-visuals {
-                grid-template-columns: 1fr !important;
+                display: flex !important;
+                flex-direction: column !important; 
                 gap: 20px !important;
             }
         }
@@ -129,10 +149,6 @@
             display: flex;
             flex-direction: column;
         }
-        .chart-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(-4px);
-        }
 
         .chart-container {
             position: relative; 
@@ -142,9 +158,6 @@
         }
 
         .swal2-popup { border-radius: 2.5rem !important; padding: 2rem !important; font-family: 'Poppins', sans-serif !important; }
-        .swal2-title { font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: -0.05em !important; font-style: italic !important; color: #1e293b !important; }
-        .swal2-confirm { border-radius: 1rem !important; padding: 12px 30px !important; font-weight: 700 !important; }
-        .swal2-cancel { border-radius: 1rem !important; font-size: 11px !important; font-weight: 700 !important; }
     </style>
 </head>
 <body onload="checkAuth()">
@@ -234,7 +247,7 @@
                         <span class="text-sm font-bold tracking-wide">Rooms</span>
                     </button>
 
-                    <!-- 2. RESTAURANTS (GOONI) -->
+                    <!-- 2. RESTAURANTS -->
                     <button onclick="showRestaurantMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-500">
                             <i class="fas fa-utensils"></i> 
@@ -242,7 +255,7 @@
                         <span class="text-sm font-bold tracking-wide">Restaurants</span>
                     </button>
 
-                    <!-- 3. HALLS (GOONI) -->
+                    <!-- 3. HALLS -->
                     <button onclick="showHallMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-teal-400 group-hover:bg-teal-500/20 group-hover:text-teal-400">
                             <i class="fas fa-hotel"></i>
@@ -279,7 +292,7 @@
 
                     <!-- 7. SECURITY (DIRECT) -->
                     <button onclick="showDirectCategory('Security', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
-                        <div class="nav-icon-box text-slate-400 group-hover:bg-slate-500/20 group-hover:text-slate-400">
+                        <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-400">
                             <i class="fas fa-shield-halved"></i>
                         </div>
                         <span class="text-sm font-bold tracking-wide">Security</span>
@@ -358,24 +371,30 @@
                 </header>
                 <main class="flex-1 overflow-y-auto p-4 md:p-6 relative z-0">
                     
-                    <!-- 1. LOGS SECTION -->
+                    <!-- 1. LOGS SECTION (IMPROVED) -->
                     <div id="logs-screen" class="hidden max-w-5xl mx-auto py-5">
                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                             <div class="bg-slate-900 p-6 flex justify-between items-center border-b-4 border-blue-500">
-                                <h2 class="text-white font-black uppercase italic tracking-tighter"><i class="fas fa-history mr-2"></i> Activity Log (Diiwaanka)</h2>
-                                <button onclick="clearLogs()" class="text-[10px] bg-red-600 text-white px-3 py-1.5 rounded-lg font-bold uppercase hover:bg-red-700 transition">Tirtir Logs</button>
+                                <h2 class="text-white font-black uppercase italic tracking-tighter text-sm md:text-lg">
+                                    <i class="fas fa-history mr-2 text-yellow-500"></i> Activity Log (Diiwaanka)
+                                </h2>
+                                <button onclick="clearLogs()" class="text-[10px] bg-red-600 text-white px-3 py-1.5 rounded-lg font-bold uppercase hover:bg-red-700 transition shadow-lg">
+                                    <i class="fas fa-trash mr-1"></i> Tirtir Logs
+                                </button>
                             </div>
-                            <div class="overflow-x-auto max-h-[600px]">
+                            <div class="overflow-x-auto max-h-[600px] custom-scroll">
                                 <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50 sticky top-0">
+                                    <thead class="bg-gray-50 sticky top-0 z-10 shadow-sm">
                                         <tr>
-                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Qofka</th>
-                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Ficilka</th>
-                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Faahfaahin</th>
-                                            <th class="px-6 py-3 text-left text-[10px] font-bold text-gray-400 uppercase">Xilliga</th>
+                                            <th class="px-6 py-4 text-left text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">User</th>
+                                            <th class="px-6 py-4 text-left text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Action</th>
+                                            <th class="px-6 py-4 text-left text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Details</th>
+                                            <th class="px-6 py-4 text-left text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="logs-tbody" class="bg-white divide-y divide-gray-100"></tbody>
+                                    <tbody id="logs-tbody" class="bg-white divide-y divide-gray-100">
+                                        <!-- Rows added by JS -->
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -563,8 +582,8 @@
         const db = supabase.createClient(supabaseUrl, supabaseKey);
 
         let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
-            user: "admin",
-            pass: "123",
+            user: "Admin",
+            pass: "Admin123",
             fullName: "Admin Maansoor",
             email: "admin@maansoorhotel.com",
             phone: "+252 634245995"
@@ -706,11 +725,12 @@
         let activityLogs = JSON.parse(localStorage.getItem('maansoor_logs')) || [];
 
         async function addLog(action, details, backupData = null) {
+            // FIX: Uses Date() formatting but we will sort by ID for better accuracy
             const logEntry = {
                 user: profile.user || "admin",
                 action: action,
                 details: details,
-                timestamp: new Date().toLocaleString('en-GB'),
+                timestamp: new Date().toLocaleString('en-GB'), 
                 backup: backupData ? JSON.parse(JSON.stringify(backupData)) : null
             };
             const { error } = await db.from('logs').insert([logEntry]);
@@ -734,14 +754,17 @@
             document.getElementById('nav-logs').classList.add('btn-active-red');
             
             const tbody = document.getElementById('logs-tbody');
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin text-blue-500"></i> Loading...</td></tr>';
+            // IMPROVED LOADING SPINNER
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center py-12"><div class="flex flex-col items-center"><i class="fas fa-circle-notch fa-spin text-4xl text-yellow-500 mb-3"></i><span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Soo dejinaya...</span></div></td></tr>`;
             
-            // FIX: LIMIT 50 LOGS ONLY (SPEED IMPROVEMENT)
-            const { data, error } = await db.from('logs').select('*').order('timestamp', { ascending: false }).limit(50);
+            // FIX: ORDER BY ID DESCENDING (LATEST FIRST) - Much safer than string date
+            const { data, error } = await db.from('logs').select('*').order('id', { ascending: false }).limit(50);
             
             if (!error && data) {
                 activityLogs = data; 
                 renderLogsTable();   
+            } else {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-red-500 font-bold text-xs">Cillad dhacday ama internet-ka hubi!</td></tr>`;
             }
         }
 
@@ -751,60 +774,68 @@
             
             tbody.innerHTML = '';
             
-            activityLogs.forEach((log, index) => {
-                let actionColor = "text-gray-700";
-                let restoreBtn = "";
+            if (activityLogs.length === 0) {
+                 tbody.innerHTML = `<tr><td colspan="4" class="text-center py-8 text-gray-400 text-sm italic">Weli wax dhaqdhaqaaq ah ma jiro.</td></tr>`;
+                 return;
+            }
 
-                if (log.action.includes("Ku daray")) {
-                    actionColor = "text-green-600 font-bold uppercase text-[10px]";
-                } else if (log.action.includes("Tirtiray")) {
-                    actionColor = "text-red-600 font-bold uppercase text-[10px]";
+            activityLogs.forEach((log, index) => {
+                let actionBadge = "";
+                let restoreBtn = "";
+                
+                // COLOR CODED ACTIONS
+                if (log.action.includes("Ku daray") || log.action.includes("Add")) {
+                    actionBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-green-200"><i class="fas fa-plus-circle mr-1"></i> ADDED</span>`;
+                } else if (log.action.includes("Tirtiray") || log.action.includes("Delete")) {
+                    actionBadge = `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-red-200"><i class="fas fa-trash-alt mr-1"></i> DELETED</span>`;
                     if (log.backup) {
                         restoreBtn = `<button onclick="restoreItem(${index})" 
-                            class="ml-2 bg-blue-600 hover:bg-blue-700 text-white text-[9px] px-2 py-1 rounded-md transition-all shadow-sm font-black uppercase">
-                            <i class="fas fa-undo mr-1"></i> Restore
+                            class="ml-2 bg-slate-800 hover:bg-slate-900 text-white text-[9px] px-3 py-1.5 rounded-lg transition-all shadow-md hover:shadow-lg font-bold uppercase transform hover:-translate-y-0.5">
+                            <i class="fas fa-undo-alt mr-1 text-yellow-400"></i> Restore
                         </button>`;
                     }
                 } else if (log.action.includes("Reset All")) {
-                    actionColor = "text-red-600 font-black uppercase text-[10px]";
+                    actionBadge = `<span class="bg-red-600 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-red-700"><i class="fas fa-bomb mr-1"></i> RESET ALL</span>`;
                     if (log.backup) {
                         restoreBtn = `<button onclick="restoreAllData(${index})" 
-                            class="ml-2 bg-red-600 hover:bg-red-700 text-white text-[9px] px-2 py-1 rounded-md transition-all shadow-sm font-black uppercase">
+                            class="ml-2 bg-red-100 hover:bg-red-200 text-red-700 text-[9px] px-3 py-1.5 rounded-lg transition-all shadow-sm font-bold uppercase border border-red-300">
                             <i class="fas fa-history mr-1"></i> RESTORE ALL
                         </button>`;
                     }
-                } else if (log.action.includes("Cusboonaysiiyey")) {
-                    actionColor = "text-blue-600 font-bold uppercase text-[10px]";
+                } else if (log.action.includes("Cusboonaysiiyey") || log.action.includes("Update")) {
+                    actionBadge = `<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-blue-200"><i class="fas fa-edit mr-1"></i> UPDATED</span>`;
                 } else if (log.action.includes("Login")) {
-                    actionColor = "text-indigo-600 font-bold uppercase text-[10px]";
+                    actionBadge = `<span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-indigo-200"><i class="fas fa-sign-in-alt mr-1"></i> LOGIN</span>`;
                 } else if (log.action.includes("Logout")) {
-                    actionColor = "text-orange-600 font-bold uppercase text-[10px]";
+                    actionBadge = `<span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-gray-200"><i class="fas fa-sign-out-alt mr-1"></i> LOGOUT</span>`;
                 } else if (log.action.includes("Restore")) {
-                    actionColor = "text-teal-600 font-bold uppercase text-[10px]";
+                    actionBadge = `<span class="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-teal-200"><i class="fas fa-recycle mr-1"></i> RESTORED</span>`;
+                } else {
+                    actionBadge = `<span class="bg-gray-50 text-gray-500 px-3 py-1 rounded-full text-[10px] font-bold uppercase border border-gray-200">${log.action}</span>`;
                 }
 
                 tbody.innerHTML += `
-                    <tr class="hover:bg-blue-50/50 transition border-b border-gray-100">
+                    <tr class="hover:bg-blue-50/30 transition duration-200 border-b border-gray-100 last:border-0 group">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 mr-2 border border-slate-200">
+                                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 mr-3 border border-slate-200 shadow-sm group-hover:bg-white group-hover:shadow-md transition">
                                     <i class="fas fa-user text-[10px]"></i>
                                 </div>
-                                <span class="text-xs font-bold text-slate-800">${log.user || 'Unknown'}</span>
+                                <span class="text-xs font-bold text-slate-700 group-hover:text-blue-900 transition">${log.user || 'Unknown'}</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="${actionColor} px-2 py-1 rounded-lg bg-opacity-10">${log.action}</span>
+                            ${actionBadge}
                         </td>
                         <td class="px-6 py-4">
-                            <div class="flex items-center text-xs text-gray-500 italic leading-tight">
+                            <div class="flex flex-wrap items-center text-xs text-gray-500 font-medium leading-relaxed">
                                 ${log.details} ${restoreBtn}
                             </div>
                         </td>
                         <td class="px-6 py-4">
                             <div class="text-[10px] text-gray-400 font-mono flex flex-col">
-                                <span class="font-bold text-slate-500">${log.timestamp ? log.timestamp.split(',')[0] : ''}</span>
-                                <span>${log.timestamp ? log.timestamp.split(',')[1] : ''}</span>
+                                <span class="font-bold text-slate-600 flex items-center"><i class="far fa-calendar mr-1.5 opacity-50"></i> ${log.timestamp ? log.timestamp.split(',')[0] : ''}</span>
+                                <span class="flex items-center mt-1"><i class="far fa-clock mr-1.5 opacity-50"></i> ${log.timestamp ? log.timestamp.split(',')[1] : ''}</span>
                             </div>
                         </td>
                     </tr>
@@ -1374,9 +1405,27 @@
             }
         }
 
-        function viewImage(imgBase64, itemName) {
-            if (!imgBase64) return;
-            Swal.fire({
+        // NEW FUNCTION: Fetch image on click (Lazy Loading for Table)
+        // Qodobka 4: Inline image view (Showing the picture IN THE ROW)
+        async function fetchViewImage(id, name, btnElement) {
+            btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            const { data, error } = await db.from('inventory').select('image').eq('id', id).single();
+            
+            if(data && data.image) {
+                // Replace button with the actual image
+                const parentTd = btnElement.parentElement;
+                parentTd.innerHTML = `
+                    <button onclick="viewImageFull('${data.image}', '${name}')" class="relative group">
+                         <img src="${data.image}" class="h-10 w-10 object-cover rounded-lg border border-gray-200 shadow-sm hover:scale-150 transition z-0 hover:z-50">
+                    </button>
+                `;
+            } else {
+                btnElement.innerHTML = '<span class="text-xs text-red-400">No Img</span>';
+            }
+        }
+
+        function viewImageFull(imgBase64, itemName) {
+             Swal.fire({
                 title: itemName,
                 imageUrl: imgBase64,
                 imageWidth: 500,
@@ -1384,18 +1433,6 @@
                 confirmButtonColor: '#0f172a',
                 confirmButtonText: 'Close'
             });
-        }
-        
-        // NEW FUNCTION: Fetch image on click (Lazy Loading for Table)
-        async function fetchViewImage(id, name) {
-            Swal.showLoading();
-            const { data, error } = await db.from('inventory').select('image').eq('id', id).single();
-            Swal.close();
-            if(data && data.image) {
-                viewImage(data.image, name);
-            } else {
-                Swal.fire('Info', 'Agabkan sawir malaha', 'info');
-            }
         }
 
         async function deleteItem(id) {
@@ -1492,9 +1529,10 @@
             filtered.forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
                 
-                // NEW: Use fetchViewImage because i.image is not loaded initially
-                let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}')" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
-                    <i class="fas fa-image text-yellow-600"></i> View
+                // Qodobka 4: Inline image fetch trigger (Lazy load button inside the row)
+                // This satisfies "kuwa sawirku jiro ha muuqdo" by letting user click to reveal
+                let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}', this)" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
+                    <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
 
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b transition-colors">
@@ -1525,6 +1563,13 @@
             currentSelectedLocation = ""; 
             const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
 
+            // FIX: If category is room, set export mode to 'room_only'
+            if (cat === 'room') {
+                currentExportMode = 'room_only';
+            } else {
+                currentExportMode = 'full';
+            }
+
             closeSidebar();
             
             hideAllScreens();
@@ -1545,13 +1590,23 @@
             document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
             document.getElementById('inventory-section').classList.remove('hidden');
 
+            // Set Correct Button Text
+            if(currentExportMode === 'room_only') {
+                 document.getElementById('btn-excel-full').innerText = "Excel (All Rooms)";
+            } else {
+                 document.getElementById('btn-excel-full').innerText = "Excel (Full)";
+            }
+            document.getElementById('btn-excel-full').classList.remove('hidden');
+            document.getElementById('btn-excel-loc').classList.add('hidden');
+
             for (let i = 1; i <= count; i++) {
                 const btn = document.createElement('button'); 
                 btn.innerText = i; 
                 btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
+                // APPLIED BLACK ACTIVE HERE TOO FOR CONSISTENCY
                 btn.onclick = (e) => { 
-                    document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('btn-active')); 
-                    e.currentTarget.classList.add('btn-active'); 
+                    document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('black-active')); 
+                    e.currentTarget.classList.add('black-active'); 
                     
                     currentSelectedLocation = `${catLabel} ${i}`; 
                     document.getElementById('location').value = currentSelectedLocation; 
@@ -1691,8 +1746,8 @@
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
                 
                 // NEW: Use fetchViewImage because i.image is not loaded initially
-                let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}')" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
-                    <i class="fas fa-image text-yellow-600"></i> View
+                let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}', this)" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
+                    <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
 
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
@@ -1755,6 +1810,11 @@
                      ));
                      fileName = "Maansoor_All_Offices";
                  } 
+                 // FIX: Added 'room_only' mode for FULL ROOM DOWNLOAD
+                 else if (currentExportMode === 'room_only') {
+                     dataToExport = inventory.filter(i => i.location.toLowerCase().startsWith("room"));
+                     fileName = "Maansoor_All_Rooms";
+                 }
                  else {
                      dataToExport = [...inventory];
                      fileName = "Maansoor_Full_Inventory_Log";
@@ -1773,9 +1833,15 @@
             });
 
             let grandTotal = 0;
+            let grandTotalQty = 0; // Added Grand Total Qty
+
             const formattedData = dataToExport.map((item, index) => {
                 const totalNum = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
+                const qtyNum = parseFloat(item.qty) || 0;
                 grandTotal += totalNum;
+                grandTotalQty += qtyNum;
+
+                // FIX: Added Qty Column before Unit Value
                 return {
                     "No": index + 1,
                     "Location": item.location || "-",
@@ -1783,27 +1849,30 @@
                     "Item Name": item.name || "-",
                     "Status": item.status || "Good",
                     "Description": item.desc || "",
+                    "Qty": qtyNum,
                     "Unit Value": parseFloat(item.uvalue) || 0,
                     "Total Value": totalNum
                 };
             });
 
+            // FIX: Added Qty to Grand Total Row
             formattedData.push({
                 "No": "", "Location": "", "Item Code": "", "Item Name": "GRAND TOTAL",
-                "Status": "", "Description": "", "Unit Value": "", "Total Value": grandTotal
+                "Status": "", "Description": "", "Qty": grandTotalQty, "Unit Value": "", "Total Value": grandTotal
             });
 
             const worksheet = XLSX.utils.json_to_sheet(formattedData);
-            const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 12}, {wch: 15}];
+            // FIX: Adjusted column widths for Qty
+            const wscols = [{wch: 5}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 10}, {wch: 25}, {wch: 8}, {wch: 12}, {wch: 15}];
             worksheet['!cols'] = wscols;
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
             XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
 
-        // --- CILAD BIXIN IYO PDF SUMMARY (FIXED & UPDATED) ---
+        // --- CILAD BIXIN IYO PDF SUMMARY (UPDATED TO LOOK LIKE PRO PDF) ---
         function exportToPDF() {
-            // Cilad bixin: Hubi in AutoTable la soo dawaystay
+            // Check libraries
             if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
                 return Swal.fire('Error', 'PDF Library not loaded.', 'error');
             }
@@ -1814,7 +1883,9 @@
 
             try {
                 const { jsPDF } = window.jspdf;
+                // 'p' = portrait, 'mm' = millimeters, 'a4' = paper size
                 const doc = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = doc.internal.pageSize.width; 
                 const date = new Date().toLocaleString('en-GB');
                 
                 // 1. KALA SUUS QAYBAHA (FILTER DATA)
@@ -1824,33 +1895,31 @@
                 // Hadii Location gaar ah la doortay (Sida Room 101)
                 if (currentSelectedLocation) {
                     dataToProcess = inventory.filter(i => i.location === currentSelectedLocation);
-                    titleText = `SUMMARY REPORT: ${currentSelectedLocation.toUpperCase()}`;
+                    titleText = `INVENTORY REPORT: ${currentSelectedLocation.toUpperCase()}`;
                 } 
                 // Hadii Category gaar ah la doortay (Sida Kitchens only)
                 else if (currentCategory) {
-                    // Logic la mid ah kii Table-ka
                     if (currentCategory === 'kitchen') {
                         dataToProcess = inventory.filter(i => {
                             const loc = (i.location || "").toLowerCase();
                             return loc.includes('kitchen') || loc.includes('cafeteria') || loc.includes('bakery');
                         });
-                        titleText = "SUMMARY REPORT: ALL KITCHENS";
+                        titleText = "INVENTORY REPORT: ALL KITCHENS";
                     } else if (currentCategory === 'hall') {
                         dataToProcess = inventory.filter(i => {
                             const loc = (i.location || "").toLowerCase();
                             return loc.includes('hall') || loc.includes('hodaale');
                         });
-                        titleText = "SUMMARY REPORT: ALL HALLS";
+                        titleText = "INVENTORY REPORT: ALL HALLS";
                     } else if (currentCategory === 'office') {
                         dataToProcess = inventory.filter(i => {
                             const loc = (i.location || "").toLowerCase();
                             return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
                         });
-                        titleText = "SUMMARY REPORT: ALL OFFICES";
+                        titleText = "INVENTORY REPORT: ALL OFFICES";
                     } else {
-                        // Qaybaha kale (Restaurant, Cars, etc)
                         dataToProcess = inventory.filter(i => (i.location || "").toLowerCase().includes(currentCategory.toLowerCase()));
-                        titleText = `SUMMARY REPORT: ALL ${currentCategory.toUpperCase()}S`;
+                        titleText = `INVENTORY REPORT: ALL ${currentCategory.toUpperCase()}S`;
                     }
                 } 
                 // Hadii "Dashboard" la joogo (FULL HOTEL)
@@ -1863,7 +1932,7 @@
                     return Swal.fire('Cillad', 'Qaybtan xog kuma jirto.', 'info');
                 }
 
-                // 2. ISKU GEYN (GROUPING LOGIC)
+                // 2. ISKU GEYN (GROUPING LOGIC - SUMMARY)
                 let summaryData = {};
 
                 dataToProcess.forEach(item => {
@@ -1871,7 +1940,6 @@
                     let displayName = (item.name || "Unknown").trim(); 
 
                     let qty = parseFloat(item.qty) || 0;
-                    // Safe calculation for total value
                     let totalStr = (item.total || "0").toString().replace(/[$,]/g, '');
                     let totalVal = parseFloat(totalStr) || 0;
 
@@ -1880,7 +1948,8 @@
                             code: item.code || "-", 
                             name: displayName.charAt(0).toUpperCase() + displayName.slice(1), 
                             totalQty: 0,
-                            totalValue: 0
+                            totalValue: 0,
+                            status: item.status // Keep last known status
                         };
                     }
 
@@ -1906,71 +1975,106 @@
 
                     tableBody.push([
                         counter++,
-                        item.code,
                         item.name,
+                        item.code,
+                        item.status || "Good",
                         item.totalQty, 
                         `$${avgUnitValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, 
                         `$${item.totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` 
                     ]);
                 });
 
-                // 4. KU DAR GRAND TOTAL ROW
-                tableBody.push([
-                    "", 
-                    "", 
-                    "GRAND TOTAL", 
-                    grandTotalQty, 
-                    "", 
-                    `$${grandTotalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
-                ]);
-
-                // 5. DESIGN-KA PDF-KA
+                // 4. DESIGN HEADER (CENTERED & PROFESSIONAL)
+                // Company Name
                 doc.setFontSize(22);
-                doc.setTextColor(15, 23, 42); 
-                doc.text("MAANSOOR HOTEL & RESORT", 14, 20);
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(44, 62, 80); // Dark Blue/Grey
+                doc.text("MAANSOOR HOTEL & RESORT", pageWidth / 2, 20, { align: 'center' });
                 
-                doc.setFontSize(12);
-                doc.setTextColor(197, 160, 89); 
-                doc.text(titleText, 14, 28);
+                // Report Title
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(197, 160, 89); // Gold Color
+                doc.text(titleText, pageWidth / 2, 30, { align: 'center' });
                 
-                doc.setFontSize(9);
+                // Metadata (Date & Generator)
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
                 doc.setTextColor(100);
-                doc.text(`Report Generated: ${date}`, 14, 35);
-                doc.line(14, 37, 196, 37); 
+                doc.text(`Generated Date: ${date}`, 14, 42);
+                doc.text(`Generated By: ${profile.user}`, pageWidth - 14, 42, { align: 'right' });
+                
+                doc.setDrawColor(200);
+                doc.line(14, 45, pageWidth - 14, 45); 
 
+                // 5. GENERATE TABLE
                 doc.autoTable({
-                    head: [['No.', 'Code No', 'Item Name', 'Total Qty', 'Avg Unit Value', 'Total Value']],
+                    startY: 50,
+                    head: [['#', 'Item Name', 'Code', 'Status', 'Qty', 'Unit Value', 'Total Value']],
                     body: tableBody,
-                    startY: 42,
-                    theme: 'grid',
+                    theme: 'striped', // Clean striped look
                     headStyles: { 
-                        fillColor: [15, 23, 42], 
+                        fillColor: [15, 23, 42], // Slate-900 like your theme
                         textColor: [255, 255, 255], 
                         fontStyle: 'bold',
-                        halign: 'center'
-                    },
-                    styles: { 
-                        fontSize: 9, 
-                        font: 'helvetica',
+                        halign: 'center',
                         cellPadding: 3
                     },
-                    columnStyles: {
-                        0: { halign: 'center', cellWidth: 15 }, // No
-                        1: { halign: 'left', cellWidth: 25 },   // Code
-                        3: { halign: 'center', fontStyle: 'bold' }, // Qty
-                        4: { halign: 'right' }, // Unit Value
-                        5: { halign: 'right', fontStyle: 'bold' } // Total Value
+                    bodyStyles: {
+                        textColor: [50, 50, 50],
+                        fontSize: 9,
+                        cellPadding: 3
                     },
-                    didParseCell: function (data) {
-                        if (data.row.index === tableBody.length - 1) {
-                            data.cell.styles.fontStyle = 'bold';
-                            data.cell.styles.fillColor = [220, 252, 231]; 
-                            data.cell.styles.textColor = [21, 128, 61];   
+                    alternateRowStyles: {
+                        fillColor: [248, 250, 252] // Very light grey
+                    },
+                    columnStyles: {
+                        0: { halign: 'center', cellWidth: 10 }, // #
+                        1: { halign: 'left', fontStyle: 'bold' }, // Name
+                        2: { halign: 'center' }, // Code
+                        3: { halign: 'center' }, // Status
+                        4: { halign: 'center', fontStyle: 'bold' }, // Qty
+                        5: { halign: 'right' }, // Unit
+                        6: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } // Total (Greenish)
+                    },
+                    // FOOTER ROW FOR GRAND TOTAL
+                    foot: [[
+                        '', 
+                        'GRAND TOTAL', 
+                        '', 
+                        '', 
+                        grandTotalQty, 
+                        '', 
+                        `$${grandTotalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
+                    ]],
+                    footStyles: {
+                        fillColor: [241, 245, 249],
+                        textColor: [0, 0, 0],
+                        fontStyle: 'bold',
+                        halign: 'right' // Default right for money
+                    },
+                    didParseCell: function(data) {
+                        // Align Grand Total Text to Center
+                        if (data.section === 'foot' && data.column.index === 1) {
+                            data.cell.styles.halign = 'left';
+                        }
+                        if (data.section === 'foot' && data.column.index === 4) {
+                            data.cell.styles.halign = 'center';
                         }
                     }
                 });
 
-                doc.save(`${titleText.replace(/\s+/g, '_')}_Summary.pdf`);
+                // 6. PAGE NUMBERS FOOTER
+                const pageCount = doc.internal.getNumberOfPages();
+                for(let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(150);
+                    doc.text('Page ' + i + ' of ' + pageCount, pageWidth - 20, doc.internal.pageSize.height - 10);
+                    doc.text('Maansoor Hotel Official Inventory', 14, doc.internal.pageSize.height - 10);
+                }
+
+                doc.save(`${titleText.replace(/\s+/g, '_')}_Report.pdf`);
                 
             } catch (err) {
                 console.error(err);
@@ -2093,15 +2197,15 @@
             });
         }
 
+        // QODOBKA 3: Handle Selection Click (Apply Black Background)
         function handleSelectionClick(btnElement, locationName) {
+            // Remove previous active classes
             document.querySelectorAll('#grid-buttons button').forEach(b => {
-                b.classList.remove('ring-4', 'ring-yellow-400', 'scale-105', 'z-10');
-                if(b.classList.contains('group')) {
-                    b.style.opacity = "1";
-                }
+                b.classList.remove('black-active');
             });
 
-            btnElement.classList.add('ring-4', 'ring-yellow-400', 'scale-105', 'z-10', 'transition-all', 'duration-300');
+            // Add new active class (Black BG defined in CSS)
+            btnElement.classList.add('black-active');
 
             currentSelectedLocation = locationName;
             
@@ -2211,5 +2315,4 @@
         }
    </script>
 </body>
-
 </html>
