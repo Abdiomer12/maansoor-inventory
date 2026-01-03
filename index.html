@@ -25,7 +25,7 @@
         
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         
-        /* 1. ROOMS ACTIVE STATE (Yellow/Orange Gradient + Black Text) */
+        /* 1. ROOMS ACTIVE STATE */
         .btn-active { 
             background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%) !important; 
             color: #000000 !important; 
@@ -44,7 +44,7 @@
             font-weight: 800 !important;
         }
 
-        /* 2. HALLS ACTIVE STATE (Black BG + Yellow Text) */
+        /* 2. HALLS ACTIVE STATE */
         .black-active {
             background-color: #000000 !important; 
             color: #fbbf24 !important; 
@@ -102,15 +102,6 @@
             border: 2px solid rgba(197, 160, 89, 0.4);
         }
         
-        .sidebar-logo-area {
-            background: linear-gradient(to bottom, #020617, #0f172a);
-            border-radius: 20px;
-            padding: 20px 10px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
@@ -118,19 +109,18 @@
         @media (max-width: 768px) {
             .mobile-sidebar {
                 position: fixed;
-                left: -100%; /* Wuu qarsoon yahay marka hore */
+                left: -100%;
                 top: 0;
                 bottom: 0;
-                width: 280px; /* Wuxuu qaadanayaa qayb yar oo shaashadda ah */
-                z-index: 9999; /* Wuxuu ka saramarayaa wax walba */
+                width: 280px; 
+                z-index: 9999; 
                 transition: all 0.3s ease-in-out;
                 box-shadow: 5px 0 15px rgba(0,0,0,0.5);
             }
             .mobile-sidebar.open { 
-                left: 0; /* Marka la furo wuu soo galayaa */
+                left: 0; 
             }
             
-            /* Button-ka Menu-ga wuxuu noqonayaa mid muuqda */
             .menu-toggle-btn {
                 z-index: 10000;
             }
@@ -143,7 +133,6 @@
                 margin-bottom: 15px; 
             }
             
-            /* CILAD XALIN: Waxan ku daray :not(.hidden) si graph-ku u qarsoomo marka hidden class lagu daro */
             #dashboard-visuals:not(.hidden) {
                 display: flex !important;
                 flex-direction: column !important; 
@@ -675,7 +664,7 @@
             phone: "+252 634245995"
         };
         
-        // --- 1. NEW DATA STRUCTURE FOR ROOMS (Fixed Spelling & Auto Data) ---
+        // --- 1. DATA STRUCTURES (Updated with PDF Content) ---
         const roomItemsDB = {
             "Bed Single": { code: "B1", price: 550.00, year: "2018", desc: "Sariir Hal Nafar ah" },
             "Bed Double": { code: "B1", price: 1100.00, year: "2018", desc: "Sariir laba Nafar ah" },
@@ -716,7 +705,6 @@
             "Wall mounted Air-condition": { code: "W6", price: 350.00, year: "2018", desc: "Aircondition - Qolalka" }
         };
 
-        // --- NEW: HALL ITEMS DB (From OCR) ---
         const hallItemsDB = {
             "Speakers Large Audio Concert": { code: "A1", price: 300.00, year: "2018", desc: "Sameecadaha Hoolasha" },
             "Speakers Small": { code: "A1", price: 150.00, year: "2012", desc: "Small Speaker" },
@@ -775,7 +763,111 @@
             "Hotel cleaning kits": { code: "HA", price: 25.00, year: "2020", desc: "Agabka ay ku shaqeeyaan Hablaha" }
         };
 
-        let activeRoomNumber = "0000"; // Holds current active room code
+        const kitchenItemsDB = {
+            "Charcoal Grill, Gas": { code: "M1", price: 1200.00, year: "2011", desc: "Heating By Steel Burners With Temp. Regulators" },
+            "Chicken Grill - Roller Grill": { code: "M7", price: 1200.00, year: "2011", desc: "Chicken Grill Machine (Electric & Gas)" },
+            "Cooking range (gas) 6 burners": { code: "M2", price: 1500.00, year: "2011", desc: "Name: Imperial, Model COK-IR6-USA" },
+            "Fries Maachine (Laba Khaanad)": { code: "M4", price: 450.00, year: "2020", desc: "electric deep fryer french fries machine" },
+            "Kitchen Metal Utility Trolley 2 Shelves": { code: "K1", price: 300.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" },
+            "Kitchen Metal Utility Trolley 3 Shelves": { code: "K1", price: 400.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" },
+            "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" },
+            "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" },
+            "Kitchen Wooden Tables 140x70": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 140x70x70cm" },
+            "Kitchen Wooden Tables 240x80": { code: "K3", price: 240.00, year: "2011", desc: "Wooden Preparation Tables 240x80x80cm" },
+            "Kitchen Wooden Tables 65x65": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" },
+            "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" },
+            "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" },
+            "Pizza Oven - Large": { code: "M5", price: 1200.00, year: "2011", desc: "Pizza Oven (Electric), 2 Deck, Table top" },
+            "Refrigerator Chest freezer double": { code: "R8", price: 700.00, year: "2016", desc: "Haier. Model, HCF368H-2. Capacity: 51Kg" },
+            "Refrigerator Chest freezer single": { code: "R4", price: 480.00, year: "2015", desc: "Talagad Jiifa" },
+            "Refrigerator Glass door Fridge": { code: "R5", price: 700.00, year: "2015", desc: "Model, MUC-440M. Capacity: 68Kg" },
+            "Refrigerator Steel Double door": { code: "R6", price: 1500.00, year: "2015", desc: "UAE - Al-halabi" },
+            "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm. Brand: Roller Grill" },
+            "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm. Brand: Roller Grill" },
+            "Water heater": { code: "W4", price: 125.00, year: "2012", desc: "Wall mounted Electric heater" },
+            "6sppons, 6forks, 6small spoons": { code: "KU", price: 4.00, year: "2018", desc: "malqacado all steel" },
+            "Biifay (Chanfing dish)": { code: "KU", price: 37.00, year: "2018", desc: "chanfing dish" },
+            "Candy ball large": { code: "KU", price: 25.00, year: "2018", desc: "candy ball large" },
+            "Cups quraarada": { code: "KU", price: 2.50, year: "2018", desc: "Koobabka Quraarada ah" },
+            "Cups biyaha gees": { code: "KU", price: 1.16, year: "2018", desc: "koobabka biyaha gees" },
+            "Dusuud No.6": { code: "KU", price: 155.00, year: "2018", desc: "dusuud no. 9 (every six pcs are one set)" },
+            "Dusuud No.9": { code: "KU", price: 200.00, year: "2018", desc: "dusuud no. 6 (every six pcs are one set)" },
+            "Dusuud Normal": { code: "KU", price: 32.00, year: "2018", desc: "Dusuud godan & Caadi ah" },
+            "Every 3pcs are one set": { code: "KU", price: 28.00, year: "2018", desc: "kulaylisooyin" },
+            "Faashash": { code: "KU", price: 5.50, year: "2018", desc: "faashash" },
+            "Falaas Naqas": { code: "KU", price: 30.00, year: "2018", desc: "Falaash Shaah Naqas / Seminaar" },
+            "Glass tea pot Glass": { code: "KU", price: 13.00, year: "2018", desc: "Chinese Glass tea cups" },
+            "Glass tea pot Steel": { code: "KU", price: 8.00, year: "2018", desc: "Kildhiyada Yaryar ee Shaaha lagu shubo" },
+            "Glass water jug": { code: "KU", price: 5.00, year: "2018", desc: "jeegag quraarad ah" },
+            "Kildhi Shaaha 32": { code: "KU", price: 25.00, year: "2018", desc: "kilaadhi jandi ah 32" },
+            "Kildhi Shaaha 29": { code: "KU", price: 19.00, year: "2018", desc: "kilaadhi jandi ah 29" },
+            "Koobabka shaah dhobo": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah dhobo" },
+            "Koobabka shaah dhobo s.s": { code: "KU", price: 2.33, year: "2018", desc: "Koobabka shaah dhobo s.s" },
+            "Koobabka shaah quraarad": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah quraarad" },
+            "Macaan dhobo ah": { code: "KU", price: 2.00, year: "2018", desc: "macaan dhobo ah" },
+            "Macaan france ah": { code: "KU", price: 3.50, year: "2018", desc: "macaan france ah" },
+            "Macan quraarad ice ceram": { code: "KU", price: 2.33, year: "2018", desc: "macan quraarad ice ceram" },
+            "Madiibado gees ah dobool leh": { code: "KU", price: 2.00, year: "2018", desc: "madiibado gees ah dobool leh" },
+            "Malaas waawayn": { code: "KU", price: 10.00, year: "2018", desc: "malaas waawayn" },
+            "Maqliyo steel culus": { code: "KU", price: 18.00, year: "2018", desc: "maqliyo steel culus" },
+            "Mindiyo waaweyn": { code: "KU", price: 1.50, year: "2018", desc: "mindiyo waaweyn" },
+            "O-shaped plate Large": { code: "KU", price: 4.00, year: "2018", desc: "biledho qado gool ah, waaweyn" },
+            "O-shaped plate Medium": { code: "KU", price: 3.00, year: "2018", desc: "biledho qado gool ah dhexe" },
+            "O-shaped plate small": { code: "KU", price: 2.00, year: "2018", desc: "biledho qado gool ah yaryar" },
+            "Oil despenser and sugar pot": { code: "KU", price: 9.30, year: "2018", desc: "oil despenser and sugar pot" },
+            "Pizza plate weyn": { code: "KU", price: 8.00, year: "2018", desc: "pizza plate waaweyn" },
+            "Pizza plate dhexe": { code: "KU", price: 5.00, year: "2018", desc: "pizza plate dhexe" },
+            "Pizza plate yar": { code: "KU", price: 4.00, year: "2018", desc: "pizza plate yaryar" },
+            "Water Jug jaandi": { code: "KU", price: 2.00, year: "2018", desc: "Jeegaga Jaandiga ah" },
+            "Plates geeska jabiska": { code: "KU", price: 2.16, year: "2018", desc: "Suxuunta, geeska jabiska" },
+            "Shaandho Miiro Baasto": { code: "KU", price: 7.00, year: "2018", desc: "Shaandho Miiro Baasto" },
+            "Shaandho Miiro Jabis": { code: "KU", price: 3.00, year: "2018", desc: "Shaandho Miiro Jabis" },
+            "Shaandho Miiro Saanbuuse": { code: "KU", price: 9.00, year: "2018", desc: "Shaandho Miiro Saanbuuse" },
+            "Shaandho Miiro Sharaab": { code: "KU", price: 4.00, year: "2018", desc: "Shaandho Miiro Sharaab" },
+            "Suxuun dhar jandi": { code: "KU", price: 11.00, year: "2018", desc: "suxuun dhar jandi" },
+            "Suxuunta Cake- Wareega": { code: "KU", price: 4.00, year: "2018", desc: "Suxuunta Cake- Wareega" },
+            "Trays All Steel": { code: "KU", price: 9.00, year: "2018", desc: "try steel (Waaweyn, dhexe & Yaryar)" },
+            "Try caag loxoox": { code: "KU", price: 2.00, year: "2018", desc: "caag loxoox" },
+            "Mixed Utensils": { code: "KU", price: 2000.00, year: "2018", desc: "Weel wax lagu kariyo oo daadsan, Xabad Xabad ah oo jajaban" },
+            "Ushaped plate Large": { code: "KU", price: 7.00, year: "2018", desc: "huudhi waaweyn" },
+            "Ushaped plate Medium": { code: "KU", price: 5.00, year: "2018", desc: "huudhi dhexe" },
+            "Ushaped plate Small": { code: "KU", price: 4.00, year: "2018", desc: "huudhi yaryar" }
+        };
+
+        const bakeryItemsDB = {
+            "Aluminium baking tray": { code: "B4", price: 15.00, year: "2011", desc: "40*60cm square bakery aluminium baking tray" },
+            "Bakery Kitchen UTENSILS": { code: "B6", price: 200.00, year: "2011", desc: "Agabka yaryar ee lagu shaqeeyo Bakeryga" },
+            "Cake, Magic Marble": { code: "B1", price: 20.00, year: "2018", desc: "Magic Marble Cake Stand black" },
+            "Electric Oven Bread Bakery": { code: "B5", price: 1500.00, year: "2011", desc: "D1-Oven. Model: HBL-40, Power 13.2Kw" },
+            "Fan Wall mounted": { code: "F3", price: 32.00, year: "2012", desc: "Maraxwada Gidaarka ku Xidhan" },
+            "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" },
+            "Kitchen Spring Scale 25Kg": { code: "B2", price: 30.00, year: "2012", desc: "Name: Camry, Model: J2012157363" },
+            "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" },
+            "Kitchen Wooden Tables 65x65": { code: "K3", price: 65.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" },
+            "Mixer High Capacity dough": { code: "B3", price: 1100.00, year: "2011", desc: "Electric Mixer, Model B20-B, Dcapacity 2-4Kg" },
+            "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" },
+            "Refrigerator Chest freezer": { code: "R7", price: 600.00, year: "2015", desc: "Talagad Jiifa" },
+            "Refrigerator Glass door Fridge": { code: "R4", price: 700.00, year: "2015", desc: "Model, FC/LD60A. Capacity: 380L" },
+            "Refrigerator Large Fridge": { code: "R3", price: 800.00, year: "2015", desc: "NAME: GA, Model TBG15BARWM, Capacity 142Kg" },
+            "Refrigerator Small Fridge": { code: "R2", price: 250.00, year: "2015", desc: "Talagada VIP Rooms" },
+            "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm" },
+            "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" }
+        };
+
+        const cafeteriaItemsDB = {
+            "Coffee Machines": { code: "M8", price: 3500.00, year: "2012", desc: "ellesse cupachine machine" },
+            "ICE CREAM, UTENSILS": { code: "I4", price: 200.00, year: "2015", desc: "Like, Scope etc (SETS)" },
+            "Ice Cream, Refrigerator Display": { code: "I1", price: 1400.00, year: "2015", desc: "Super King: Ice Cream Freezers scooping cabinet" },
+            "Kitchen Pot Rack": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" },
+            "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" },
+            "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" },
+            "Refrigerator Chest freezer": { code: "R8", price: 700.00, year: "2015", desc: "Talagad Jiifa" },
+            "Refrigerator Display Counter": { code: "R12", price: 2000.00, year: "2015", desc: "Refrigerator Display Freezer Counter Cake" },
+            "Refrigerator Glass door Fridge": { code: "R5", price: 960.00, year: "2015", desc: "Talagada Sharaabka ee Cafateria taala" },
+            "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" }
+        };
+
+        let activeRoomNumber = "0001"; // Holds current active room code
 
         function handleLogin() {
             const uInput = document.getElementById('username').value.trim();
@@ -1397,7 +1489,6 @@
             return res; 
         }
 
-        // NEW FUNCTION: Calculate Age
         function calculateAge() {
             const purchaseDateVal = document.getElementById('purchase_date').value;
             const ageInput = document.getElementById('item_age');
@@ -1418,12 +1509,10 @@
                 months += 12;
             }
             
-            // Adjust months if days are negative
             if (today.getDate() < purchaseDate.getDate()) {
                  months--;
                  if (months < 0) {
                      months += 12;
-                     // Don't double subtract year as it's handled by logic above
                  }
             }
 
@@ -1443,8 +1532,10 @@
         const categoryItemsDB = {
             "ROOM": Object.keys(roomItemsDB),
             "HALL": Object.keys(hallItemsDB),
-            "CAFETERIA": ["Talagad", "Makiinada Bunka", "Computer System", "Shoolad", "Kildhi", "Koobab", "Jeegag", "Tarayaal", "Saxamo"],
-            "BAKERY": ["Foorno", "Makiinada Cajiinka", "Laayli", "Daawa", "Bur", "Saliid"],
+            "RESTAURANT": Object.keys(hallItemsDB),
+            "CAFETERIA": Object.keys(cafeteriaItemsDB),
+            "BAKERY": Object.keys(bakeryItemsDB),
+            "KITCHEN": Object.keys(kitchenItemsDB),
             "OFFICE": ["Xafiis (Desk)", "Kursi (Chair)", "Computer", "Printer", "File Cabinet", "AC", "Telephone", "Shelf"]
         };
 
@@ -1504,47 +1595,104 @@
             }
         }
 
+        // --- NEW: Helper to Calculate Sequential Number ---
+        function calcNextSequence(itemName, categoryPrefix) {
+            // Filter inventory for similar items (same name or code base)
+            const similarItems = inventory.filter(i => 
+                (i.name === itemName || (i.code && i.code.includes(categoryPrefix))) 
+            );
+
+            // Sum up existing quantities
+            let totalQty = similarItems.reduce((sum, item) => sum + (parseFloat(item.qty) || 0), 0);
+            
+            // Next start number is Total + 1
+            let nextStart = totalQty + 1;
+            
+            return nextStart.toString().padStart(4, '0');
+        }
+
         function selectItem(val) {
             document.getElementById('name').value = val;
             document.getElementById('custom-dropdown-list').classList.add('hidden');
+            const cat = getCurrentCategoryKey();
 
-            // --- 2. NEW ID GENERATION LOGIC ---
-            // If we are in "ROOMS" category and the item exists in our DB
-            if (currentCategory.toLowerCase() === 'room' && roomItemsDB[val]) {
-                const data = roomItemsDB[val]; // e.g. B1
-                // Generate: RA + ShortCode + RoomNumber
+            // --- REFACTORED SELECTION LOGIC ---
+            
+            if (cat === 'ROOM' && roomItemsDB[val]) {
+                const data = roomItemsDB[val]; 
                 const fullID = `RA-${data.code}-${activeRoomNumber}`;
                 document.getElementById('code').value = fullID;
-                
-                // Auto Fill Price
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                
-                // Auto Fill Purchase Date (YYYY-01-01)
                 document.getElementById('purchase_date').value = `${data.year}-01-01`;
-
-                // Auto Fill Description
                 document.getElementById('desc').value = data.desc;
-                
-                // Trigger calculations
                 calculate(); 
                 calculateAge();
-            } else if (currentCategory.toLowerCase() === 'hall' && hallItemsDB[val]) {
-                const data = hallItemsDB[val]; // e.g. A1
-                // Generate: H + ShortCode + HallNumber (activeRoomNumber holds both room and hall IDs)
-                const fullID = `H-${data.code}-${activeRoomNumber}`;
+            } 
+            else if (cat === 'HALL' && hallItemsDB[val]) {
+                const data = hallItemsDB[val];
+                // Halls logic: Count qty for next sequence
+                const nextSeq = calcNextSequence(val, `H-${data.code}`);
+                const fullID = `H-${data.code}-${nextSeq}`;
+                
                 document.getElementById('code').value = fullID;
-                
-                // Auto Fill Price
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                
-                // Auto Fill Purchase Date
                 document.getElementById('purchase_date').value = `${data.year}-01-01`;
-                
-                // Auto Fill Description
                 document.getElementById('desc').value = data.desc;
-                
-                // Trigger calculations
                 calculate(); 
+                calculateAge();
+            }
+            // --- NEW: RESTAURANT LOGIC (Same data as Hall but distinct code) ---
+            else if (cat === 'RESTAURANT' && hallItemsDB[val]) {
+                const data = hallItemsDB[val];
+                // Restaurant logic: Count qty for next sequence
+                const nextSeq = calcNextSequence(val, `RES-${data.code}`);
+                const fullID = `RES-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // --- NEW: KITCHEN LOGIC (KE-code-0001) ---
+            else if (cat === 'KITCHEN' && kitchenItemsDB[val]) {
+                const data = kitchenItemsDB[val];
+                // Sequence logic: Count existing qty of this item to get next ID
+                const nextSeq = calcNextSequence(val, `KE-${data.code}`);
+                const fullID = `KE-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('desc').value = data.desc;
+                calculate();
+                calculateAge();
+            }
+            // --- NEW: BAKERY LOGIC (KE-code-0001) ---
+            else if (cat === 'BAKERY' && bakeryItemsDB[val]) {
+                const data = bakeryItemsDB[val];
+                const nextSeq = calcNextSequence(val, `KE-${data.code}`);
+                const fullID = `KE-${data.code}-${nextSeq}`; // Uses KE as requested, but distinct from Kitchen items
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('desc').value = data.desc;
+                calculate();
+                calculateAge();
+            }
+            // --- NEW: CAFETERIA LOGIC (KE-code-0001) ---
+            else if (cat === 'CAFETERIA' && cafeteriaItemsDB[val]) {
+                const data = cafeteriaItemsDB[val];
+                const nextSeq = calcNextSequence(val, `KE-${data.code}`);
+                const fullID = `KE-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('desc').value = data.desc;
+                calculate();
                 calculateAge();
             }
         }
@@ -1636,6 +1784,14 @@
                 saveBtn.classList.remove('bg-blue-600');
                 saveBtn.classList.add('bg-slate-900');
             }
+            // Reset both old and new fields
+            ['holder','dept','code','name','desc','qty','uvalue','total','depreciation','purchase_date','item_age'].forEach(f => {
+                const el = document.getElementById(f);
+                if(el) el.value = '';
+            });
+            document.getElementById('status').value = 'Good';
+            document.getElementById('itemImage').value = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
         }
 
         async function editItem(id) { 
@@ -2145,6 +2301,7 @@
             XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
 
+        // --- FIXED: Updated exportToPDF function ---
         function exportToPDF() {
             if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
                 return Swal.fire('Error', 'PDF Library not loaded.', 'error');
@@ -2163,11 +2320,14 @@
                 let dataToProcess = [];
                 let titleText = "";
 
+                // Determine what data to show based on current view/filter
                 if (currentSelectedLocation) {
+                    // Specific location (e.g., Room 101, Somali Restaurant)
                     dataToProcess = inventory.filter(i => i.location === currentSelectedLocation);
                     titleText = `INVENTORY REPORT: ${currentSelectedLocation.toUpperCase()}`;
                 } 
                 else if (currentCategory) {
+                    // Category view (e.g., All Kitchens)
                     if (currentCategory === 'kitchen') {
                         dataToProcess = inventory.filter(i => {
                             const loc = (i.location || "").toLowerCase();
@@ -2186,12 +2346,16 @@
                             return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
                         });
                         titleText = "INVENTORY REPORT: ALL OFFICES";
+                    } else if (currentCategory === 'restaurant') {
+                        dataToProcess = inventory.filter(i => (i.location || "").toLowerCase().includes('restaurant'));
+                        titleText = "INVENTORY REPORT: ALL RESTAURANTS";
                     } else {
                         dataToProcess = inventory.filter(i => (i.location || "").toLowerCase().includes(currentCategory.toLowerCase()));
                         titleText = `INVENTORY REPORT: ALL ${currentCategory.toUpperCase()}S`;
                     }
                 } 
                 else {
+                    // Default / Dashboard view (Everything)
                     dataToProcess = [...inventory];
                     titleText = "FULL HOTEL INVENTORY SUMMARY REPORT";
                 }
@@ -2200,107 +2364,97 @@
                     return Swal.fire('Cillad', 'Qaybtan xog kuma jirto.', 'info');
                 }
 
-                let summaryData = {};
-
-                dataToProcess.forEach(item => {
-                    let normalizedName = (item.name || "").trim().toLowerCase();
-                    let displayName = (item.name || "Unknown").trim(); 
-
-                    let qty = parseFloat(item.qty) || 0;
-                    let totalStr = (item.total || "0").toString().replace(/[$,]/g, '');
-                    let totalVal = parseFloat(totalStr) || 0;
-
-                    if (!summaryData[normalizedName]) {
-                        summaryData[normalizedName] = {
-                            code: item.code || "-", 
-                            name: displayName.charAt(0).toUpperCase() + displayName.slice(1), 
-                            totalQty: 0,
-                            totalValue: 0,
-                            status: item.status 
-                        };
-                    }
-
-                    summaryData[normalizedName].totalQty += qty;
-                    summaryData[normalizedName].totalValue += totalVal;
-                });
+                // Sort by location then name for cleaner report
+                dataToProcess.sort((a, b) => (a.location || "").localeCompare(b.location || ""));
 
                 let tableBody = [];
                 let grandTotalQty = 0;
                 let grandTotalValue = 0;
-                let counter = 1;
 
-                const sortedKeys = Object.keys(summaryData).sort();
-
-                sortedKeys.forEach(key => {
-                    let item = summaryData[key];
+                // Build table rows directly from data (DETAILED REPORT)
+                dataToProcess.forEach((item, index) => {
+                    let qty = parseFloat(item.qty) || 0;
                     
-                    grandTotalQty += item.totalQty;
-                    grandTotalValue += item.totalValue;
+                    // SAFE PARSING for Total Value (remove $ and ,)
+                    let totalStr = (item.total || "0").toString().replace(/[^0-9.-]+/g,"");
+                    let totalVal = parseFloat(totalStr) || 0;
+                    
+                    // Determine Unit Price
+                    let unitPrice = qty > 0 ? (totalVal / qty) : (parseFloat(item.uvalue) || 0);
 
-                    let avgUnitValue = item.totalQty > 0 ? (item.totalValue / item.totalQty) : 0;
+                    grandTotalQty += qty;
+                    grandTotalValue += totalVal;
 
                     tableBody.push([
-                        counter++,
-                        item.name,
-                        item.code,
+                        index + 1,
+                        item.name || "-",
+                        item.code || "-",
+                        item.location || "-",
                         item.status || "Good",
-                        item.totalQty, 
-                        `$${avgUnitValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, 
-                        `$${item.totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` 
+                        qty, 
+                        `$${unitPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, 
+                        `$${totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` 
                     ]);
                 });
 
-                doc.setFontSize(22);
+                // Header Generation
+                doc.setFontSize(18);
                 doc.setFont("helvetica", "bold");
-                doc.setTextColor(44, 62, 80); 
+                doc.setTextColor(15, 23, 42); // Slate 900
                 doc.text("MAANSOOR HOTEL & RESORT", pageWidth / 2, 20, { align: 'center' });
                 
-                doc.setFontSize(14);
+                doc.setFontSize(11);
                 doc.setFont("helvetica", "bold");
-                doc.setTextColor(197, 160, 89); 
-                doc.text(titleText, pageWidth / 2, 30, { align: 'center' });
+                doc.setTextColor(202, 138, 4); // Yellow-600ish
+                doc.text(titleText, pageWidth / 2, 28, { align: 'center' });
                 
-                doc.setFontSize(10);
+                doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
                 doc.setTextColor(100);
-                doc.text(`Generated Date: ${date}`, 14, 42);
-                doc.text(`Generated By: ${profile.user}`, pageWidth - 14, 42, { align: 'right' });
+                doc.text(`Generated Date: ${date}`, 14, 38);
+                doc.text(`Generated By: ${profile.user}`, pageWidth - 14, 38, { align: 'right' });
                 
+                // Line separator
                 doc.setDrawColor(200);
-                doc.line(14, 45, pageWidth - 14, 45); 
+                doc.line(14, 42, pageWidth - 14, 42); 
 
+                // Generate Table
                 doc.autoTable({
-                    startY: 50,
-                    head: [['#', 'Item Name', 'Code', 'Status', 'Qty', 'Unit Value', 'Total Value']],
+                    startY: 45,
+                    head: [['#', 'Item Name', 'Code', 'Location', 'Status', 'Qty', 'Unit Price', 'Total Value']],
                     body: tableBody,
-                    theme: 'striped', 
+                    theme: 'grid', 
                     headStyles: { 
-                        fillColor: [15, 23, 42], 
+                        fillColor: [15, 23, 42], // Slate 900
                         textColor: [255, 255, 255], 
                         fontStyle: 'bold',
                         halign: 'center',
+                        fontSize: 8,
                         cellPadding: 3
                     },
                     bodyStyles: {
                         textColor: [50, 50, 50],
-                        fontSize: 9,
-                        cellPadding: 3
+                        fontSize: 8,
+                        cellPadding: 3,
+                        lineColor: [230, 230, 230]
                     },
                     alternateRowStyles: {
-                        fillColor: [248, 250, 252] 
+                        fillColor: [248, 250, 252] // Slate 50
                     },
                     columnStyles: {
                         0: { halign: 'center', cellWidth: 10 }, 
-                        1: { halign: 'left', fontStyle: 'bold' }, 
-                        2: { halign: 'center' }, 
-                        3: { halign: 'center' }, 
-                        4: { halign: 'center', fontStyle: 'bold' }, 
-                        5: { halign: 'right' }, 
-                        6: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } 
+                        1: { halign: 'left', fontStyle: 'bold' }, // Name
+                        2: { halign: 'center' }, // Code
+                        3: { halign: 'left', fontSize: 7 }, // Location
+                        4: { halign: 'center' }, // Status
+                        5: { halign: 'center', fontStyle: 'bold' }, // Qty
+                        6: { halign: 'right' }, // Unit
+                        7: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } // Total (Green)
                     },
                     foot: [[
                         '', 
-                        'GRAND TOTAL', 
+                        'GRAND TOTAL SUMMARY', 
+                        '', 
                         '', 
                         '', 
                         grandTotalQty, 
@@ -2309,34 +2463,38 @@
                     ]],
                     footStyles: {
                         fillColor: [241, 245, 249],
-                        textColor: [0, 0, 0],
+                        textColor: [15, 23, 42],
                         fontStyle: 'bold',
-                        halign: 'right' 
+                        halign: 'right',
+                        fontSize: 9
                     },
                     didParseCell: function(data) {
+                        // Align footer text
                         if (data.section === 'foot' && data.column.index === 1) {
                             data.cell.styles.halign = 'left';
                         }
-                        if (data.section === 'foot' && data.column.index === 4) {
+                        if (data.section === 'foot' && data.column.index === 5) {
                             data.cell.styles.halign = 'center';
                         }
                     }
                 });
 
+                // Footer Page Numbers
                 const pageCount = doc.internal.getNumberOfPages();
                 for(let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
                     doc.setFontSize(8);
                     doc.setTextColor(150);
                     doc.text('Page ' + i + ' of ' + pageCount, pageWidth - 20, doc.internal.pageSize.height - 10);
-                    doc.text('Maansoor Hotel Official Inventory', 14, doc.internal.pageSize.height - 10);
+                    doc.text('Maansoor Hotel Official Inventory System', 14, doc.internal.pageSize.height - 10);
                 }
 
-                doc.save(`${titleText.replace(/\s+/g, '_')}_Report.pdf`);
+                // Save File
+                doc.save(`${titleText.replace(/[:\s]+/g, '_')}_Report.pdf`);
                 
             } catch (err) {
                 console.error(err);
-                Swal.fire('Technical Error', 'Please ensure internet connection is active to load PDF libraries.', 'error');
+                Swal.fire('Technical Error', 'Please check internet connection (libraries not loaded) or data format.', 'error');
             }
         }
 
@@ -2456,6 +2614,9 @@
         }
 
         function handleSelectionClick(btnElement, locationName) {
+            // FIX: Reset form data before setting new location
+            resetFormOnlyInputs();
+
             document.querySelectorAll('#grid-buttons button').forEach(b => {
                 b.classList.remove('black-active');
             });
@@ -2522,7 +2683,16 @@
                     if (opt.type === "sub") {
                         opt.action(); 
                     } else {
-                        handleSelectionClick(btn, opt.name); 
+                        // For direct categories (Bakery, Cafeteria)
+                        if (opt.name === "BAKERY") {
+                             currentCategory = "Bakery";
+                             handleSelectionClick(btn, opt.name);
+                             renderTable("Bakery");
+                        } else if (opt.name === "CAFETERIA") {
+                             currentCategory = "Cafeteria";
+                             handleSelectionClick(btn, opt.name);
+                             renderTable("Cafeteria");
+                        }
                     }
                 };
                 grid.appendChild(btn);
