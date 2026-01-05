@@ -650,7 +650,7 @@
                                             </div>
                                             <div>
                                                 <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Unit Price ($)</label>
-                                                <input type="number" id="uvalue" oninput="calculate()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-bold shadow-sm">
+                                                <input type="number" id="uvalue" oninput="calculate(); calculateDepreciation()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-bold shadow-sm">
                                             </div>
                                         </div>
 
@@ -664,7 +664,7 @@
                                         <div class="grid grid-cols-2 gap-4">
                                             <div>
                                                 <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Purchase Date</label>
-                                                <input type="date" id="purchase_date" onchange="calculateAge()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm shadow-sm text-gray-600">
+                                                <input type="date" id="purchase_date" onchange="calculateAge(); calculateDepreciation()" class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm shadow-sm text-gray-600">
                                             </div>
                                             <div>
                                                 <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Item Age</label>
@@ -692,7 +692,7 @@
                                 <div class="flex flex-wrap gap-2">
                                     <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">Excel (Full)</button>
                                     <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold hidden">Excel (Location)</button>
-                                    <button onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">PDF Report</button>
+                                    <button id="btn-pdf" onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">PDF Report</button>
                                     <button onclick="clearAllData()" id="reset-all-btn" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
                                 </div>
                             </div>
@@ -1495,12 +1495,18 @@
             }
         }
 
+        // --- UPDATED CALCULATE FUNCTION ---
+        // This now uses the depreciated value (current value) for the total calculation
         function calculate() { 
             const q = parseFloat(document.getElementById('qty').value) || 0; 
-            const v = parseFloat(document.getElementById('uvalue').value) || 0; 
-            const res = (q * v).toFixed(2);
+            
+            // Get the depreciated unit value (New Price)
+            const depValue = calculateDepreciation();
+            
+            // Total = Qty * Depreciated Unit Value
+            const res = (q * depValue).toFixed(2);
+            
             document.getElementById('total').value = `$${res}`; 
-            return res; 
         }
 
         function calculateAge() {
@@ -1541,6 +1547,41 @@
             }
 
             ageInput.value = ageString.trim();
+        }
+
+        // --- NEW: Calculate Depreciation from Image Formula ---
+        // Returns the depreciated unit value so calculate() can use it
+        function calculateDepreciation() {
+            const val = parseFloat(document.getElementById('uvalue').value) || 0;
+            const dateVal = document.getElementById('purchase_date').value;
+            
+            if (val === 0 || !dateVal) {
+                document.getElementById('depreciation').value = "0.00";
+                return 0;
+            }
+
+            const purchaseDate = new Date(dateVal);
+            const today = new Date();
+            
+            const ageInMilliseconds = today - purchaseDate;
+            const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+
+            if (ageInYears < 1) {
+                document.getElementById('depreciation').value = val.toFixed(2);
+                return val;
+            }
+
+            const step1 = val - (val / 8);
+            const step2 = step1 / ageInYears;
+            const finalResult = val - step2;
+
+            const res = finalResult > 0 ? finalResult : 0;
+            
+            // Update input field
+            document.getElementById('depreciation').value = res.toFixed(2);
+            
+            // Return numeric value for calculation
+            return res;
         }
 
         const categoryItemsDB = {
@@ -1626,6 +1667,11 @@
             document.getElementById('custom-dropdown-list').classList.add('hidden');
             const cat = getCurrentCategoryKey();
 
+            // Calculate exactly 3 years ago from today to ensure AGE = 3 YEARS
+            const d = new Date();
+            d.setFullYear(d.getFullYear() - 3);
+            const threeYearsAgoDate = d.toISOString().split('T')[0];
+
             // --- REFACTORED SELECTION LOGIC ---
             
             if (cat === 'ROOM' && roomItemsDB[val]) {
@@ -1633,7 +1679,7 @@
                 const fullID = `RA-${data.code}-${activeRoomNumber}`;
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
@@ -1645,7 +1691,7 @@
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
@@ -1657,7 +1703,7 @@
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
@@ -1669,7 +1715,7 @@
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
                 document.getElementById('desc').value = data.desc;
                 calculate();
                 calculateAge();
@@ -1681,7 +1727,7 @@
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
                 document.getElementById('desc').value = data.desc;
                 calculate();
                 calculateAge();
@@ -1693,7 +1739,7 @@
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = `${data.year}-01-01`;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
                 document.getElementById('desc').value = data.desc;
                 calculate();
                 calculateAge();
