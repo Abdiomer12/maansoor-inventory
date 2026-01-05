@@ -158,6 +158,9 @@
         }
 
         .swal2-popup { border-radius: 2.5rem !important; padding: 2rem !important; font-family: 'Poppins', sans-serif !important; }
+        
+        /* Disable Actions for Staff */
+        .staff-hidden { display: none !important; }
     </style>
 </head>
 <body onload="checkAuth()">
@@ -194,7 +197,7 @@
                     <button id="forgot-link" onclick="handleForgot()" class="text-[11px] font-bold text-red-500 hidden hover:underline transition-all">Forgot Password?</button>
                 </div>
                 
-                <button onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-black py-5 rounded-2xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-yellow-500/10 active:scale-[0.98] uppercase tracking-[0.2em] text-sm mt-4">
+                <button id="login-btn" onclick="handleLogin()" class="w-full bg-slate-900 text-yellow-500 font-black py-5 rounded-2xl hover:bg-slate-800 transition-all shadow-xl hover:shadow-yellow-500/10 active:scale-[0.98] uppercase tracking-[0.2em] text-sm mt-4">
                     LOGIN
                 </button>
             </div>
@@ -268,13 +271,26 @@
                         <div class="nav-icon-box text-red-500 group-hover:bg-red-500/20 group-hover:text-red-500">
                             <i class="fas fa-fire-burner"></i>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-[13px] font-bold leading-none">Kitchens</span>
-                            <span class="text-[10px] opacity-70 mt-0.5 font-normal">& Cafeteria, Bakery</span>
-                        </div>
+                        <span class="text-sm font-bold tracking-wide">Kitchens</span>
                     </button>
 
-                    <!-- 5. UTENSILS (NEW ADDITION) -->
+                    <!-- 4.1 CAFETERIA (NEW) -->
+                    <button onclick="showDirectCategory('Cafeteria', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
+                            <i class="fas fa-mug-hot"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Cafeteria</span>
+                    </button>
+
+                    <!-- 4.2 BAKERY (NEW) -->
+                    <button onclick="showDirectCategory('Bakery', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-pink-400 group-hover:bg-pink-500/20 group-hover:text-pink-400">
+                            <i class="fas fa-bread-slice"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Bakery</span>
+                    </button>
+
+                    <!-- 5. UTENSILS -->
                     <button onclick="showDirectCategory('Utensils', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-cyan-400 group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
                             <i class="fas fa-spoon"></i>
@@ -282,7 +298,7 @@
                         <span class="text-sm font-bold tracking-wide">Utensils</span>
                     </button>
 
-                    <!-- 6. OFFICES (DIRECT) -->
+                    <!-- 6. OFFICES -->
                     <button onclick="showDirectCategory('Office', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
                             <i class="fas fa-briefcase"></i>
@@ -290,7 +306,7 @@
                         <span class="text-sm font-bold tracking-wide">Offices</span>
                     </button>
 
-                    <!-- 7. ELECTRICITY (DIRECT) -->
+                    <!-- 7. ELECTRICITY -->
                     <button onclick="showDirectCategory('Electricity', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-400">
                             <i class="fas fa-bolt"></i>
@@ -298,7 +314,7 @@
                         <span class="text-sm font-bold tracking-wide">Electricity</span>
                     </button>
 
-                    <!-- 8. SECURITY (DIRECT) -->
+                    <!-- 8. SECURITY -->
                     <button onclick="showDirectCategory('Security', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-400">
                             <i class="fas fa-shield-halved"></i>
@@ -306,7 +322,7 @@
                         <span class="text-sm font-bold tracking-wide">Security</span>
                     </button>
 
-                    <!-- 9. GARDEN (DIRECT) -->
+                    <!-- 9. GARDEN -->
                     <button onclick="showDirectCategory('Garden', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-green-500 group-hover:bg-green-500/20 group-hover:text-green-500">
                             <i class="fas fa-tree"></i>
@@ -314,7 +330,7 @@
                         <span class="text-sm font-bold tracking-wide">Garden</span>
                     </button>
 
-                    <!-- 10. CARS (DIRECT) -->
+                    <!-- 10. CARS -->
                     <button onclick="showDirectCategory('Cars', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-indigo-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-400">
                             <i class="fas fa-car"></i>
@@ -325,6 +341,7 @@
 
                     <!-- SETTINGS & LOGOUT AREA -->
                     <div class="pt-6 border-t border-slate-700/50 mt-6 space-y-2">
+                        <!-- Activity Log (Admin Only) -->
                         <button id="nav-logs" onclick="showLogs()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
                             <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
                                 <i class="fas fa-history"></i>
@@ -332,6 +349,7 @@
                             <span class="text-xs font-medium">Activity Log</span>
                         </button>
                         
+                        <!-- Settings (Admin Only) -->
                         <button id="nav-settings" onclick="showSettings()" class="nav-btn w-full text-left py-3 px-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition flex items-center">
                             <div class="nav-icon-box border-none bg-transparent !w-6 !h-6 !mr-3">
                                 <i class="fas fa-cog"></i>
@@ -370,7 +388,7 @@
                             <p id="stat-total-value" class="text-xs md:text-sm font-extrabold text-green-600">$0.00</p>
                         </div>
                         <!-- USER HEADER INFO -->
-                        <div onclick="showSettings()" class="flex items-center space-x-2 cursor-pointer bg-slate-100/50 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition group border border-slate-200 shadow-sm">
+                        <div class="flex items-center space-x-2 cursor-pointer bg-slate-100/50 hover:bg-slate-200/80 px-3 py-1.5 rounded-full transition group border border-slate-200 shadow-sm">
                             <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-yellow-500 border border-slate-800 shadow-md">
                                 <i class="fas fa-user text-xs"></i>
                             </div>
@@ -382,7 +400,6 @@
                     
                     <!-- 1. LOGS SECTION -->
                     <div id="logs-screen" class="hidden max-w-5xl mx-auto py-5">
-                        <!-- Same Logs Code -->
                          <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                             <div class="bg-slate-900 p-6 flex justify-between items-center border-b-4 border-blue-500">
                                 <h2 class="text-white font-black uppercase italic tracking-tighter text-sm md:text-lg">
@@ -408,18 +425,22 @@
                         </div>
                     </div>
 
-                    <!-- SECURITY SETTINGS SECTION -->
+                    <!-- SETTINGS & USER MANAGEMENT SECTION -->
                     <div id="settings-screen" class="hidden max-w-4xl mx-auto py-10">
-                        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+                        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 mb-8">
                             <div class="bg-slate-900 p-8 text-center border-b-4 border-yellow-500">
                                 <div class="w-24 h-24 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center border-2 border-yellow-500 mb-4">
                                     <i class="fas fa-user-shield text-yellow-500 text-5xl"></i>
                                 </div>
-                                <h2 class="text-2xl font-black text-white uppercase tracking-tighter italic">Account Settings</h2>
-                                <p class="text-gray-400 text-xs mt-1 uppercase tracking-widest">Maamul xogtaada ama beddel password-ka</p>
+                                <h2 class="text-2xl font-black text-white uppercase tracking-tighter italic">Admin Settings</h2>
+                                <p class="text-gray-400 text-xs mt-1 uppercase tracking-widest">Maamul xogtaada iyo Staff-ka</p>
                             </div>
                             
+                            <!-- Admin Profile Form -->
                             <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <h3 class="text-sm font-extrabold text-slate-800 uppercase border-b pb-2 mb-4">Admin Profile</h3>
+                                </div>
                                 <div>
                                     <label class="block text-[10px] font-black text-slate-400 uppercase ml-1 mb-1">Username</label>
                                     <input type="text" id="set-username" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 text-sm font-bold">
@@ -438,22 +459,61 @@
                                 </div>
                                 <div class="md:col-span-2 bg-yellow-50/50 p-6 rounded-2xl border border-yellow-100">
                                     <h4 class="text-xs font-black text-yellow-700 uppercase mb-4 flex items-center">
-                                        <i class="fas fa-lock mr-2"></i> Beddel Password-ka
+                                        <i class="fas fa-lock mr-2"></i> Beddel Password-ka Admin-ka
                                     </h4>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <input type="password" id="set-new-pass" placeholder="Password cusub" class="p-3.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-yellow-500">
                                         <input type="password" id="set-confirm-pass" placeholder="Hubi Password-ka" class="p-3.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-yellow-500">
                                     </div>
                                 </div>
+                                <div class="md:col-span-2">
+                                    <button onclick="saveUserProfile()" class="w-full bg-slate-900 text-yellow-500 font-black py-4 rounded-xl shadow-xl hover:bg-slate-800 transition-all uppercase text-xs tracking-widest">
+                                        SAVE ADMIN CHANGES
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- USER MANAGEMENT SECTION (NEW) -->
+                        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+                            <div class="bg-slate-100 p-6 border-b border-gray-200">
+                                <h3 class="text-sm font-extrabold text-slate-800 uppercase flex items-center">
+                                    <i class="fas fa-users-cog mr-2 text-blue-600"></i> Manage Staff Users
+                                </h3>
+                                <p class="text-[10px] text-gray-500 mt-1 ml-6">Halkan ka samee user cusub oo shaqada geliya (Can Add, No Edit/Delete).</p>
                             </div>
                             
-                            <div class="p-8 pt-0 flex space-x-4">
-                                <button onclick="saveUserProfile()" class="flex-1 bg-slate-900 text-yellow-500 font-black py-4 rounded-xl shadow-xl hover:bg-slate-800 transition-all uppercase text-xs tracking-widest">
-                                    SAVE CHANGES
-                                </button>
-                                <button onclick="showHomePage()" class="px-8 bg-gray-100 text-gray-400 font-black py-4 rounded-xl hover:bg-gray-200 transition-all uppercase text-xs tracking-widest">
-                                    CANCEL
-                                </button>
+                            <div class="p-8">
+                                <!-- Create User Form -->
+                                <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100 mb-8">
+                                    <h4 class="text-xs font-black text-blue-700 uppercase mb-4">Create New User</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <input type="text" id="new-user-fullname" placeholder="Full Name" class="p-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" id="new-user-username" placeholder="Username" class="p-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="password" id="new-user-password" placeholder="Password" class="p-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <button onclick="createNewUser()" class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl font-bold text-xs uppercase hover:bg-blue-700 transition shadow-md">
+                                        <i class="fas fa-plus mr-1"></i> Add User
+                                    </button>
+                                </div>
+
+                                <!-- User List Table -->
+                                <h4 class="text-xs font-black text-slate-600 uppercase mb-4">Existing Users</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase">Name</th>
+                                                <th class="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase">Username</th>
+                                                <th class="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase">Password</th>
+                                                <th class="px-4 py-3 text-right text-[10px] font-bold text-gray-500 uppercase">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="users-table-body" class="bg-white divide-y divide-gray-100">
+                                            <!-- Users will load here -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -549,7 +609,7 @@
                                             </select>
                                         </div>
 
-                                        <!-- Hidden/Extra Fields kept for data integrity but visually simplified -->
+                                        <!-- Hidden/Extra Fields -->
                                         <div class="grid grid-cols-2 gap-4 hidden">
                                             <input type="text" id="holder" placeholder="Holder">
                                             <input type="text" id="dept" placeholder="Dept">
@@ -633,7 +693,7 @@
                                     <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">Excel (Full)</button>
                                     <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold hidden">Excel (Location)</button>
                                     <button onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">PDF Report</button>
-                                    <button onclick="clearAllData()" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
+                                    <button onclick="clearAllData()" id="reset-all-btn" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
                                 </div>
                             </div>
                             <div class="overflow-x-auto">
@@ -647,7 +707,7 @@
                                             <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Status</th>
                                             <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Qty</th>
                                             <th class="px-6 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Total</th>
-                                            <th class="px-4 md:px-6 py-3 md:py-4 w-20">Actions</th>
+                                            <th class="px-4 md:px-6 py-3 md:py-4 w-20 action-column">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="inventory-tbody" class="bg-white divide-y divide-gray-100"></tbody>
@@ -674,227 +734,65 @@
         };
         
         // --- 1. DATA STRUCTURES (Updated with PDF Content) ---
-        const roomItemsDB = {
-            "Bed Single": { code: "B1", price: 550.00, year: "2018", desc: "Sariir Hal Nafar ah" },
-            "Bed Double": { code: "B1", price: 1100.00, year: "2018", desc: "Sariir laba Nafar ah" },
-            "Bed Single Sheets": { code: "B10", price: 5.00, year: "2016", desc: "Goyaasha Nafarka ee Sariirta la saaro" },
-            "Bed pillow": { code: "B6", price: 5.00, year: "2016", desc: "Barkimo Sariirta" },
-            "Bathroom towel": { code: "B15", price: 8.00, year: "2018", desc: "Tuwaal la isku qalajiyo" },
-            "Bed Double Mattress": { code: "B2", price: 200.00, year: "2018", desc: "Furaash laba nafar ah" },
-            "Bed Double Cover Mattress": { code: "B3", price: 25.00, year: "2018", desc: "Xalaafka Furaashka (waterproof)" },
-            "Bed Double Linen Cover": { code: "B4", price: 35.00, year: "2018", desc: "Xalaaf la huwado ee laba nafar" },
-            "Bed Double Sheets": { code: "B5", price: 10.00, year: "2018", desc: "Goyaasha laba nafar ee sariirta" },
-            "Bed Single Mattress": { code: "B7", price: 120.00, year: "2018", desc: "Furaash Nafar kaliya" },
-            "Bed SingleCover Mattress": { code: "B8", price: 18.00, year: "2018", desc: "Xalaaf Sariirta la saaro ee nafarka ah" },
-            "Chair Coffee": { code: "C1", price: 50.00, year: "2018", desc: "Kuraasta Qolalka ee Shaaha" },
-            "Chair Wooden": { code: "C3", price: 40.00, year: "2012", desc: "Kuraasta Qolalka ee Shaaha" },
-            "Dustbin small": { code: "D1", price: 2.00, year: "2018", desc: "for waste papers" },
-            "Dustbin Middle": { code: "D2", price: 5.00, year: "2018", desc: "Basket Laundry" },
-            "Fan Small": { code: "F2", price: 35.00, year: "2018", desc: "Maraxwadaha Qolka" },
-            "Dressing mirror cupboard": { code: "K1", price: 250.00, year: "2018", desc: "Tawaleetka Hurdada" },
-            "Cupboards with 2 shelves": { code: "K2", price: 200.00, year: "2018", desc: "Kabadhka dharka ee labada Fardadood" },
-            "Cupboards with 3 shelves": { code: "K3", price: 290.00, year: "2018", desc: "Kabadhka dharka ee sadexda Fardadood" },
-            "Lights, for bedroom": { code: "L1", price: 35.00, year: "2018", desc: "Leedhka Hurdada ee Miiska la saaro" },
-            "Landline Phone": { code: "L3", price: 7.00, year: "2012", desc: "Madax Telephone Qolalka" },
-            "Mosquito net": { code: "MN", price: 12.00, year: "2018", desc: "Maro kaneeco" },
-            "Rugs Bedroom": { code: "R1", price: 20.00, year: "2018", desc: "Rooga Hurdada" },
-            "Rugs Doormats": { code: "R3", price: 7.00, year: "2018", desc: "Dacsadaha Albaabada" },
-            "Rugs for Prayers": { code: "R4", price: 6.00, year: "2018", desc: "Sijaayado" },
-            "Rugs Plastic for Toilets": { code: "R5", price: 5.00, year: "2018", desc: "Dacsadaha Suuliga ee rabadhka ah" },
-            "Refrigerator Mini Fridge": { code: "R6", price: 120.00, year: "2018", desc: "Talagadaha Maqsinada yar yar" },
-            "Bath Shower Box": { code: "SH", price: 50.00, year: "2020", desc: "Shower Quruurad" },
-            "TV screen wall mounted": { code: "T10", price: 200.00, year: "2017", desc: "Murayad LG 32\" iyo Birta Gidaarka" },
-            "Table Coffee small": { code: "T4", price: 50.00, year: "2018", desc: "Miiska Shaaha Qolalka" },
-            "Table TV": { code: "T5", price: 60.00, year: "2018", desc: "Miiska TV-ga la saaro" },
-            "Table for Briefcase": { code: "T7", price: 60.00, year: "2018", desc: "Miiska Shandadaha la saarto ee Qolalka" },
-            "Curtains bedroom window": { code: "W1", price: 65.00, year: "2020", desc: "Daahyo Daqadii -2Jeex" },
-            "Curtains Toilet window": { code: "W3", price: 18.00, year: "2020", desc: "Daaha Shower ee Plastic" },
-            "Wall art Pictures": { code: "W4", price: 15.00, year: "2012", desc: "Sawirka Gidaarka ku xidhan" },
-            "Wall mounted Electric heater": { code: "W5", price: 125.00, year: "2012", desc: "Electric Heater 50Ltr" },
-            "Wall mounted Air-condition": { code: "W6", price: 350.00, year: "2018", desc: "Aircondition - Qolalka" }
-        };
+        const roomItemsDB = { "Bed Single": { code: "B1", price: 550.00, year: "2018", desc: "Sariir Hal Nafar ah" }, "Bed Double": { code: "B1", price: 1100.00, year: "2018", desc: "Sariir laba Nafar ah" }, "Bed Single Sheets": { code: "B10", price: 5.00, year: "2016", desc: "Goyaasha Nafarka ee Sariirta la saaro" }, "Bed pillow": { code: "B6", price: 5.00, year: "2016", desc: "Barkimo Sariirta" }, "Bathroom towel": { code: "B15", price: 8.00, year: "2018", desc: "Tuwaal la isku qalajiyo" }, "Bed Double Mattress": { code: "B2", price: 200.00, year: "2018", desc: "Furaash laba nafar ah" }, "Bed Double Cover Mattress": { code: "B3", price: 25.00, year: "2018", desc: "Xalaafka Furaashka (waterproof)" }, "Bed Double Linen Cover": { code: "B4", price: 35.00, year: "2018", desc: "Xalaaf la huwado ee laba nafar" }, "Bed Double Sheets": { code: "B5", price: 10.00, year: "2018", desc: "Goyaasha laba nafar ee sariirta" }, "Bed Single Mattress": { code: "B7", price: 120.00, year: "2018", desc: "Furaash Nafar kaliya" }, "Bed SingleCover Mattress": { code: "B8", price: 18.00, year: "2018", desc: "Xalaaf Sariirta la saaro ee nafarka ah" }, "Chair Coffee": { code: "C1", price: 50.00, year: "2018", desc: "Kuraasta Qolalka ee Shaaha" }, "Chair Wooden": { code: "C3", price: 40.00, year: "2012", desc: "Kuraasta Qolalka ee Shaaha" }, "Dustbin small": { code: "D1", price: 2.00, year: "2018", desc: "for waste papers" }, "Dustbin Middle": { code: "D2", price: 5.00, year: "2018", desc: "Basket Laundry" }, "Fan Small": { code: "F2", price: 35.00, year: "2018", desc: "Maraxwadaha Qolka" }, "Dressing mirror cupboard": { code: "K1", price: 250.00, year: "2018", desc: "Tawaleetka Hurdada" }, "Cupboards with 2 shelves": { code: "K2", price: 200.00, year: "2018", desc: "Kabadhka dharka ee labada Fardadood" }, "Cupboards with 3 shelves": { code: "K3", price: 290.00, year: "2018", desc: "Kabadhka dharka ee sadexda Fardadood" }, "Lights, for bedroom": { code: "L1", price: 35.00, year: "2018", desc: "Leedhka Hurdada ee Miiska la saaro" }, "Landline Phone": { code: "L3", price: 7.00, year: "2012", desc: "Madax Telephone Qolalka" }, "Mosquito net": { code: "MN", price: 12.00, year: "2018", desc: "Maro kaneeco" }, "Rugs Bedroom": { code: "R1", price: 20.00, year: "2018", desc: "Rooga Hurdada" }, "Rugs Doormats": { code: "R3", price: 7.00, year: "2018", desc: "Dacsadaha Albaabada" }, "Rugs for Prayers": { code: "R4", price: 6.00, year: "2018", desc: "Sijaayado" }, "Rugs Plastic for Toilets": { code: "R5", price: 5.00, year: "2018", desc: "Dacsadaha Suuliga ee rabadhka ah" }, "Refrigerator Mini Fridge": { code: "R6", price: 120.00, year: "2018", desc: "Talagadaha Maqsinada yar yar" }, "Bath Shower Box": { code: "SH", price: 50.00, year: "2020", desc: "Shower Quruurad" }, "TV screen wall mounted": { code: "T10", price: 200.00, year: "2017", desc: "Murayad LG 32\" iyo Birta Gidaarka" }, "Table Coffee small": { code: "T4", price: 50.00, year: "2018", desc: "Miiska Shaaha Qolalka" }, "Table TV": { code: "T5", price: 60.00, year: "2018", desc: "Miiska TV-ga la saaro" }, "Table for Briefcase": { code: "T7", price: 60.00, year: "2018", desc: "Miiska Shandadaha la saarto ee Qolalka" }, "Curtains bedroom window": { code: "W1", price: 65.00, year: "2020", desc: "Daahyo Daqadii -2Jeex" }, "Curtains Toilet window": { code: "W3", price: 18.00, year: "2020", desc: "Daaha Shower ee Plastic" }, "Wall art Pictures": { code: "W4", price: 15.00, year: "2012", desc: "Sawirka Gidaarka ku xidhan" }, "Wall mounted Electric heater": { code: "W5", price: 125.00, year: "2012", desc: "Electric Heater 50Ltr" }, "Wall mounted Air-condition": { code: "W6", price: 350.00, year: "2018", desc: "Aircondition - Qolalka" } };
+        const hallItemsDB = { "Speakers Large Audio Concert": { code: "A1", price: 300.00, year: "2018", desc: "Sameecadaha Hoolasha" }, "Speakers Small": { code: "A1", price: 150.00, year: "2012", desc: "Small Speaker" }, "Audio Mixer & Assoceies": { code: "A2", price: 250.00, year: "2018", desc: "Mixer-ka & Microphones" }, "Chair VIP": { code: "C1", price: 60.00, year: "2012", desc: "Kuraasta Meherada" }, "Chair Red Bush with Iron legs": { code: "C2", price: 32.00, year: "2012", desc: "Kuraasta Hoolasha" }, "Chair for dining": { code: "C3", price: 30.00, year: "2012", desc: "Kuraasta Cuntada" }, "Chair Brown rubbed with iron legs": { code: "C4", price: 35.00, year: "2020", desc: "Kuraasta Caaga adag ee Turkey" }, "Chairs gold plastic for dining": { code: "C5", price: 30.00, year: "2020", desc: "Kuraasta Qadada Siminaarada" }, "Chairs Fibre White outdoor": { code: "C6", price: 11.00, year: "2018", desc: "Kuraasta Caaga Cadcad" }, "Chair Iron for outdoor": { code: "C7", price: 25.00, year: "2012", desc: "Kursiga Birta" }, "Chairs cover clothes": { code: "C8", price: 7.00, year: "2012", desc: "Marada Kuraasta Different Colors" }, "Chair Excutive meeting room": { code: "C9", price: 60.00, year: "2008", desc: "Kuraasida Shirarka ee VIP-da sare" }, "Dustbin small for Waste papers": { code: "D1", price: 2.00, year: "2020", desc: "Dusbin waraaqaha ee hoolasha" }, "Dustbin Middle (Basket Laundry)": { code: "D2", price: 5.00, year: "2018", desc: "Baaldiyada Khashinka" }, "Dustbin Large for waste": { code: "D3", price: 10.00, year: "2018", desc: "Baaldiyada Duskpinka waaweyn" }, "Dustbin for cigarettes": { code: "D4", price: 8.00, year: "2018", desc: "Sigaarka lagu bakhtiiyo" }, "Plug extension socket": { code: "D5", price: 12.00, year: "2020", desc: "Dabqaybisada Hoolasha ku samaysan" }, "Fan Wall mounted": { code: "F3", price: 35.00, year: "2018", desc: "Maraxwado" }, "Modern indoor plant pots": { code: "FL", price: 15.00, year: "2012", desc: "Floweradda Gudaha Hoteelka" }, "Flip Chart stand": { code: "P1", price: 45.00, year: "2018", desc: "Flip Chart" }, "Eurolite Projection Screen W/stand": { code: "P2", price: 70.00, year: "2018", desc: "Projector Stand" }, "Rug for hallway entrance red plastic": { code: "RG", price: 500.00, year: "2018", desc: "Roog cas ee Madaxda loo dhigo 80M" }, "Sofa seat for Wedding": { code: "S1", price: 400.00, year: "2018", desc: "Kurasida Caruuska SET (2pcs+1Table)" }, "Sofa seat complete (7 chairs)": { code: "S2", price: 1100.00, year: "2018", desc: "Fadhiyada" }, "Sofa seat complete (4 chairs)": { code: "S2", price: 600.00, year: "2018", desc: "Fadhiyada" }, "Sofa seat cover clothes": { code: "S5", price: 4.00, year: "2018", desc: "Gogosha Fadhiyada Sofa Seatka" }, "Glass portable stage speech": { code: "SS", price: 300.00, year: "2018", desc: "Stege-ka Quruurada" }, "Wooden portable stage speech": { code: "SS", price: 120.00, year: "2016", desc: "Steage Looxa ah" }, "Table Coffee small": { code: "T1", price: 50.00, year: "2012", desc: "Miisaska meherada ee yaryar" }, "Table Excutive meeting room": { code: "T10", price: 2000.00, year: "2012", desc: "Miiska Shirarka Dabaqa3aad" }, "Table Mirror": { code: "T11", price: 120.00, year: "2012", desc: "Miiska Quruurada" }, "Table With Iron legs/ Circle": { code: "T2", price: 80.00, year: "2012", desc: "Miisaska Goolka ah" }, "Table wooden for holls": { code: "T2", price: 150.00, year: "2017", desc: "Miisaska Hoolasha 150x80x75cm" }, "Table for Dining": { code: "T3", price: 120.00, year: "2017", desc: "Miisaska Qadada Looxa ah" }, "Table Outdoor Plastic Brown": { code: "T5", price: 45.00, year: "2018", desc: "Misaska Caaga Adag" }, "Table beefy Outdoor": { code: "T6", price: 200.00, year: "2018", desc: "Table beefy Seminaar 200x80x80 cm" }, "Table beefy Indoor Wooden 300x80x80": { code: "T6", price: 300.00, year: "2016", desc: "Table restaurant beefy" }, "Table beefy Indoor": { code: "T6", price: 160.00, year: "2016", desc: "Table restaurant beefy" }, "Table Outdoor Plastic White": { code: "T7", price: 26.00, year: "2017", desc: "Miisaska cadcad ee banaanka" }, "Table cover clothes": { code: "T8", price: 7.00, year: "2012", desc: "Different Colors" }, "Table cover Diamond clothes": { code: "T8", price: 5.00, year: "2012", desc: "Different Colors" }, "Wall art Pictures": { code: "W1", price: 15.00, year: "2012", desc: "Sawiro Gidaar" }, "TV Flat Screen": { code: "W1", price: 720.00, year: "2018", desc: "Tv 52Inch LG" }, "Wall art Pictures Large": { code: "W2", price: 15.00, year: "2012", desc: "Sawiro Gidaar" }, "Wall mounted Air-condition": { code: "W3", price: 350.00, year: "2018", desc: "LG AIR CONDITIONER" }, "Curtains, Living room Window": { code: "W7", price: 35.00, year: "2020", desc: "Daahyo Daqadii -1Jeex" }, "Fire Dry Powder wall mounted": { code: "F1", price: 33.00, year: "2020", desc: "Haanta Dabdamiska" }, "Dry Powder with wheels": { code: "F1", price: 63.00, year: "2020", desc: "Haanta Dabdamiska, Taayarada leh" }, "Curtains for Hools, Cafateria": { code: "W8", price: 85.00, year: "2020", desc: "Hools, Cafateria & restuarent" }, "Restaurant chines decoration": { code: "HA", price: 80.00, year: "2020", desc: "Sitaarada restuerent-ka" }, "Floor standing menu poster display": { code: "HA", price: 100.00, year: "2020", desc: "Birta Menu ee Quraarada ah" }, "Hotel suitcase wheels bags": { code: "HA", price: 200.00, year: "2020", desc: "Birta Shanadadaha la saaro" }, "Alaabta Hidaha & Dhaqanka": { code: "HA", price: 2000.00, year: "2020", desc: "Buulka Banaanka Qalabka Dhex-yaala" }, "Hotel Housekeeping / Maids Carts": { code: "HA", price: 300.00, year: "2020", desc: "Baabuurka Caaga ee Hablaha Nadaafada" }, "Hotel cleaning kits": { code: "HA", price: 25.00, year: "2020", desc: "Agabka ay ku shaqeeyaan Hablaha" } };
+        const kitchenItemsDB = { "Charcoal Grill, Gas": { code: "M1", price: 1200.00, year: "2011", desc: "Heating By Steel Burners With Temp. Regulators" }, "Chicken Grill - Roller Grill": { code: "M7", price: 1200.00, year: "2011", desc: "Chicken Grill Machine (Electric & Gas)" }, "Cooking range (gas) 6 burners": { code: "M2", price: 1500.00, year: "2011", desc: "Name: Imperial, Model COK-IR6-USA" }, "Fries Maachine (Laba Khaanad)": { code: "M4", price: 450.00, year: "2020", desc: "electric deep fryer french fries machine" }, "Kitchen Metal Utility Trolley 2 Shelves": { code: "K1", price: 300.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" }, "Kitchen Metal Utility Trolley 3 Shelves": { code: "K1", price: 400.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" }, "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" }, "Kitchen Wooden Tables 140x70": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 140x70x70cm" }, "Kitchen Wooden Tables 240x80": { code: "K3", price: 240.00, year: "2011", desc: "Wooden Preparation Tables 240x80x80cm" }, "Kitchen Wooden Tables 65x65": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" }, "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Pizza Oven - Large": { code: "M5", price: 1200.00, year: "2011", desc: "Pizza Oven (Electric), 2 Deck, Table top" }, "Refrigerator Chest freezer double": { code: "R8", price: 700.00, year: "2016", desc: "Haier. Model, HCF368H-2. Capacity: 51Kg" }, "Refrigerator Chest freezer single": { code: "R4", price: 480.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Glass door Fridge": { code: "R5", price: 700.00, year: "2015", desc: "Model, MUC-440M. Capacity: 68Kg" }, "Refrigerator Steel Double door": { code: "R6", price: 1500.00, year: "2015", desc: "UAE - Al-halabi" }, "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm. Brand: Roller Grill" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm. Brand: Roller Grill" }, "Water heater": { code: "W4", price: 125.00, year: "2012", desc: "Wall mounted Electric heater" }, "6sppons, 6forks, 6small spoons": { code: "KU", price: 4.00, year: "2018", desc: "malqacado all steel" }, "Biifay (Chanfing dish)": { code: "KU", price: 37.00, year: "2018", desc: "chanfing dish" }, "Candy ball large": { code: "KU", price: 25.00, year: "2018", desc: "candy ball large" }, "Cups quraarada": { code: "KU", price: 2.50, year: "2018", desc: "Koobabka Quraarada ah" }, "Cups biyaha gees": { code: "KU", price: 1.16, year: "2018", desc: "koobabka biyaha gees" }, "Dusuud No.6": { code: "KU", price: 155.00, year: "2018", desc: "dusuud no. 9 (every six pcs are one set)" }, "Dusuud No.9": { code: "KU", price: 200.00, year: "2018", desc: "dusuud no. 6 (every six pcs are one set)" }, "Dusuud Normal": { code: "KU", price: 32.00, year: "2018", desc: "Dusuud godan & Caadi ah" }, "Every 3pcs are one set": { code: "KU", price: 28.00, year: "2018", desc: "kulaylisooyin" }, "Faashash": { code: "KU", price: 5.50, year: "2018", desc: "faashash" }, "Falaas Naqas": { code: "KU", price: 30.00, year: "2018", desc: "Falaash Shaah Naqas / Seminaar" }, "Glass tea pot Glass": { code: "KU", price: 13.00, year: "2018", desc: "Chinese Glass tea cups" }, "Glass tea pot Steel": { code: "KU", price: 8.00, year: "2018", desc: "Kildhiyada Yaryar ee Shaaha lagu shubo" }, "Glass water jug": { code: "KU", price: 5.00, year: "2018", desc: "jeegag quraarad ah" }, "Kildhi Shaaha 32": { code: "KU", price: 25.00, year: "2018", desc: "kilaadhi jandi ah 32" }, "Kildhi Shaaha 29": { code: "KU", price: 19.00, year: "2018", desc: "kilaadhi jandi ah 29" }, "Koobabka shaah dhobo": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah dhobo" }, "Koobabka shaah dhobo s.s": { code: "KU", price: 2.33, year: "2018", desc: "Koobabka shaah dhobo s.s" }, "Koobabka shaah quraarad": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah quraarad" }, "Macaan dhobo ah": { code: "KU", price: 2.00, year: "2018", desc: "macaan dhobo ah" }, "Macaan france ah": { code: "KU", price: 3.50, year: "2018", desc: "macaan france ah" }, "Macan quraarad ice ceram": { code: "KU", price: 2.33, year: "2018", desc: "macan quraarad ice ceram" }, "Madiibado gees ah dobool leh": { code: "KU", price: 2.00, year: "2018", desc: "madiibado gees ah dobool leh" }, "Malaas waawayn": { code: "KU", price: 10.00, year: "2018", desc: "malaas waawayn" }, "Maqliyo steel culus": { code: "KU", price: 18.00, year: "2018", desc: "maqliyo steel culus" }, "Mindiyo waaweyn": { code: "KU", price: 1.50, year: "2018", desc: "mindiyo waaweyn" }, "O-shaped plate Large": { code: "KU", price: 4.00, year: "2018", desc: "biledho qado gool ah, waaweyn" }, "O-shaped plate Medium": { code: "KU", price: 3.00, year: "2018", desc: "biledho qado gool ah dhexe" }, "O-shaped plate small": { code: "KU", price: 2.00, year: "2018", desc: "biledho qado gool ah yaryar" }, "Oil despenser and sugar pot": { code: "KU", price: 9.30, year: "2018", desc: "oil despenser and sugar pot" }, "Pizza plate weyn": { code: "KU", price: 8.00, year: "2018", desc: "pizza plate waaweyn" }, "Pizza plate dhexe": { code: "KU", price: 5.00, year: "2018", desc: "pizza plate dhexe" }, "Pizza plate yar": { code: "KU", price: 4.00, year: "2018", desc: "pizza plate yaryar" }, "Water Jug jaandi": { code: "KU", price: 2.00, year: "2018", desc: "Jeegaga Jaandiga ah" }, "Plates geeska jabiska": { code: "KU", price: 2.16, year: "2018", desc: "Suxuunta, geeska jabiska" }, "Shaandho Miiro Baasto": { code: "KU", price: 7.00, year: "2018", desc: "Shaandho Miiro Baasto" }, "Shaandho Miiro Jabis": { code: "KU", price: 3.00, year: "2018", desc: "Shaandho Miiro Jabis" }, "Shaandho Miiro Saanbuuse": { code: "KU", price: 9.00, year: "2018", desc: "Shaandho Miiro Saanbuuse" }, "Shaandho Miiro Sharaab": { code: "KU", price: 4.00, year: "2018", desc: "Shaandho Miiro Sharaab" }, "Suxuun dhar jandi": { code: "KU", price: 11.00, year: "2018", desc: "suxuun dhar jandi" }, "Suxuunta Cake- Wareega": { code: "KU", price: 4.00, year: "2018", desc: "Suxuunta Cake- Wareega" }, "Trays All Steel": { code: "KU", price: 9.00, year: "2018", desc: "try steel (Waaweyn, dhexe & Yaryar)" }, "Try caag loxoox": { code: "KU", price: 2.00, year: "2018", desc: "caag loxoox" }, "Mixed Utensils": { code: "KU", price: 2000.00, year: "2018", desc: "Weel wax lagu kariyo oo daadsan, Xabad Xabad ah oo jajaban" }, "Ushaped plate Large": { code: "KU", price: 7.00, year: "2018", desc: "huudhi waaweyn" }, "Ushaped plate Medium": { code: "KU", price: 5.00, year: "2018", desc: "huudhi dhexe" }, "Ushaped plate Small": { code: "KU", price: 4.00, year: "2018", desc: "huudhi yaryar" } };
+        const bakeryItemsDB = { "Aluminium baking tray": { code: "B4", price: 15.00, year: "2011", desc: "40*60cm square bakery aluminium baking tray" }, "Bakery Kitchen UTENSILS": { code: "B6", price: 200.00, year: "2011", desc: "Agabka yaryar ee lagu shaqeeyo Bakeryga" }, "Cake, Magic Marble": { code: "B1", price: 20.00, year: "2018", desc: "Magic Marble Cake Stand black" }, "Electric Oven Bread Bakery": { code: "B5", price: 1500.00, year: "2011", desc: "D1-Oven. Model: HBL-40, Power 13.2Kw" }, "Fan Wall mounted": { code: "F3", price: 32.00, year: "2012", desc: "Maraxwada Gidaarka ku Xidhan" }, "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Kitchen Spring Scale 25Kg": { code: "B2", price: 30.00, year: "2012", desc: "Name: Camry, Model: J2012157363" }, "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" }, "Kitchen Wooden Tables 65x65": { code: "K3", price: 65.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" }, "Mixer High Capacity dough": { code: "B3", price: 1100.00, year: "2011", desc: "Electric Mixer, Model B20-B, Dcapacity 2-4Kg" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Refrigerator Chest freezer": { code: "R7", price: 600.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Glass door Fridge": { code: "R4", price: 700.00, year: "2015", desc: "Model, FC/LD60A. Capacity: 380L" }, "Refrigerator Large Fridge": { code: "R3", price: 800.00, year: "2015", desc: "NAME: GA, Model TBG15BARWM, Capacity 142Kg" }, "Refrigerator Small Fridge": { code: "R2", price: 250.00, year: "2015", desc: "Talagada VIP Rooms" }, "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" } };
+        const cafeteriaItemsDB = { "Coffee Machines": { code: "M8", price: 3500.00, year: "2012", desc: "ellesse cupachine machine" }, "ICE CREAM, UTENSILS": { code: "I4", price: 200.00, year: "2015", desc: "Like, Scope etc (SETS)" }, "Ice Cream, Refrigerator Display": { code: "I1", price: 1400.00, year: "2015", desc: "Super King: Ice Cream Freezers scooping cabinet" }, "Kitchen Pot Rack": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Refrigerator Chest freezer": { code: "R8", price: 700.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Display Counter": { code: "R12", price: 2000.00, year: "2015", desc: "Refrigerator Display Freezer Counter Cake" }, "Refrigerator Glass door Fridge": { code: "R5", price: 960.00, year: "2015", desc: "Talagada Sharaabka ee Cafateria taala" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" } };
 
-        const hallItemsDB = {
-            "Speakers Large Audio Concert": { code: "A1", price: 300.00, year: "2018", desc: "Sameecadaha Hoolasha" },
-            "Speakers Small": { code: "A1", price: 150.00, year: "2012", desc: "Small Speaker" },
-            "Audio Mixer & Assoceies": { code: "A2", price: 250.00, year: "2018", desc: "Mixer-ka & Microphones" },
-            "Chair VIP": { code: "C1", price: 60.00, year: "2012", desc: "Kuraasta Meherada" },
-            "Chair Red Bush with Iron legs": { code: "C2", price: 32.00, year: "2012", desc: "Kuraasta Hoolasha" },
-            "Chair for dining": { code: "C3", price: 30.00, year: "2012", desc: "Kuraasta Cuntada" },
-            "Chair Brown rubbed with iron legs": { code: "C4", price: 35.00, year: "2020", desc: "Kuraasta Caaga adag ee Turkey" },
-            "Chairs gold plastic for dining": { code: "C5", price: 30.00, year: "2020", desc: "Kuraasta Qadada Siminaarada" },
-            "Chairs Fibre White outdoor": { code: "C6", price: 11.00, year: "2018", desc: "Kuraasta Caaga Cadcad" },
-            "Chair Iron for outdoor": { code: "C7", price: 25.00, year: "2012", desc: "Kursiga Birta" },
-            "Chairs cover clothes": { code: "C8", price: 7.00, year: "2012", desc: "Marada Kuraasta Different Colors" },
-            "Chair Excutive meeting room": { code: "C9", price: 60.00, year: "2008", desc: "Kuraasida Shirarka ee VIP-da sare" },
-            "Dustbin small for Waste papers": { code: "D1", price: 2.00, year: "2020", desc: "Dusbin waraaqaha ee hoolasha" },
-            "Dustbin Middle (Basket Laundry)": { code: "D2", price: 5.00, year: "2018", desc: "Baaldiyada Khashinka" },
-            "Dustbin Large for waste": { code: "D3", price: 10.00, year: "2018", desc: "Baaldiyada Duskpinka waaweyn" },
-            "Dustbin for cigarettes": { code: "D4", price: 8.00, year: "2018", desc: "Sigaarka lagu bakhtiiyo" },
-            "Plug extension socket": { code: "D5", price: 12.00, year: "2020", desc: "Dabqaybisada Hoolasha ku samaysan" },
-            "Fan Wall mounted": { code: "F3", price: 35.00, year: "2018", desc: "Maraxwado" },
-            "Modern indoor plant pots": { code: "FL", price: 15.00, year: "2012", desc: "Floweradda Gudaha Hoteelka" },
-            "Flip Chart stand": { code: "P1", price: 45.00, year: "2018", desc: "Flip Chart" },
-            "Eurolite Projection Screen W/stand": { code: "P2", price: 70.00, year: "2018", desc: "Projector Stand" },
-            "Rug for hallway entrance red plastic": { code: "RG", price: 500.00, year: "2018", desc: "Roog cas ee Madaxda loo dhigo 80M" },
-            "Sofa seat for Wedding": { code: "S1", price: 400.00, year: "2018", desc: "Kurasida Caruuska SET (2pcs+1Table)" },
-            "Sofa seat complete (7 chairs)": { code: "S2", price: 1100.00, year: "2018", desc: "Fadhiyada" },
-            "Sofa seat complete (4 chairs)": { code: "S2", price: 600.00, year: "2018", desc: "Fadhiyada" },
-            "Sofa seat cover clothes": { code: "S5", price: 4.00, year: "2018", desc: "Gogosha Fadhiyada Sofa Seatka" },
-            "Glass portable stage speech": { code: "SS", price: 300.00, year: "2018", desc: "Stege-ka Quruurada" },
-            "Wooden portable stage speech": { code: "SS", price: 120.00, year: "2016", desc: "Steage Looxa ah" },
-            "Table Coffee small": { code: "T1", price: 50.00, year: "2012", desc: "Miisaska meherada ee yaryar" },
-            "Table Excutive meeting room": { code: "T10", price: 2000.00, year: "2012", desc: "Miiska Shirarka Dabaqa3aad" },
-            "Table Mirror": { code: "T11", price: 120.00, year: "2012", desc: "Miiska Quruurada" },
-            "Table With Iron legs/ Circle": { code: "T2", price: 80.00, year: "2012", desc: "Miisaska Goolka ah" },
-            "Table wooden for holls": { code: "T2", price: 150.00, year: "2017", desc: "Miisaska Hoolasha 150x80x75cm" },
-            "Table for Dining": { code: "T3", price: 120.00, year: "2017", desc: "Miisaska Qadada Looxa ah" },
-            "Table Outdoor Plastic Brown": { code: "T5", price: 45.00, year: "2018", desc: "Misaska Caaga Adag" },
-            "Table beefy Outdoor": { code: "T6", price: 200.00, year: "2018", desc: "Table beefy Seminaar 200x80x80 cm" },
-            "Table beefy Indoor Wooden 300x80x80": { code: "T6", price: 300.00, year: "2016", desc: "Table restaurant beefy" },
-            "Table beefy Indoor": { code: "T6", price: 160.00, year: "2016", desc: "Table restaurant beefy" },
-            "Table Outdoor Plastic White": { code: "T7", price: 26.00, year: "2017", desc: "Miisaska cadcad ee banaanka" },
-            "Table cover clothes": { code: "T8", price: 7.00, year: "2012", desc: "Different Colors" },
-            "Table cover Diamond clothes": { code: "T8", price: 5.00, year: "2012", desc: "Different Colors" },
-            "Wall art Pictures": { code: "W1", price: 15.00, year: "2012", desc: "Sawiro Gidaar" },
-            "TV Flat Screen": { code: "W1", price: 720.00, year: "2018", desc: "Tv 52Inch LG" },
-            "Wall art Pictures Large": { code: "W2", price: 15.00, year: "2012", desc: "Sawiro Gidaar" },
-            "Wall mounted Air-condition": { code: "W3", price: 350.00, year: "2018", desc: "LG AIR CONDITIONER" },
-            "Curtains, Living room Window": { code: "W7", price: 35.00, year: "2020", desc: "Daahyo Daqadii -1Jeex" },
-            "Fire Dry Powder wall mounted": { code: "F1", price: 33.00, year: "2020", desc: "Haanta Dabdamiska" },
-            "Dry Powder with wheels": { code: "F1", price: 63.00, year: "2020", desc: "Haanta Dabdamiska, Taayarada leh" },
-            "Curtains for Hools, Cafateria": { code: "W8", price: 85.00, year: "2020", desc: "Hools, Cafateria & restuarent" },
-            "Restaurant chines decoration": { code: "HA", price: 80.00, year: "2020", desc: "Sitaarada restuerent-ka" },
-            "Floor standing menu poster display": { code: "HA", price: 100.00, year: "2020", desc: "Birta Menu ee Quraarada ah" },
-            "Hotel suitcase wheels bags": { code: "HA", price: 200.00, year: "2020", desc: "Birta Shanadadaha la saaro" },
-            "Alaabta Hidaha & Dhaqanka": { code: "HA", price: 2000.00, year: "2020", desc: "Buulka Banaanka Qalabka Dhex-yaala" },
-            "Hotel Housekeeping / Maids Carts": { code: "HA", price: 300.00, year: "2020", desc: "Baabuurka Caaga ee Hablaha Nadaafada" },
-            "Hotel cleaning kits": { code: "HA", price: 25.00, year: "2020", desc: "Agabka ay ku shaqeeyaan Hablaha" }
-        };
+        let activeRoomNumber = "0001";
+        let currentUserRole = 'admin'; // 'admin' or 'staff'
 
-        const kitchenItemsDB = {
-            "Charcoal Grill, Gas": { code: "M1", price: 1200.00, year: "2011", desc: "Heating By Steel Burners With Temp. Regulators" },
-            "Chicken Grill - Roller Grill": { code: "M7", price: 1200.00, year: "2011", desc: "Chicken Grill Machine (Electric & Gas)" },
-            "Cooking range (gas) 6 burners": { code: "M2", price: 1500.00, year: "2011", desc: "Name: Imperial, Model COK-IR6-USA" },
-            "Fries Maachine (Laba Khaanad)": { code: "M4", price: 450.00, year: "2020", desc: "electric deep fryer french fries machine" },
-            "Kitchen Metal Utility Trolley 2 Shelves": { code: "K1", price: 300.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" },
-            "Kitchen Metal Utility Trolley 3 Shelves": { code: "K1", price: 400.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" },
-            "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" },
-            "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" },
-            "Kitchen Wooden Tables 140x70": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 140x70x70cm" },
-            "Kitchen Wooden Tables 240x80": { code: "K3", price: 240.00, year: "2011", desc: "Wooden Preparation Tables 240x80x80cm" },
-            "Kitchen Wooden Tables 65x65": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" },
-            "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" },
-            "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" },
-            "Pizza Oven - Large": { code: "M5", price: 1200.00, year: "2011", desc: "Pizza Oven (Electric), 2 Deck, Table top" },
-            "Refrigerator Chest freezer double": { code: "R8", price: 700.00, year: "2016", desc: "Haier. Model, HCF368H-2. Capacity: 51Kg" },
-            "Refrigerator Chest freezer single": { code: "R4", price: 480.00, year: "2015", desc: "Talagad Jiifa" },
-            "Refrigerator Glass door Fridge": { code: "R5", price: 700.00, year: "2015", desc: "Model, MUC-440M. Capacity: 68Kg" },
-            "Refrigerator Steel Double door": { code: "R6", price: 1500.00, year: "2015", desc: "UAE - Al-halabi" },
-            "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm. Brand: Roller Grill" },
-            "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm. Brand: Roller Grill" },
-            "Water heater": { code: "W4", price: 125.00, year: "2012", desc: "Wall mounted Electric heater" },
-            "6sppons, 6forks, 6small spoons": { code: "KU", price: 4.00, year: "2018", desc: "malqacado all steel" },
-            "Biifay (Chanfing dish)": { code: "KU", price: 37.00, year: "2018", desc: "chanfing dish" },
-            "Candy ball large": { code: "KU", price: 25.00, year: "2018", desc: "candy ball large" },
-            "Cups quraarada": { code: "KU", price: 2.50, year: "2018", desc: "Koobabka Quraarada ah" },
-            "Cups biyaha gees": { code: "KU", price: 1.16, year: "2018", desc: "koobabka biyaha gees" },
-            "Dusuud No.6": { code: "KU", price: 155.00, year: "2018", desc: "dusuud no. 9 (every six pcs are one set)" },
-            "Dusuud No.9": { code: "KU", price: 200.00, year: "2018", desc: "dusuud no. 6 (every six pcs are one set)" },
-            "Dusuud Normal": { code: "KU", price: 32.00, year: "2018", desc: "Dusuud godan & Caadi ah" },
-            "Every 3pcs are one set": { code: "KU", price: 28.00, year: "2018", desc: "kulaylisooyin" },
-            "Faashash": { code: "KU", price: 5.50, year: "2018", desc: "faashash" },
-            "Falaas Naqas": { code: "KU", price: 30.00, year: "2018", desc: "Falaash Shaah Naqas / Seminaar" },
-            "Glass tea pot Glass": { code: "KU", price: 13.00, year: "2018", desc: "Chinese Glass tea cups" },
-            "Glass tea pot Steel": { code: "KU", price: 8.00, year: "2018", desc: "Kildhiyada Yaryar ee Shaaha lagu shubo" },
-            "Glass water jug": { code: "KU", price: 5.00, year: "2018", desc: "jeegag quraarad ah" },
-            "Kildhi Shaaha 32": { code: "KU", price: 25.00, year: "2018", desc: "kilaadhi jandi ah 32" },
-            "Kildhi Shaaha 29": { code: "KU", price: 19.00, year: "2018", desc: "kilaadhi jandi ah 29" },
-            "Koobabka shaah dhobo": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah dhobo" },
-            "Koobabka shaah dhobo s.s": { code: "KU", price: 2.33, year: "2018", desc: "Koobabka shaah dhobo s.s" },
-            "Koobabka shaah quraarad": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah quraarad" },
-            "Macaan dhobo ah": { code: "KU", price: 2.00, year: "2018", desc: "macaan dhobo ah" },
-            "Macaan france ah": { code: "KU", price: 3.50, year: "2018", desc: "macaan france ah" },
-            "Macan quraarad ice ceram": { code: "KU", price: 2.33, year: "2018", desc: "macan quraarad ice ceram" },
-            "Madiibado gees ah dobool leh": { code: "KU", price: 2.00, year: "2018", desc: "madiibado gees ah dobool leh" },
-            "Malaas waawayn": { code: "KU", price: 10.00, year: "2018", desc: "malaas waawayn" },
-            "Maqliyo steel culus": { code: "KU", price: 18.00, year: "2018", desc: "maqliyo steel culus" },
-            "Mindiyo waaweyn": { code: "KU", price: 1.50, year: "2018", desc: "mindiyo waaweyn" },
-            "O-shaped plate Large": { code: "KU", price: 4.00, year: "2018", desc: "biledho qado gool ah, waaweyn" },
-            "O-shaped plate Medium": { code: "KU", price: 3.00, year: "2018", desc: "biledho qado gool ah dhexe" },
-            "O-shaped plate small": { code: "KU", price: 2.00, year: "2018", desc: "biledho qado gool ah yaryar" },
-            "Oil despenser and sugar pot": { code: "KU", price: 9.30, year: "2018", desc: "oil despenser and sugar pot" },
-            "Pizza plate weyn": { code: "KU", price: 8.00, year: "2018", desc: "pizza plate waaweyn" },
-            "Pizza plate dhexe": { code: "KU", price: 5.00, year: "2018", desc: "pizza plate dhexe" },
-            "Pizza plate yar": { code: "KU", price: 4.00, year: "2018", desc: "pizza plate yaryar" },
-            "Water Jug jaandi": { code: "KU", price: 2.00, year: "2018", desc: "Jeegaga Jaandiga ah" },
-            "Plates geeska jabiska": { code: "KU", price: 2.16, year: "2018", desc: "Suxuunta, geeska jabiska" },
-            "Shaandho Miiro Baasto": { code: "KU", price: 7.00, year: "2018", desc: "Shaandho Miiro Baasto" },
-            "Shaandho Miiro Jabis": { code: "KU", price: 3.00, year: "2018", desc: "Shaandho Miiro Jabis" },
-            "Shaandho Miiro Saanbuuse": { code: "KU", price: 9.00, year: "2018", desc: "Shaandho Miiro Saanbuuse" },
-            "Shaandho Miiro Sharaab": { code: "KU", price: 4.00, year: "2018", desc: "Shaandho Miiro Sharaab" },
-            "Suxuun dhar jandi": { code: "KU", price: 11.00, year: "2018", desc: "suxuun dhar jandi" },
-            "Suxuunta Cake- Wareega": { code: "KU", price: 4.00, year: "2018", desc: "Suxuunta Cake- Wareega" },
-            "Trays All Steel": { code: "KU", price: 9.00, year: "2018", desc: "try steel (Waaweyn, dhexe & Yaryar)" },
-            "Try caag loxoox": { code: "KU", price: 2.00, year: "2018", desc: "caag loxoox" },
-            "Mixed Utensils": { code: "KU", price: 2000.00, year: "2018", desc: "Weel wax lagu kariyo oo daadsan, Xabad Xabad ah oo jajaban" },
-            "Ushaped plate Large": { code: "KU", price: 7.00, year: "2018", desc: "huudhi waaweyn" },
-            "Ushaped plate Medium": { code: "KU", price: 5.00, year: "2018", desc: "huudhi dhexe" },
-            "Ushaped plate Small": { code: "KU", price: 4.00, year: "2018", desc: "huudhi yaryar" }
-        };
-
-        const bakeryItemsDB = {
-            "Aluminium baking tray": { code: "B4", price: 15.00, year: "2011", desc: "40*60cm square bakery aluminium baking tray" },
-            "Bakery Kitchen UTENSILS": { code: "B6", price: 200.00, year: "2011", desc: "Agabka yaryar ee lagu shaqeeyo Bakeryga" },
-            "Cake, Magic Marble": { code: "B1", price: 20.00, year: "2018", desc: "Magic Marble Cake Stand black" },
-            "Electric Oven Bread Bakery": { code: "B5", price: 1500.00, year: "2011", desc: "D1-Oven. Model: HBL-40, Power 13.2Kw" },
-            "Fan Wall mounted": { code: "F3", price: 32.00, year: "2012", desc: "Maraxwada Gidaarka ku Xidhan" },
-            "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" },
-            "Kitchen Spring Scale 25Kg": { code: "B2", price: 30.00, year: "2012", desc: "Name: Camry, Model: J2012157363" },
-            "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" },
-            "Kitchen Wooden Tables 65x65": { code: "K3", price: 65.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" },
-            "Mixer High Capacity dough": { code: "B3", price: 1100.00, year: "2011", desc: "Electric Mixer, Model B20-B, Dcapacity 2-4Kg" },
-            "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" },
-            "Refrigerator Chest freezer": { code: "R7", price: 600.00, year: "2015", desc: "Talagad Jiifa" },
-            "Refrigerator Glass door Fridge": { code: "R4", price: 700.00, year: "2015", desc: "Model, FC/LD60A. Capacity: 380L" },
-            "Refrigerator Large Fridge": { code: "R3", price: 800.00, year: "2015", desc: "NAME: GA, Model TBG15BARWM, Capacity 142Kg" },
-            "Refrigerator Small Fridge": { code: "R2", price: 250.00, year: "2015", desc: "Talagada VIP Rooms" },
-            "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm" },
-            "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" }
-        };
-
-        const cafeteriaItemsDB = {
-            "Coffee Machines": { code: "M8", price: 3500.00, year: "2012", desc: "ellesse cupachine machine" },
-            "ICE CREAM, UTENSILS": { code: "I4", price: 200.00, year: "2015", desc: "Like, Scope etc (SETS)" },
-            "Ice Cream, Refrigerator Display": { code: "I1", price: 1400.00, year: "2015", desc: "Super King: Ice Cream Freezers scooping cabinet" },
-            "Kitchen Pot Rack": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" },
-            "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" },
-            "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" },
-            "Refrigerator Chest freezer": { code: "R8", price: 700.00, year: "2015", desc: "Talagad Jiifa" },
-            "Refrigerator Display Counter": { code: "R12", price: 2000.00, year: "2015", desc: "Refrigerator Display Freezer Counter Cake" },
-            "Refrigerator Glass door Fridge": { code: "R5", price: 960.00, year: "2015", desc: "Talagada Sharaabka ee Cafateria taala" },
-            "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" }
-        };
-
-        let activeRoomNumber = "0001"; // Holds current active room code
-
-        function handleLogin() {
+        async function handleLogin() {
             const uInput = document.getElementById('username').value.trim();
             const pInput = document.getElementById('password').value.trim();
+            const btn = document.getElementById('login-btn');
+            const errBox = document.getElementById('login-error');
 
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            errBox.classList.add('hidden');
+
+            // 1. Check Admin (Local)
             if(uInput === profile.user && pInput === profile.pass) {
                 localStorage.setItem('maansoor_isLoggedIn', 'true');
                 localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
-                addLog("Login", `User-ka ${uInput} ayaa soo galay.`); 
+                localStorage.setItem('maansoor_role', 'admin');
+                addLog("Login", `User-ka Admin (${uInput}) ayaa soo galay.`); 
                 checkAuth();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
+                btn.innerText = 'LOGIN';
+                return;
             }
+
+            // 2. Check Staff Users (Supabase)
+            try {
+                const { data, error } = await db.from('users').select('*').eq('username', uInput).eq('password', pInput).single();
+                
+                if(data && !error) {
+                    localStorage.setItem('maansoor_isLoggedIn', 'true');
+                    localStorage.setItem('maansoor_loginTime', Date.now().toString()); 
+                    localStorage.setItem('maansoor_role', 'staff');
+                    localStorage.setItem('maansoor_staff_name', data.fullname);
+                    
+                    addLog("Login", `Staff user (${uInput}) ayaa soo galay.`); 
+                    checkAuth();
+                } else {
+                    errBox.classList.remove('hidden');
+                }
+            } catch (e) {
+                console.error("Login Error:", e);
+                errBox.classList.remove('hidden');
+                errBox.innerText = "Cillad internet ama Database!";
+            }
+            
+            btn.innerText = 'LOGIN';
         }
 
         async function checkAuth() {
             const auth = localStorage.getItem('maansoor_isLoggedIn');
             const loginTime = localStorage.getItem('maansoor_loginTime');
+            const role = localStorage.getItem('maansoor_role') || 'admin';
+            currentUserRole = role;
+
             const oneHour = 3600000; 
 
             if(auth === 'true') {
@@ -905,12 +803,19 @@
 
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-content').classList.remove('hidden');
+                
+                // Update UI based on role
+                applyPermissions();
+
                 showHomePage();
                 await loadInventory(); 
-                if(typeof loadLogs === 'function') await loadLogs();
 
                 const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
-                document.getElementById('header-username').innerText = savedProfile.user;
+                const staffName = localStorage.getItem('maansoor_staff_name');
+                document.getElementById('header-username').innerText = role === 'admin' ? savedProfile.user : (staffName || "STAFF");
+                
+                if(role === 'admin') loadUsers();
+
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('app-content').classList.add('hidden');
@@ -924,12 +829,26 @@
             closeSidebar();
         }
 
+        function applyPermissions() {
+            if(currentUserRole === 'staff') {
+                // Hide Sensitive Nav Items
+                document.getElementById('nav-logs').classList.add('hidden');
+                document.getElementById('nav-settings').classList.add('hidden');
+                document.getElementById('reset-all-btn').classList.add('hidden');
+                
+                // CSS class to hide edit/delete columns is applied in renderTable
+            } else {
+                document.getElementById('nav-logs').classList.remove('hidden');
+                document.getElementById('nav-settings').classList.remove('hidden');
+                document.getElementById('reset-all-btn').classList.remove('hidden');
+            }
+        }
+
         setInterval(() => {
             const auth = localStorage.getItem('maansoor_isLoggedIn');
             const loginTime = localStorage.getItem('maansoor_loginTime');
-            const oneHour = 3600000;
             
-            if (auth === 'true' && loginTime && (Date.now() - parseInt(loginTime) > oneHour)) {
+            if (auth === 'true' && loginTime && (Date.now() - parseInt(loginTime) > 3600000)) {
                 Swal.fire({
                     title: 'Waqtigu waa kaa dhamaaday!',
                     text: 'Fadlan dib u soo gal nidaamka.',
@@ -942,9 +861,12 @@
         }, 60000); 
 
         async function handleLogout() {
-            await addLog("Logout", `User-ka ${profile.user} ayaa ka baxay nidaamka.`);
+            const user = currentUserRole === 'admin' ? profile.user : localStorage.getItem('maansoor_staff_name');
+            await addLog("Logout", `User-ka ${user} ayaa ka baxay nidaamka.`);
             localStorage.removeItem('maansoor_isLoggedIn');
             localStorage.removeItem('maansoor_loginTime');
+            localStorage.removeItem('maansoor_role');
+            localStorage.removeItem('maansoor_staff_name');
             sessionStorage.clear();
             window.location.reload();
         }
@@ -963,6 +885,8 @@
         }
 
         function showSettings() {
+            if(currentUserRole !== 'admin') return;
+
             hideAllScreens();
             document.getElementById('settings-screen').classList.remove('hidden');
             document.getElementById('set-username').value = profile.user;
@@ -975,6 +899,7 @@
             document.getElementById('nav-settings').classList.add('btn-active-red');
             
             closeSidebar();
+            loadUsers(); // Load staff list
         }
 
         async function saveUserProfile() {
@@ -998,7 +923,7 @@
             profile.fullName = newFN;
 
             localStorage.setItem('maansoor_profile', JSON.stringify(profile));
-            await addLog("Profile Update", `Xogta user-ka ${profile.user} waa la beddelay.`);
+            await addLog("Profile Update", `Xogta admin-ka ${profile.user} waa la beddelay.`);
             
             Swal.fire({
                 title: 'Waa la beddelay!',
@@ -1010,12 +935,104 @@
                 window.location.reload();
             });
         }
+        
+        // --- STAFF MANAGEMENT FUNCTIONS ---
+        async function loadUsers() {
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+            
+            const { data, error } = await db.from('users').select('*').order('id', {ascending: false});
+            
+            tbody.innerHTML = '';
+            
+            if(error) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-red-500">Error loading users (Create "users" table in DB)</td></tr>';
+                return;
+            }
+            
+            if(data.length === 0) {
+                 tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-gray-400">No staff users found.</td></tr>';
+                 return;
+            }
+
+            data.forEach(user => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 border-b last:border-0">
+                        <td class="px-4 py-3 text-xs font-bold text-gray-700">${user.fullname}</td>
+                        <td class="px-4 py-3 text-xs text-gray-600">${user.username}</td>
+                        <td class="px-4 py-3 text-xs font-mono text-gray-400">••••••</td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="deleteUser(${user.id})" class="text-red-500 hover:text-red-700 font-bold text-[10px] uppercase">
+                                <i class="fas fa-trash mr-1"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function createNewUser() {
+            const fn = document.getElementById('new-user-fullname').value.trim();
+            const un = document.getElementById('new-user-username').value.trim();
+            const pw = document.getElementById('new-user-password').value.trim();
+
+            if(!fn || !un || !pw) {
+                return Swal.fire('Error', 'Fadlan buuxi dhamaan xogta user-ka', 'warning');
+            }
+
+            // Check if user exists locally (Admin)
+            if(un === profile.user) {
+                return Swal.fire('Error', 'Username-kan Admin-ka ayaa isticmaala.', 'error');
+            }
+
+            const { data, error } = await db.from('users').insert([{
+                fullname: fn,
+                username: un,
+                password: pw
+            }]);
+
+            if(!error) {
+                Swal.fire({ title: 'Success', text: 'User cusub ayaa la sameeyay', icon: 'success', timer: 1500, showConfirmButton: false });
+                document.getElementById('new-user-fullname').value = '';
+                document.getElementById('new-user-username').value = '';
+                document.getElementById('new-user-password').value = '';
+                loadUsers();
+                addLog("User Created", `Admin ayaa sameeyay user: ${un}`);
+            } else {
+                console.error(error);
+                Swal.fire('Error', 'Database error: Hubi in table-ka "users" uu jiro.', 'error');
+            }
+        }
+
+        async function deleteUser(id) {
+            Swal.fire({
+                title: 'Ma hubtaa?',
+                text: "User-kan waa la tirtirayaa.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Haa, Tirtir'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const { error } = await db.from('users').delete().eq('id', id);
+                    if(!error) {
+                        Swal.fire('Deleted', 'User-ka waa la tirtiray', 'success');
+                        loadUsers();
+                    } else {
+                        Swal.fire('Error', 'Cillad ayaa dhacday', 'error');
+                    }
+                }
+            });
+        }
 
         let activityLogs = JSON.parse(localStorage.getItem('maansoor_logs')) || [];
 
         async function addLog(action, details, backupData = null) {
+            // Logs are only visible to Admin, but tracked for everyone
+            const currentUser = currentUserRole === 'admin' ? profile.user : (localStorage.getItem('maansoor_staff_name') || 'Staff');
+            
             const logEntry = {
-                user: profile.user || "admin",
+                user: currentUser,
                 action: action,
                 details: details,
                 timestamp: new Date().toLocaleString('en-GB'), 
@@ -1031,6 +1048,8 @@
         }
 
         async function showLogs() {
+            if(currentUserRole !== 'admin') return; 
+
             hideAllScreens();
             document.getElementById('logs-screen').classList.remove('hidden');
             closeSidebar();
@@ -1362,33 +1381,21 @@
         }
 
         function updateCharts() {
-            // Added Utensils to categories
-            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils'];
-            
-            // Added Cyan/Teal color for Utensils
-            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2'];
-            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee'];
+            // Updated Categories
+            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Cafeteria', 'Bakery', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils'];
+            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#ea580c', '#db2777', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2'];
+            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#fb923c', '#f472b6', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee'];
 
             const calculateValue = (category) => {
                 return inventory.filter(i => {
                     const loc = (i.location || "").toLowerCase();
                     const cat = category.toLowerCase();
                     
-                    if (cat === 'kitchen') {
-                        return loc.includes('kitchen') || loc.includes('cafeteria') || loc.includes('bakery');
-                    }
-                    if (cat === 'hall') {
-                        return loc.includes('hall') || loc.includes('hodaale');
-                    }
-                    if (cat === 'office') {
-                        return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
-                    }
-                    if (cat === 'cars') {
-                        return loc.includes('car');
-                    }
-                    if (cat === 'utensils') {
-                         return loc.includes('utensils');
-                    }
+                    if (cat === 'kitchen') return loc.includes('kitchen');
+                    if (cat === 'hall') return loc.includes('hall') || loc.includes('hodaale');
+                    if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                    if (cat === 'cars') return loc.includes('car');
+                    if (cat === 'utensils') return loc.includes('utensils');
                     return loc.includes(cat);
                 }).reduce((sum, i) => sum + (parseFloat(i.total?.toString().replace(/[$,]/g,''))||0), 0);
             };
@@ -1398,21 +1405,11 @@
                     const loc = (i.location || "").toLowerCase();
                     const cat = category.toLowerCase();
 
-                    if (cat === 'kitchen') {
-                        return loc.includes('kitchen') || loc.includes('cafeteria') || loc.includes('bakery');
-                    }
-                    if (cat === 'hall') {
-                        return loc.includes('hall') || loc.includes('hodaale');
-                    }
-                    if (cat === 'office') {
-                        return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
-                    }
-                    if (cat === 'cars') {
-                        return loc.includes('car');
-                    }
-                    if (cat === 'utensils') {
-                         return loc.includes('utensils');
-                    }
+                    if (cat === 'kitchen') return loc.includes('kitchen');
+                    if (cat === 'hall') return loc.includes('hall') || loc.includes('hodaale');
+                    if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                    if (cat === 'cars') return loc.includes('car');
+                    if (cat === 'utensils') return loc.includes('utensils');
                     return loc.includes(cat);
                 }).length;
             };
@@ -1554,7 +1551,6 @@
             "BAKERY": Object.keys(bakeryItemsDB),
             "KITCHEN": Object.keys(kitchenItemsDB),
             "OFFICE": ["Xafiis (Desk)", "Kursi (Chair)", "Computer", "Printer", "File Cabinet", "AC", "Telephone", "Shelf"],
-            // NEW UTENSILS CATEGORY WITH ITEM NAMES
             "UTENSILS": ["Jaandi", "Dhoobo", "Gees", "Qurarad", "Mulqacado", "Farageeto", "Mindiyo"]
         };
 
@@ -1572,7 +1568,7 @@
             if (loc.includes("GARDEN")) return "GARDEN";
             if (loc.includes("CARS")) return "CARS";
             if (loc.includes("OFFICE")) return "OFFICE";
-            if (loc.includes("UTENSILS")) return "UTENSILS"; // ADDED
+            if (loc.includes("UTENSILS")) return "UTENSILS"; 
             return "OTHER";
         }
 
@@ -1617,17 +1613,11 @@
 
         // --- NEW: Helper to Calculate Sequential Number ---
         function calcNextSequence(itemName, categoryPrefix) {
-            // Filter inventory for similar items (same name or code base)
             const similarItems = inventory.filter(i => 
                 (i.name === itemName || (i.code && i.code.includes(categoryPrefix))) 
             );
-
-            // Sum up existing quantities
             let totalQty = similarItems.reduce((sum, item) => sum + (parseFloat(item.qty) || 0), 0);
-            
-            // Next start number is Total + 1
             let nextStart = totalQty + 1;
-            
             return nextStart.toString().padStart(4, '0');
         }
 
@@ -1650,7 +1640,6 @@
             } 
             else if (cat === 'HALL' && hallItemsDB[val]) {
                 const data = hallItemsDB[val];
-                // Halls logic: Count qty for next sequence
                 const nextSeq = calcNextSequence(val, `H-${data.code}`);
                 const fullID = `H-${data.code}-${nextSeq}`;
                 
@@ -1661,10 +1650,8 @@
                 calculate(); 
                 calculateAge();
             }
-            // --- NEW: RESTAURANT LOGIC (Same data as Hall but distinct code) ---
             else if (cat === 'RESTAURANT' && hallItemsDB[val]) {
                 const data = hallItemsDB[val];
-                // Restaurant logic: Count qty for next sequence
                 const nextSeq = calcNextSequence(val, `RES-${data.code}`);
                 const fullID = `RES-${data.code}-${nextSeq}`;
                 
@@ -1675,10 +1662,8 @@
                 calculate(); 
                 calculateAge();
             }
-            // --- NEW: KITCHEN LOGIC (KE-code-0001) ---
             else if (cat === 'KITCHEN' && kitchenItemsDB[val]) {
                 const data = kitchenItemsDB[val];
-                // Sequence logic: Count existing qty of this item to get next ID
                 const nextSeq = calcNextSequence(val, `KE-${data.code}`);
                 const fullID = `KE-${data.code}-${nextSeq}`;
                 
@@ -1689,11 +1674,10 @@
                 calculate();
                 calculateAge();
             }
-            // --- NEW: BAKERY LOGIC (KE-code-0001) ---
             else if (cat === 'BAKERY' && bakeryItemsDB[val]) {
                 const data = bakeryItemsDB[val];
                 const nextSeq = calcNextSequence(val, `KE-${data.code}`);
-                const fullID = `KE-${data.code}-${nextSeq}`; // Uses KE as requested, but distinct from Kitchen items
+                const fullID = `KE-${data.code}-${nextSeq}`; 
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -1702,7 +1686,6 @@
                 calculate();
                 calculateAge();
             }
-            // --- NEW: CAFETERIA LOGIC (KE-code-0001) ---
             else if (cat === 'CAFETERIA' && cafeteriaItemsDB[val]) {
                 const data = cafeteriaItemsDB[val];
                 const nextSeq = calcNextSequence(val, `KE-${data.code}`);
@@ -1758,6 +1741,10 @@
             try {
                 let result;
                 if(editId) {
+                     // Staff cannot edit, double check permissions here
+                    if(currentUserRole === 'staff') {
+                        return Swal.fire('Unauthorized', 'Ma haysatid ogolaansho aad wax ku beddesho.', 'error');
+                    }
                     result = await db.from('inventory').update(data).eq('id', editId);
                 } else {
                     result = await db.from('inventory').insert([data]);
@@ -1782,7 +1769,7 @@
 
             } catch (err) {
                 console.error("Supabase Error:", err);
-                Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin. Hubi in DB-ga columns-ka cusub lagu daray.', 'error');
+                Swal.fire('Cillad!', 'Xogta Cloud-ka ma gelin.', 'error');
             }
         }
         
@@ -1804,7 +1791,6 @@
                 saveBtn.classList.remove('bg-blue-600');
                 saveBtn.classList.add('bg-slate-900');
             }
-            // Reset both old and new fields
             ['holder','dept','code','name','desc','qty','uvalue','total','depreciation','purchase_date','item_age'].forEach(f => {
                 const el = document.getElementById(f);
                 if(el) el.value = '';
@@ -1815,6 +1801,10 @@
         }
 
         async function editItem(id) { 
+            if(currentUserRole === 'staff') {
+                return Swal.fire('Ops!', 'Staff-ku ma beddeli karo xogta.', 'error');
+            }
+
             const i = inventory.find(x => x.id === id); 
             if(!i) return; 
 
@@ -1824,19 +1814,16 @@
 
             editId = id; 
 
-            // Old Fields
             const fields = ['holder','dept','location','code','name','desc','qty','uvalue','total'];
             fields.forEach(f => {
                 const el = document.getElementById(f);
                 if(el) el.value = i[f] || '';
             });
 
-            // New Fields
             if(document.getElementById('depreciation')) document.getElementById('depreciation').value = i.depreciation || '';
             if(document.getElementById('purchase_date')) document.getElementById('purchase_date').value = i.purchase_date || '';
             if(document.getElementById('item_age')) document.getElementById('item_age').value = i.item_age || '';
             
-            // Recalculate age if date exists but age is empty (legacy data)
             if(i.purchase_date && !i.item_age) {
                  calculateAge();
             }
@@ -1899,6 +1886,10 @@
         }
 
         async function deleteItem(id) {
+            if(currentUserRole === 'staff') {
+                return Swal.fire('Ops!', 'Staff-ku ma tirtiri karo xogta.', 'error');
+            }
+
             const i = inventory.find(x => x.id === id);
             
             Swal.fire({
@@ -1936,6 +1927,8 @@
         }
         
         async function clearAllData() { 
+            if(currentUserRole === 'staff') return;
+
             Swal.fire({
                 title: 'aad u hubi!',
                 text: "DHAMAAN xogta huteelka ee Cloud-ka ma tirtirnaa? Tallaabadan dib looma soo celin karo!",
@@ -1982,7 +1975,7 @@
                     i.location.toLowerCase().includes("floor") 
                 ));
             }
-            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Electricity", "Security", "Garden", "Cars", "Utensils"].includes(loc)) {
+            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Cafeteria", "Bakery", "Electricity", "Security", "Garden", "Cars", "Utensils"].includes(loc)) {
                 filtered = inventory.filter(i => i.location && i.location.includes(loc));
             } 
             else {
@@ -1995,6 +1988,17 @@
                 let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}', this)" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
                     <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
+
+                // If staff, hide action buttons
+                let actionButtons = '';
+                if(currentUserRole === 'admin') {
+                    actionButtons = `
+                        <button onclick="editItem(${i.id})" class="text-blue-500 hover:text-blue-700 transition" title="Edit & View Image"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem(${i.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                    `;
+                } else {
+                    actionButtons = `<span class="text-gray-300 text-[10px] italic">View Only</span>`;
+                }
 
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b transition-colors">
                     <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
@@ -2011,8 +2015,7 @@
                     <td class="px-6 py-4 text-xs font-extrabold text-slate-900">${i.total}</td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex justify-end space-x-3">
-                            <button onclick="editItem(${i.id})" class="text-blue-500 hover:text-blue-700 transition" title="Edit & View Image"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteItem(${i.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                            ${actionButtons}
                         </div>
                     </td>
                 </tr>`;
@@ -2066,8 +2069,7 @@
                     document.querySelectorAll('#grid-buttons button').forEach(b => b.classList.remove('black-active')); 
                     e.currentTarget.classList.add('black-active'); 
                     
-                    // --- 3. AUTO ROOM ID LOGIC ---
-                    activeRoomNumber = i.toString().padStart(4, '0'); // e.g. "0001", "0100"
+                    activeRoomNumber = i.toString().padStart(4, '0');
 
                     currentSelectedLocation = `${catLabel} ${i}`; 
                     document.getElementById('location').value = currentSelectedLocation; 
@@ -2127,7 +2129,6 @@
                 saveBtn.classList.remove('bg-blue-600');
                 saveBtn.classList.add('bg-slate-900');
             }
-            // Reset both old and new fields
             ['holder','dept','code','name','desc','qty','uvalue','total','depreciation','purchase_date','item_age'].forEach(f => {
                 const el = document.getElementById(f);
                 if(el) el.value = '';
@@ -2200,6 +2201,17 @@
                     <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
 
+                 // If staff, hide action buttons
+                let actionButtons = '';
+                if(currentUserRole === 'admin') {
+                    actionButtons = `
+                        <button onclick="editItem(${i.id})" class="text-blue-500 hover:text-blue-700 transition" title="Edit & View Image"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteItem(${i.id})" class="text-red-500 hover:text-red-700 transition"><i class="fas fa-trash"></i></button>
+                    `;
+                } else {
+                    actionButtons = `<span class="text-gray-300 text-[10px] italic">View Only</span>`;
+                }
+
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50 border-b">
                     <td class="px-6 py-4 text-xs font-bold text-gray-400">${index + 1}.</td>
                     <td class="px-6 py-4">${imageCell}</td>
@@ -2208,7 +2220,7 @@
                     <td class="px-6 py-4 text-xs"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span></td>
                     <td class="px-6 py-4 text-xs font-bold">${i.qty}</td>
                     <td class="px-6 py-4 text-xs font-extrabold">${i.total}</td>
-                    <td class="px-6 py-4 flex gap-2"><button onclick="editItem(${i.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem(${i.id})" class="text-red-500"><i class="fas fa-trash"></i></button></td>
+                    <td class="px-6 py-4 flex gap-2">${actionButtons}</td>
                 </tr>`;
             });
         }
@@ -2219,14 +2231,16 @@
             if (loc.startsWith("room")) return 1;
             if (loc.includes("restaurant")) return 2;
             if (loc.includes("hall") || loc.includes("hodaale")) return 3;
-            if (loc.includes("kitchen") || loc.includes("cafeteria") || loc.includes("bakery")) return 4;
-            if (loc.includes("office")) return 5;
-            if (loc.includes("electricity")) return 6;
-            if (loc.includes("security")) return 7;
-            if (loc.includes("garden")) return 8;
-            if (loc.includes("cars")) return 9;
-            if (loc.includes("utensils")) return 10;
-            return 11; 
+            if (loc.includes("kitchen")) return 4;
+            if (loc.includes("cafeteria")) return 5;
+            if (loc.includes("bakery")) return 6;
+            if (loc.includes("office")) return 7;
+            if (loc.includes("electricity")) return 8;
+            if (loc.includes("security")) return 9;
+            if (loc.includes("garden")) return 10;
+            if (loc.includes("cars")) return 11;
+            if (loc.includes("utensils")) return 12;
+            return 13; 
         }
 
         let currentExportMode = 'full';
@@ -2279,7 +2293,6 @@
                 const priorityA = getCategoryPriority(a.location);
                 const priorityB = getCategoryPriority(b.location);
                 if (priorityA !== priorityB) return priorityA - priorityB;
-                // Safe compare
                 const locA = a.location || "";
                 const locB = b.location || "";
                 return locA.localeCompare(locB, undefined, {numeric: true, sensitivity: 'base'});
@@ -2341,19 +2354,13 @@
                 let dataToProcess = [];
                 let titleText = "";
 
-                // Determine what data to show based on current view/filter
                 if (currentSelectedLocation) {
-                    // Specific location (e.g., Room 101, Somali Restaurant)
                     dataToProcess = inventory.filter(i => i.location === currentSelectedLocation);
                     titleText = `INVENTORY REPORT: ${currentSelectedLocation.toUpperCase()}`;
                 } 
                 else if (currentCategory) {
-                    // Category view (e.g., All Kitchens)
                     if (currentCategory === 'kitchen') {
-                        dataToProcess = inventory.filter(i => {
-                            const loc = (i.location || "").toLowerCase();
-                            return loc.includes('kitchen') || loc.includes('cafeteria') || loc.includes('bakery');
-                        });
+                        dataToProcess = inventory.filter(i => (i.location || "").toLowerCase().includes('kitchen'));
                         titleText = "INVENTORY REPORT: ALL KITCHENS";
                     } else if (currentCategory === 'hall') {
                         dataToProcess = inventory.filter(i => {
@@ -2376,7 +2383,6 @@
                     }
                 } 
                 else {
-                    // Default / Dashboard view (Everything)
                     dataToProcess = [...inventory];
                     titleText = "FULL HOTEL INVENTORY SUMMARY REPORT";
                 }
@@ -2385,22 +2391,16 @@
                     return Swal.fire('Cillad', 'Qaybtan xog kuma jirto.', 'info');
                 }
 
-                // Sort by location then name for cleaner report
                 dataToProcess.sort((a, b) => (a.location || "").localeCompare(b.location || ""));
 
                 let tableBody = [];
                 let grandTotalQty = 0;
                 let grandTotalValue = 0;
 
-                // Build table rows directly from data (DETAILED REPORT)
                 dataToProcess.forEach((item, index) => {
                     let qty = parseFloat(item.qty) || 0;
-                    
-                    // SAFE PARSING for Total Value (remove $ and ,)
                     let totalStr = (item.total || "0").toString().replace(/[^0-9.-]+/g,"");
                     let totalVal = parseFloat(totalStr) || 0;
-                    
-                    // Determine Unit Price
                     let unitPrice = qty > 0 ? (totalVal / qty) : (parseFloat(item.uvalue) || 0);
 
                     grandTotalQty += qty;
@@ -2418,15 +2418,14 @@
                     ]);
                 });
 
-                // Header Generation
                 doc.setFontSize(18);
                 doc.setFont("helvetica", "bold");
-                doc.setTextColor(15, 23, 42); // Slate 900
+                doc.setTextColor(15, 23, 42); 
                 doc.text("MAANSOOR HOTEL & RESORT", pageWidth / 2, 20, { align: 'center' });
                 
                 doc.setFontSize(11);
                 doc.setFont("helvetica", "bold");
-                doc.setTextColor(202, 138, 4); // Yellow-600ish
+                doc.setTextColor(202, 138, 4); 
                 doc.text(titleText, pageWidth / 2, 28, { align: 'center' });
                 
                 doc.setFontSize(8);
@@ -2435,18 +2434,16 @@
                 doc.text(`Generated Date: ${date}`, 14, 38);
                 doc.text(`Generated By: ${profile.user}`, pageWidth - 14, 38, { align: 'right' });
                 
-                // Line separator
                 doc.setDrawColor(200);
                 doc.line(14, 42, pageWidth - 14, 42); 
 
-                // Generate Table
                 doc.autoTable({
                     startY: 45,
                     head: [['#', 'Item Name', 'Code', 'Location', 'Status', 'Qty', 'Unit Price', 'Total Value']],
                     body: tableBody,
                     theme: 'grid', 
                     headStyles: { 
-                        fillColor: [15, 23, 42], // Slate 900
+                        fillColor: [15, 23, 42], 
                         textColor: [255, 255, 255], 
                         fontStyle: 'bold',
                         halign: 'center',
@@ -2460,17 +2457,17 @@
                         lineColor: [230, 230, 230]
                     },
                     alternateRowStyles: {
-                        fillColor: [248, 250, 252] // Slate 50
+                        fillColor: [248, 250, 252] 
                     },
                     columnStyles: {
                         0: { halign: 'center', cellWidth: 10 }, 
-                        1: { halign: 'left', fontStyle: 'bold' }, // Name
-                        2: { halign: 'center' }, // Code
-                        3: { halign: 'left', fontSize: 7 }, // Location
-                        4: { halign: 'center' }, // Status
-                        5: { halign: 'center', fontStyle: 'bold' }, // Qty
-                        6: { halign: 'right' }, // Unit
-                        7: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } // Total (Green)
+                        1: { halign: 'left', fontStyle: 'bold' }, 
+                        2: { halign: 'center' }, 
+                        3: { halign: 'left', fontSize: 7 }, 
+                        4: { halign: 'center' }, 
+                        5: { halign: 'center', fontStyle: 'bold' }, 
+                        6: { halign: 'right' }, 
+                        7: { halign: 'right', fontStyle: 'bold', textColor: [22, 163, 74] } 
                     },
                     foot: [[
                         '', 
@@ -2490,7 +2487,6 @@
                         fontSize: 9
                     },
                     didParseCell: function(data) {
-                        // Align footer text
                         if (data.section === 'foot' && data.column.index === 1) {
                             data.cell.styles.halign = 'left';
                         }
@@ -2500,7 +2496,6 @@
                     }
                 });
 
-                // Footer Page Numbers
                 const pageCount = doc.internal.getNumberOfPages();
                 for(let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
@@ -2510,7 +2505,6 @@
                     doc.text('Maansoor Hotel Official Inventory System', 14, doc.internal.pageSize.height - 10);
                 }
 
-                // Save File
                 doc.save(`${titleText.replace(/[:\s]+/g, '_')}_Report.pdf`);
                 
             } catch (err) {
@@ -2635,7 +2629,6 @@
         }
 
         function handleSelectionClick(btnElement, locationName) {
-            // FIX: Reset form data before setting new location
             resetFormOnlyInputs();
 
             document.querySelectorAll('#grid-buttons button').forEach(b => {
@@ -2672,61 +2665,16 @@
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
             
-            document.getElementById('inventory-section').classList.add('hidden');
+            document.getElementById('inventory-section').classList.remove('hidden');
 
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
             const sidebarBtns = document.querySelectorAll('.nav-btn');
             if(sidebarBtns[4]) sidebarBtns[4].classList.add('btn-active'); 
             
-            document.getElementById('grid-buttons').className = "flex flex-col md:flex-row justify-center gap-8 px-4";
-
-            document.getElementById('table-title').innerText = "DOORO QAYBTA (KITCHEN / CAFETERIA / BAKERY)";
-            document.getElementById('selection-label').innerHTML = `
-                 <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
-                 <span class="text-gray-400">|</span> <span class="ml-2">Fadlan kala dooro :</span>
-            `;
-            
-            const grid = document.getElementById('grid-buttons');
-            grid.innerHTML = ''; 
-
-            const mainOptions = [
-                { name: "KITCHENS", icon: "fa-fire-burner", color: "text-red-600", action: showKitchenSubOptions, type: "sub" },
-                { name: "CAFETERIA", icon: "fa-mug-hot", color: "text-orange-600", action: null, type: "direct" },
-                { name: "BAKERY", icon: "fa-bread-slice", color: "text-yellow-600", action: null, type: "direct" }
-            ];
-
-            mainOptions.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "w-full md:w-1/3 h-40 p-8 bg-white border-2 border-gray-100 rounded-3xl text-xl font-black shadow-lg transition-all hover:bg-slate-50 hover:border-yellow-500 hover:-translate-y-2 flex flex-col items-center justify-center gap-4 group";
-                btn.innerHTML = `<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-2 group-hover:bg-slate-200 transition"><i class="fas ${opt.icon} ${opt.color} text-4xl"></i></div> <span>${opt.name}</span>`;
-                
-                btn.onclick = () => {
-                    if (opt.type === "sub") {
-                        opt.action(); 
-                    } else {
-                        // For direct categories (Bakery, Cafeteria)
-                        if (opt.name === "BAKERY") {
-                             currentCategory = "Bakery";
-                             handleSelectionClick(btn, opt.name);
-                             renderTable("Bakery");
-                        } else if (opt.name === "CAFETERIA") {
-                             currentCategory = "Cafeteria";
-                             handleSelectionClick(btn, opt.name);
-                             renderTable("Cafeteria");
-                        }
-                    }
-                };
-                grid.appendChild(btn);
-            });
-        }
-
-        function showKitchenSubOptions() {
             currentCategory = "Kitchen";
-            
-            document.getElementById('inventory-section').classList.remove('hidden');
-            document.getElementById('table-title').innerText = "ALL KITCHENS INVENTORY LOGS";
             currentExportMode = 'kitchen_only';
             
+            document.getElementById('table-title').innerText = "ALL KITCHENS INVENTORY LOGS";
             document.getElementById('btn-excel-full').classList.remove('hidden');
             document.getElementById('btn-excel-loc').classList.add('hidden');
             document.getElementById('btn-excel-full').innerText = "EXCEL (ALL KITCHENS)";
@@ -2734,10 +2682,10 @@
             renderTable("Kitchen");
 
             document.getElementById('selection-label').innerHTML = `
-                <button onclick="showKitchenMainSelection()" class="mr-3 text-red-600 hover:underline text-[10px] uppercase font-bold bg-red-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Dib u noqo</button> 
-                <span class="text-gray-400">|</span> <span class="ml-2 text-red-600 font-bold">KITCHENS</span>
+                <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2">Dooro Jikada :</span>
             `;
-
+            
             document.getElementById('grid-buttons').className = "grid grid-cols-2 md:grid-cols-3 gap-4";
             const grid = document.getElementById('grid-buttons');
             grid.innerHTML = ''; 
