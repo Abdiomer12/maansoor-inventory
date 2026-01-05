@@ -274,7 +274,15 @@
                         </div>
                     </button>
 
-                    <!-- 5. OFFICES (DIRECT) -->
+                    <!-- 5. UTENSILS (NEW ADDITION) -->
+                    <button onclick="showDirectCategory('Utensils', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-cyan-400 group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
+                            <i class="fas fa-spoon"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Utensils</span>
+                    </button>
+
+                    <!-- 6. OFFICES (DIRECT) -->
                     <button onclick="showDirectCategory('Office', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
                             <i class="fas fa-briefcase"></i>
@@ -282,7 +290,7 @@
                         <span class="text-sm font-bold tracking-wide">Offices</span>
                     </button>
 
-                    <!-- 6. ELECTRICITY (DIRECT) -->
+                    <!-- 7. ELECTRICITY (DIRECT) -->
                     <button onclick="showDirectCategory('Electricity', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-400">
                             <i class="fas fa-bolt"></i>
@@ -290,7 +298,7 @@
                         <span class="text-sm font-bold tracking-wide">Electricity</span>
                     </button>
 
-                    <!-- 7. SECURITY (DIRECT) -->
+                    <!-- 8. SECURITY (DIRECT) -->
                     <button onclick="showDirectCategory('Security', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-400">
                             <i class="fas fa-shield-halved"></i>
@@ -298,7 +306,7 @@
                         <span class="text-sm font-bold tracking-wide">Security</span>
                     </button>
 
-                    <!-- 8. GARDEN (DIRECT) -->
+                    <!-- 9. GARDEN (DIRECT) -->
                     <button onclick="showDirectCategory('Garden', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-green-500 group-hover:bg-green-500/20 group-hover:text-green-500">
                             <i class="fas fa-tree"></i>
@@ -306,13 +314,14 @@
                         <span class="text-sm font-bold tracking-wide">Garden</span>
                     </button>
 
-                    <!-- 9. CARS (DIRECT) -->
+                    <!-- 10. CARS (DIRECT) -->
                     <button onclick="showDirectCategory('Cars', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-indigo-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-400">
                             <i class="fas fa-car"></i>
                         </div>
                         <span class="text-sm font-bold tracking-wide">Cars</span>
                     </button>
+
 
                     <!-- SETTINGS & LOGOUT AREA -->
                     <div class="pt-6 border-t border-slate-700/50 mt-6 space-y-2">
@@ -1353,10 +1362,12 @@
         }
 
         function updateCharts() {
-            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Electricity', 'Security', 'Garden', 'Cars', 'Office'];
+            // Added Utensils to categories
+            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils'];
             
-            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c'];
-            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c'];
+            // Added Cyan/Teal color for Utensils
+            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2'];
+            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee'];
 
             const calculateValue = (category) => {
                 return inventory.filter(i => {
@@ -1374,6 +1385,9 @@
                     }
                     if (cat === 'cars') {
                         return loc.includes('car');
+                    }
+                    if (cat === 'utensils') {
+                         return loc.includes('utensils');
                     }
                     return loc.includes(cat);
                 }).reduce((sum, i) => sum + (parseFloat(i.total?.toString().replace(/[$,]/g,''))||0), 0);
@@ -1395,6 +1409,9 @@
                     }
                     if (cat === 'cars') {
                         return loc.includes('car');
+                    }
+                    if (cat === 'utensils') {
+                         return loc.includes('utensils');
                     }
                     return loc.includes(cat);
                 }).length;
@@ -1536,7 +1553,9 @@
             "CAFETERIA": Object.keys(cafeteriaItemsDB),
             "BAKERY": Object.keys(bakeryItemsDB),
             "KITCHEN": Object.keys(kitchenItemsDB),
-            "OFFICE": ["Xafiis (Desk)", "Kursi (Chair)", "Computer", "Printer", "File Cabinet", "AC", "Telephone", "Shelf"]
+            "OFFICE": ["Xafiis (Desk)", "Kursi (Chair)", "Computer", "Printer", "File Cabinet", "AC", "Telephone", "Shelf"],
+            // NEW UTENSILS CATEGORY WITH ITEM NAMES
+            "UTENSILS": ["Jaandi", "Dhoobo", "Gees", "Qurarad", "Mulqacado", "Farageeto", "Mindiyo"]
         };
 
         function getCurrentCategoryKey() {
@@ -1553,6 +1572,7 @@
             if (loc.includes("GARDEN")) return "GARDEN";
             if (loc.includes("CARS")) return "CARS";
             if (loc.includes("OFFICE")) return "OFFICE";
+            if (loc.includes("UTENSILS")) return "UTENSILS"; // ADDED
             return "OTHER";
         }
 
@@ -1962,7 +1982,7 @@
                     i.location.toLowerCase().includes("floor") 
                 ));
             }
-            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Electricity", "Security", "Garden", "Cars"].includes(loc)) {
+            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Electricity", "Security", "Garden", "Cars", "Utensils"].includes(loc)) {
                 filtered = inventory.filter(i => i.location && i.location.includes(loc));
             } 
             else {
@@ -2205,7 +2225,8 @@
             if (loc.includes("security")) return 7;
             if (loc.includes("garden")) return 8;
             if (loc.includes("cars")) return 9;
-            return 10; 
+            if (loc.includes("utensils")) return 10;
+            return 11; 
         }
 
         let currentExportMode = 'full';
