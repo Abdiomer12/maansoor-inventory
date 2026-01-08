@@ -106,6 +106,21 @@
         .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
 
+        /* SKELETON LOADING ANIMATION */
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 6px;
+            height: 16px;
+            width: 100%;
+        }
+        .skeleton-img { height: 40px; width: 40px; border-radius: 8px; }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
         @media (max-width: 768px) {
             .mobile-sidebar {
                 position: fixed;
@@ -138,7 +153,20 @@
                 flex-direction: column !important; 
                 gap: 20px !important;
             }
+            #dashboard-alerts:not(.hidden) {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+
+            /* HIDE TABLE ON MOBILE, SHOW CARDS */
+            .inventory-table-container { display: none; }
+            .inventory-cards-container { display: flex !important; flex-direction: column; gap: 15px; }
         }
+
+        /* Default Desktop View */
+        .inventory-cards-container { display: none; }
+
         .chart-card {
             background: #ffffff;
             border-radius: 24px;
@@ -161,6 +189,13 @@
         
         /* Disable Actions for Staff */
         .staff-hidden { display: none !important; }
+
+        /* Filter Tabs Active State */
+        .filter-tab.active {
+            background-color: #0f172a;
+            color: #fbbf24;
+            border-color: #0f172a;
+        }
     </style>
 </head>
 <body onload="checkAuth()">
@@ -548,6 +583,32 @@
                             </div>
                         </div>
 
+                         <!-- 3. DASHBOARD ALERTS -->
+                        <div id="dashboard-alerts" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 hidden">
+                             <!-- Card 1: Damaged -->
+                             <div class="bg-white border border-red-100 p-6 rounded-3xl flex items-center shadow-sm relative overflow-hidden">
+                                <div class="absolute right-0 top-0 h-full w-2 bg-red-500"></div>
+                                <div class="w-14 h-14 rounded-full bg-red-50 text-red-600 flex items-center justify-center mr-5 text-2xl shadow-sm">
+                                    <i class="fas fa-heart-crack"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Damaged Items</p>
+                                    <h3 id="stat-damaged" class="text-3xl font-black text-slate-800 mt-1">0</h3>
+                                </div>
+                             </div>
+                             <!-- Card 2: Missing -->
+                             <div class="bg-white border border-orange-100 p-6 rounded-3xl flex items-center shadow-sm relative overflow-hidden">
+                                <div class="absolute right-0 top-0 h-full w-2 bg-orange-500"></div>
+                                <div class="w-14 h-14 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center mr-5 text-2xl shadow-sm">
+                                    <i class="fas fa-magnifying-glass"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Missing Items</p>
+                                    <h3 id="stat-missing" class="text-3xl font-black text-slate-800 mt-1">0</h3>
+                                </div>
+                             </div>
+                        </div>
+
                         <div id="selection-area" class="mb-6 bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-gray-200 hidden">
                             <h3 id="selection-label" class="mb-3 font-bold text-gray-700 text-xs md:text-sm uppercase flex items-center">
                                 <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha aad rabto :
@@ -689,17 +750,39 @@
                         <div id="inventory-section" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
                             <div class="bg-slate-900 p-4 border-b border-yellow-600 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
                                 <h4 id="table-title" class="font-bold text-yellow-500 uppercase text-[10px] md:text-xs tracking-[0.2em]">Inventory Log List</h4>
-                                <div class="flex flex-wrap gap-2">
+                                <div class="flex flex-wrap gap-2 items-center">
                                     <button id="btn-excel-full" onclick="exportToExcel('full')" class="bg-blue-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">Excel (Full)</button>
                                     <button id="btn-excel-loc" onclick="exportToExcel('context')" class="bg-green-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold hidden">Excel (Location)</button>
                                     <button id="btn-pdf" onclick="exportToPDF()" class="bg-red-600 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold">PDF Report</button>
+                                    
+                                    <!-- 4. BULK DELETE BUTTON (Hidden by default) -->
+                                    <button id="btn-bulk-delete" onclick="deleteSelectedItems()" class="bg-red-700 text-white text-[9px] px-3 py-1.5 rounded uppercase font-bold hidden shadow-md animate-bounce"><i class="fas fa-trash-alt mr-1"></i> Delete Selected (<span id="selected-count">0</span>)</button>
+
                                     <button onclick="clearAllData()" id="reset-all-btn" class="text-red-400 text-[9px] hover:underline uppercase font-bold pl-2">Reset All</button>
                                 </div>
                             </div>
-                            <div class="overflow-x-auto">
+
+                             <!-- 2. STATUS FILTERS -->
+                            <div class="px-6 py-4 flex flex-wrap gap-2 border-b border-gray-100 bg-gray-50/50">
+                                <button onclick="filterByStatus('All', this)" class="filter-tab active px-4 py-1.5 rounded-full text-[10px] font-black border border-slate-300 text-slate-500 uppercase transition hover:bg-white hover:shadow-sm">All Items</button>
+                                <button onclick="filterByStatus('Good', this)" class="filter-tab px-4 py-1.5 rounded-full text-[10px] font-black border border-green-200 text-green-600 uppercase transition hover:bg-green-50 hover:shadow-sm">Good</button>
+                                <button onclick="filterByStatus('Damaged', this)" class="filter-tab px-4 py-1.5 rounded-full text-[10px] font-black border border-red-200 text-red-600 uppercase transition hover:bg-red-50 hover:shadow-sm">Damaged</button>
+                                <button onclick="filterByStatus('Missing', this)" class="filter-tab px-4 py-1.5 rounded-full text-[10px] font-black border border-amber-200 text-amber-600 uppercase transition hover:bg-amber-50 hover:shadow-sm">Missing</button>
+                            </div>
+
+                            <!-- Mobile Cards Container (Visible on Mobile) -->
+                            <div id="inventory-cards" class="inventory-cards-container p-4 bg-gray-50/50">
+                                <!-- Cards will be injected here -->
+                            </div>
+
+                            <!-- Desktop Table Container (Hidden on Mobile) -->
+                            <div class="inventory-table-container overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200 text-left">
                                     <thead class="bg-gray-50 sticky top-0 z-10">
                                         <tr>
+                                            <th class="px-4 py-3 w-10">
+                                                <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer">
+                                            </th>
                                             <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">No.</th>
                                             <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Sawirka</th>
                                             <th class="px-4 md:px-6 py-3 md:py-4 text-[10px] font-bold text-gray-500 uppercase">Code</th>
@@ -725,6 +808,19 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhaWFudWl3Z3ByZ3h5amV2eXF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAwMDEsImV4cCI6MjA4MjUwNjAwMX0.AVqzFT7s1YeEJOX6EWVNl-SamDqfsfEr3HDVGyDiVBE';
         const db = supabase.createClient(supabaseUrl, supabaseKey);
 
+        // 1. TOAST NOTIFICATION CONFIG
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
         let profile = JSON.parse(localStorage.getItem('maansoor_profile')) || {
             user: "Admin",
             pass: "Admin123",
@@ -742,6 +838,7 @@
 
         let activeRoomNumber = "0001";
         let currentUserRole = 'admin'; // 'admin' or 'staff'
+        let selectedItems = new Set(); // For bulk actions
 
         async function handleLogin() {
             const uInput = document.getElementById('username').value.trim();
@@ -835,12 +932,13 @@
                 document.getElementById('nav-logs').classList.add('hidden');
                 document.getElementById('nav-settings').classList.add('hidden');
                 document.getElementById('reset-all-btn').classList.add('hidden');
+                document.querySelector('.action-column').classList.add('staff-hidden'); // Hide actions in table
                 
-                // CSS class to hide edit/delete columns is applied in renderTable
             } else {
                 document.getElementById('nav-logs').classList.remove('hidden');
                 document.getElementById('nav-settings').classList.remove('hidden');
                 document.getElementById('reset-all-btn').classList.remove('hidden');
+                document.querySelector('.action-column').classList.remove('staff-hidden');
             }
         }
 
@@ -1106,7 +1204,7 @@
                             <i class="fas fa-history mr-1"></i> RESTORE ALL
                         </button>`;
                     }
-                } else if (log.action.includes("Cusboonaysiiyey") || log.action.includes("Update")) {
+                } else if (log.action.includes("Cusboonaysiiyey") || log.action.includes("Update") || log.action.includes("Price changed")) {
                     actionBadge = `<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-blue-200"><i class="fas fa-edit mr-1"></i> UPDATED</span>`;
                 } else if (log.action.includes("Login")) {
                     actionBadge = `<span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border border-indigo-200"><i class="fas fa-sign-in-alt mr-1"></i> LOGIN</span>`;
@@ -1263,10 +1361,14 @@
         let editId = null; 
         let myChart1, myChart2;
         let currentImageBase64 = null; 
+        let currentStatusFilter = 'All'; // Default filter
 
         document.getElementById('itemImage')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                // 3. SUPABASE STORAGE LOGIC START (Simplified)
+                // In production, use supabase.storage.from('images').upload()
+                // For now, keeping Base64 but preparing for transition
                 if (file.size > 20000 * 20000) {
                     Swal.fire('Sawirku waa weyn yahay!', 'Fadlan isticmaal sawir ka yar 1MB', 'warning');
                     this.value = "";
@@ -1279,6 +1381,7 @@
                     document.getElementById('image-preview-container').classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
+                // 3. SUPABASE STORAGE LOGIC END
             }
         });
 
@@ -1321,7 +1424,51 @@
             cameraInput.click();
         }
 
+        // 2. SKELETON LOADING LOGIC
+        function renderSkeleton() {
+            const tbody = document.getElementById('inventory-tbody');
+            const cardContainer = document.getElementById('inventory-cards');
+            tbody.innerHTML = '';
+            cardContainer.innerHTML = '';
+            
+            // Skeleton for Desktop Table
+            for(let i=0; i<5; i++) {
+                tbody.innerHTML += `
+                    <tr class="animate-pulse border-b border-gray-100">
+                        <td class="px-6 py-4"><div class="skeleton w-8"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-8"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton skeleton-img"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-24"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-32 mb-2"></div><div class="skeleton w-16"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-16 rounded-full"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-8"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-16"></div></td>
+                        <td class="px-6 py-4"><div class="skeleton w-16"></div></td>
+                    </tr>
+                `;
+            }
+            
+            // Skeleton for Mobile Cards
+            for(let i=0; i<3; i++) {
+                cardContainer.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 animate-pulse">
+                        <div class="flex items-start justify-between mb-3">
+                             <div class="skeleton w-32 mb-2"></div>
+                             <div class="skeleton w-8 h-8 rounded-full"></div>
+                        </div>
+                        <div class="space-y-2">
+                             <div class="skeleton w-full h-4"></div>
+                             <div class="skeleton w-2/3 h-4"></div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         async function loadInventory() {
+            // Show Skeleton before fetching
+            renderSkeleton();
+
             const { data, error } = await db.from('inventory')
                 .select('*') 
                 .order('id', { ascending: false });
@@ -1347,11 +1494,13 @@
             currentSelectedLocation = ""; 
             currentCategory = "";
             currentExportMode = "full"; 
+            currentStatusFilter = "All"; // Reset filter
 
             hideAllScreens(); 
 
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.remove('hidden');
+            document.getElementById('dashboard-alerts').classList.remove('hidden'); // Show alerts
             document.getElementById('inventory-section').classList.remove('hidden');
             document.getElementById('selection-area').classList.add('hidden');
             document.getElementById('entry-form').classList.add('hidden');
@@ -1376,8 +1525,16 @@
                 return sum + val;
             }, 0);
 
+            // 3. ALERT LOGIC
+            const damagedCount = inventory.filter(i => i.status === 'Damaged').length;
+            const missingCount = inventory.filter(i => i.status === 'Missing').length;
+
             document.getElementById('stat-total-items').innerText = `${totalItems} Items`;
             document.getElementById('stat-total-value').innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            
+            // Update Alert Cards
+            document.getElementById('stat-damaged').innerText = damagedCount;
+            document.getElementById('stat-missing').innerText = missingCount;
         }
 
         function updateCharts() {
@@ -1676,70 +1833,78 @@
             
             if (cat === 'ROOM' && roomItemsDB[val]) {
                 const data = roomItemsDB[val]; 
-                const fullID = `RA-${data.code}-${activeRoomNumber}`;
+                const fullID = `MH-RA-${data.code}-${activeRoomNumber}`;
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
             } 
             else if (cat === 'HALL' && hallItemsDB[val]) {
                 const data = hallItemsDB[val];
-                const nextSeq = calcNextSequence(val, `H-${data.code}`);
-                const fullID = `H-${data.code}-${nextSeq}`;
+                const nextSeq = calcNextSequence(val, `MH-HA-${data.code}`);
+                const fullID = `MH-HA-${data.code}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
             }
             else if (cat === 'RESTAURANT' && hallItemsDB[val]) {
                 const data = hallItemsDB[val];
-                const nextSeq = calcNextSequence(val, `RES-${data.code}`);
-                const fullID = `RES-${data.code}-${nextSeq}`;
+                const nextSeq = calcNextSequence(val, `MH-RES-${data.code}`);
+                const fullID = `MH-RES-${data.code}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
             }
             else if (cat === 'KITCHEN' && kitchenItemsDB[val]) {
                 const data = kitchenItemsDB[val];
-                const nextSeq = calcNextSequence(val, `KE-${data.code}`);
-                const fullID = `KE-${data.code}-${nextSeq}`;
+                let finalItemCode = data.code;
+
+                // "KU ka daa" logic: If code is KU, generate specific code from name
+                if(finalItemCode === 'KU') {
+                    // Remove non-alphanumeric, uppercase, take first 3 chars
+                    finalItemCode = val.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase();
+                }
+
+                const nextSeq = calcNextSequence(val, `MH-KE-${finalItemCode}`);
+                const fullID = `MH-KE-${finalItemCode}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate();
                 calculateAge();
             }
             else if (cat === 'BAKERY' && bakeryItemsDB[val]) {
                 const data = bakeryItemsDB[val];
-                const nextSeq = calcNextSequence(val, `KE-${data.code}`);
-                const fullID = `KE-${data.code}-${nextSeq}`; 
+                const nextSeq = calcNextSequence(val, `MH-BK-${data.code}`);
+                const fullID = `MH-BK-${data.code}-${nextSeq}`; 
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate();
                 calculateAge();
             }
             else if (cat === 'CAFETERIA' && cafeteriaItemsDB[val]) {
                 const data = cafeteriaItemsDB[val];
-                const nextSeq = calcNextSequence(val, `KE-${data.code}`);
-                const fullID = `KE-${data.code}-${nextSeq}`;
+                const nextSeq = calcNextSequence(val, `MH-CF-${data.code}`);
+                const fullID = `MH-CF-${data.code}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
-                document.getElementById('purchase_date').value = threeYearsAgoDate; // Force 3 Years
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate();
                 calculateAge();
@@ -1754,15 +1919,36 @@
             }
         });
 
+        // 2. STATUS FILTER FUNCTION
+        function filterByStatus(status, btnElement) {
+            currentStatusFilter = status;
+            
+            // UI Toggle
+            document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+
+            renderTable(currentSelectedLocation);
+        }
+
         async function saveData() {
             const n = document.getElementById('name').value.trim();
             const q = document.getElementById('qty').value;
+            const uVal = parseFloat(document.getElementById('uvalue').value) || 0;
             
             if(!n || !q) {
                 return Swal.fire('Cillad!', 'Fadlan buuxi Magaca iyo Tirada agabka!', 'error');
             }
 
             Swal.showLoading();
+
+            // 5. AUDIT / PRICE HISTORY LOGIC
+            let priceChangeDetails = "";
+            if(editId) {
+                const oldItem = inventory.find(i => i.id === editId);
+                if(oldItem && oldItem.uvalue != uVal) {
+                    priceChangeDetails = ` | Price changed from $${oldItem.uvalue} to $${uVal}`;
+                }
+            }
 
             const data = {
                 id: editId || Date.now(),
@@ -1773,7 +1959,7 @@
                 name: n,
                 status: document.getElementById('status').value,
                 qty: parseFloat(q),
-                uvalue: parseFloat(document.getElementById('uvalue').value) || 0,
+                uvalue: uVal,
                 // New Fields
                 depreciation: parseFloat(document.getElementById('depreciation').value) || 0,
                 purchase_date: document.getElementById('purchase_date').value || null,
@@ -1798,15 +1984,12 @@
 
                 if (result.error) throw result.error;
 
-                Swal.fire({
-                    title: 'Waa la kaydiyey!',
-                    text: 'Agabka waa la keydiyey, waad sii wadi kartaa ku darista.',
+                Toast.fire({
                     icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
+                    title: editId ? 'Xogta waa la cusboonaysiiyey!' : 'Agabka waa la keydiyey!'
                 });
 
-                addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}`);
+                addLog(editId ? "Cusboonaysiiyey" : "Ku daray", `Agab: ${n} ee yaalay ${data.location}${priceChangeDetails}`);
                 
                 // Reset Fields
                 resetFormInputsOnly();
@@ -1972,6 +2155,76 @@
             });
         }
         
+        // 4. BULK DELETE LOGIC
+        function toggleSelectAll() {
+            const selectAllBox = document.getElementById('selectAll');
+            const boxes = document.querySelectorAll('.item-checkbox');
+            const isChecked = selectAllBox.checked;
+            
+            selectedItems.clear();
+            boxes.forEach(box => {
+                box.checked = isChecked;
+                if(isChecked) selectedItems.add(parseInt(box.value));
+            });
+            updateBulkDeleteButton();
+        }
+        
+        function toggleItemSelection(id) {
+            const box = document.querySelector(`.item-checkbox[value="${id}"]`);
+            if(box.checked) {
+                selectedItems.add(id);
+            } else {
+                selectedItems.delete(id);
+            }
+            updateBulkDeleteButton();
+        }
+        
+        function updateBulkDeleteButton() {
+            const btn = document.getElementById('btn-bulk-delete');
+            const countSpan = document.getElementById('selected-count');
+            
+            countSpan.innerText = selectedItems.size;
+            
+            if(selectedItems.size > 0 && currentUserRole === 'admin') {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+        
+        async function deleteSelectedItems() {
+             if(currentUserRole === 'staff') return;
+             
+             Swal.fire({
+                title: 'Ma hubtaa?',
+                text: `Ma rabtaa in aad tirtirto ${selectedItems.size} shey?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#0f172a',
+                confirmButtonText: 'Haa, tirtir!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.showLoading();
+                    const idsToDelete = Array.from(selectedItems);
+                    const { error } = await db.from('inventory').delete().in('id', idsToDelete);
+                    
+                    if(!error) {
+                         addLog("Bulk Delete", `Admin tirtiray ${idsToDelete.length} shey.`);
+                         inventory = inventory.filter(i => !selectedItems.has(i.id));
+                         selectedItems.clear();
+                         updateBulkDeleteButton();
+                         document.getElementById('selectAll').checked = false;
+                         renderTable(currentSelectedLocation);
+                         updateDashboardStats();
+                         Swal.fire('La tirtiray', 'Agabkii waa la tirtiray', 'success');
+                    } else {
+                        Swal.fire('Error', 'Cillad ayaa dhacday', 'error');
+                    }
+                }
+            });
+        }
+
         async function clearAllData() { 
             if(currentUserRole === 'staff') return;
 
@@ -2007,8 +2260,11 @@
 
         function renderTable(loc = "") {
             const tbody = document.getElementById('inventory-tbody'); 
+            const cardContainer = document.getElementById('inventory-cards'); 
+            
             if(!tbody) return;
             tbody.innerHTML = ''; 
+            cardContainer.innerHTML = '';
             
             let filtered;
 
@@ -2028,6 +2284,11 @@
                 filtered = inventory.filter(i => i.location === loc);
             }
             
+            // APPLY STATUS FILTER
+            if(currentStatusFilter !== 'All') {
+                filtered = filtered.filter(i => i.status === currentStatusFilter);
+            }
+            
             filtered.forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
                 
@@ -2045,8 +2306,10 @@
                 } else {
                     actionButtons = `<span class="text-gray-300 text-[10px] italic">View Only</span>`;
                 }
-
+                
+                // DESKTOP TABLE ROW
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b transition-colors">
+                    <td class="px-4 py-3"><input type="checkbox" value="${i.id}" onclick="toggleItemSelection(${i.id})" class="item-checkbox rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer"></td>
                     <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
                     <td class="px-6 py-4">${imageCell}</td>
                     <td class="px-6 py-4 text-xs text-gray-600 font-mono">${i.code || '-'}</td>
@@ -2065,7 +2328,57 @@
                         </div>
                     </td>
                 </tr>`;
+                
+                // 6. MOBILE CARD VIEW
+                cardContainer.innerHTML += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col relative overflow-hidden">
+                        <!-- FIX: Added Checkbox for Mobile -->
+                        <div class="absolute top-4 left-4 z-10">
+                            <input type="checkbox" value="${i.id}" onclick="toggleItemSelection(${i.id})" class="item-checkbox w-5 h-5 rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer">
+                        </div>
+
+                        <div class="absolute top-0 right-0 p-4">
+                             <span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span>
+                        </div>
+                        
+                        <!-- Added ml-8 to push content so it doesn't overlap checkbox -->
+                        <div class="flex items-center mb-3 ml-6"> 
+                             <div class="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 font-bold text-xs mr-3 border">${index+1}</div>
+                             <div>
+                                 <h4 class="font-bold text-slate-800 text-sm">${i.name}</h4>
+                                 <p class="text-[10px] text-gray-400 uppercase font-mono">${i.code || '-'}</p>
+                             </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs mb-4 ml-6">
+                             <div class="bg-gray-50 p-2 rounded-lg">
+                                <span class="block text-gray-400 text-[9px] uppercase">Location</span>
+                                <span class="font-bold text-slate-700">${i.location}</span>
+                             </div>
+                             <div class="bg-gray-50 p-2 rounded-lg">
+                                <span class="block text-gray-400 text-[9px] uppercase">Quantity</span>
+                                <span class="font-bold text-slate-700">${i.qty}</span>
+                             </div>
+                             <div class="bg-gray-50 p-2 rounded-lg col-span-2 flex justify-between items-center">
+                                <span class="text-gray-400 text-[9px] uppercase">Total Value</span>
+                                <span class="font-extrabold text-green-600">${i.total}</span>
+                             </div>
+                        </div>
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-50 ml-6">
+                             ${imageCell}
+                             <div class="flex space-x-3">
+                                 ${actionButtons}
+                             </div>
+                        </div>
+                    </div>
+                `;
             });
+            
+            // Re-apply selection state
+            selectedItems.forEach(id => {
+                const box = document.querySelector(`.item-checkbox[value="${id}"]`);
+                if(box) box.checked = true;
+            });
+            updateBulkDeleteButton();
         }
 
         function changeCategory(cat, count) {
@@ -2084,12 +2397,23 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden');
             
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            // --- FIXED: Also remove btn-active-red ---
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
             if(event) event.currentTarget.classList.add('btn-active');
+
+            // --- FIX START: Reset the Selection Label ---
+            document.getElementById('selection-label').innerHTML = `
+                <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha aad rabto :
+            `;
+            // --- FIX END ---
 
             document.getElementById('grid-buttons').className = "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2";
             const grid = document.getElementById('grid-buttons'); 
@@ -2143,12 +2467,17 @@
             
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden');
             document.getElementById('selection-area').classList.add('hidden');
             
             document.getElementById('entry-form').classList.remove('hidden');
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            // --- FIXED: Also remove btn-active-red ---
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
             if(event && event.currentTarget) event.currentTarget.classList.add('btn-active');
 
             currentSelectedLocation = catName;
@@ -2563,13 +2892,18 @@
             closeSidebar();
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
-            document.getElementById('dashboard-visuals').classList.add('hidden'); 
+            document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden');
             
             document.getElementById('selection-area').classList.remove('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            // --- FIXED: Also remove btn-active-red ---
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
             const sidebarBtns = document.querySelectorAll('.nav-btn');
             if(sidebarBtns[2]) sidebarBtns[2].classList.add('btn-active'); 
 
@@ -2616,12 +2950,17 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden'); 
+            document.getElementById('dashboard-alerts').classList.add('hidden');
             
             document.getElementById('selection-area').classList.remove('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            // --- FIXED: Also remove btn-active-red ---
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
             const sidebarBtns = document.querySelectorAll('.nav-btn');
             if(sidebarBtns[3]) sidebarBtns[3].classList.add('btn-active'); 
 
@@ -2713,7 +3052,11 @@
             
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('btn-active'));
+            // --- FIXED: Also remove btn-active-red ---
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
             const sidebarBtns = document.querySelectorAll('.nav-btn');
             if(sidebarBtns[4]) sidebarBtns[4].classList.add('btn-active'); 
             
