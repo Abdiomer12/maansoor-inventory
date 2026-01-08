@@ -1401,11 +1401,11 @@
             cameraInput.onchange = function(e) {
                 const file = e.target.files[0];
                 if (file) {
-                    const fileSizeMB = file.size / (1024 * 1024); 
+                    const fileSizeMB = file.size / (3648 * 2736); 
                     if (fileSizeMB > 1) { 
                         return Swal.fire({
                             title: 'Sawirka waa weyn yahay!',
-                            text: 'Fadlan soo geli sawir ka yar 1MB. Kaaga hadda waa: ' + fileSizeMB.toFixed(2) + ' MB',
+                            text: 'Fadlan soo geli sawir ka yar 10MB. Kaaga hadda waa: ' + fileSizeMB.toFixed(2) + ' MB',
                             icon: 'warning',
                             confirmButtonColor: '#0f172a'
                         });
