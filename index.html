@@ -341,7 +341,7 @@
                         <span class="text-sm font-bold tracking-wide">Offices</span>
                     </button>
 
-                    <!-- 7. ELECTRICITY -->
+                    <!-- 7. ELECTRICITY (NEW ADDITION) -->
                     <button onclick="showDirectCategory('Electricity', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-400">
                             <i class="fas fa-bolt"></i>
@@ -349,7 +349,7 @@
                         <span class="text-sm font-bold tracking-wide">Electricity</span>
                     </button>
 
-                    <!-- 8. SECURITY -->
+                    <!-- 8. SECURITY (NEW ADDITION) -->
                     <button onclick="showDirectCategory('Security', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-400">
                             <i class="fas fa-shield-halved"></i>
@@ -357,7 +357,7 @@
                         <span class="text-sm font-bold tracking-wide">Security</span>
                     </button>
 
-                    <!-- 9. GARDEN -->
+                    <!-- 9. GARDEN (NEW ADDITION) -->
                     <button onclick="showDirectCategory('Garden', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-green-500 group-hover:bg-green-500/20 group-hover:text-green-500">
                             <i class="fas fa-tree"></i>
@@ -685,6 +685,7 @@
                                                     <i class="fas fa-camera"></i>
                                                 </button>
                                             </div>
+                                            <p class="text-[9px] text-gray-400 mt-1 italic">Sawirka waa la yareynayaa (Compressed) si Database u fududaado.</p>
                                             <div id="image-preview-container" class="mt-3 hidden flex items-center space-x-3 bg-white p-2 rounded-xl border border-dashed border-gray-300">
                                                 <img id="image-preview" src="" class="h-16 w-16 object-cover rounded-lg border border-gray-200">
                                                 <button onclick="clearImage()" class="text-red-500 text-xs font-bold hover:underline">Ka saar</button>
@@ -835,6 +836,32 @@
         const kitchenItemsDB = { "Charcoal Grill, Gas": { code: "M1", price: 1200.00, year: "2011", desc: "Heating By Steel Burners With Temp. Regulators" }, "Chicken Grill - Roller Grill": { code: "M7", price: 1200.00, year: "2011", desc: "Chicken Grill Machine (Electric & Gas)" }, "Cooking range (gas) 6 burners": { code: "M2", price: 1500.00, year: "2011", desc: "Name: Imperial, Model COK-IR6-USA" }, "Fries Maachine (Laba Khaanad)": { code: "M4", price: 450.00, year: "2020", desc: "electric deep fryer french fries machine" }, "Kitchen Metal Utility Trolley 2 Shelves": { code: "K1", price: 300.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" }, "Kitchen Metal Utility Trolley 3 Shelves": { code: "K1", price: 400.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" }, "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" }, "Kitchen Wooden Tables 140x70": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 140x70x70cm" }, "Kitchen Wooden Tables 240x80": { code: "K3", price: 240.00, year: "2011", desc: "Wooden Preparation Tables 240x80x80cm" }, "Kitchen Wooden Tables 65x65": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" }, "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Pizza Oven - Large": { code: "M5", price: 1200.00, year: "2011", desc: "Pizza Oven (Electric), 2 Deck, Table top" }, "Refrigerator Chest freezer double": { code: "R8", price: 700.00, year: "2016", desc: "Haier. Model, HCF368H-2. Capacity: 51Kg" }, "Refrigerator Chest freezer single": { code: "R4", price: 480.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Glass door Fridge": { code: "R5", price: 700.00, year: "2015", desc: "Model, MUC-440M. Capacity: 68Kg" }, "Refrigerator Steel Double door": { code: "R6", price: 1500.00, year: "2015", desc: "UAE - Al-halabi" }, "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm. Brand: Roller Grill" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm. Brand: Roller Grill" }, "Water heater": { code: "W4", price: 125.00, year: "2012", desc: "Wall mounted Electric heater" }, "6sppons, 6forks, 6small spoons": { code: "KU", price: 4.00, year: "2018", desc: "malqacado all steel" }, "Biifay (Chanfing dish)": { code: "KU", price: 37.00, year: "2018", desc: "chanfing dish" }, "Candy ball large": { code: "KU", price: 25.00, year: "2018", desc: "candy ball large" }, "Cups quraarada": { code: "KU", price: 2.50, year: "2018", desc: "Koobabka Quraarada ah" }, "Cups biyaha gees": { code: "KU", price: 1.16, year: "2018", desc: "koobabka biyaha gees" }, "Dusuud No.6": { code: "KU", price: 155.00, year: "2018", desc: "dusuud no. 9 (every six pcs are one set)" }, "Dusuud No.9": { code: "KU", price: 200.00, year: "2018", desc: "dusuud no. 6 (every six pcs are one set)" }, "Dusuud Normal": { code: "KU", price: 32.00, year: "2018", desc: "Dusuud godan & Caadi ah" }, "Every 3pcs are one set": { code: "KU", price: 28.00, year: "2018", desc: "kulaylisooyin" }, "Faashash": { code: "KU", price: 5.50, year: "2018", desc: "faashash" }, "Falaas Naqas": { code: "KU", price: 30.00, year: "2018", desc: "Falaash Shaah Naqas / Seminaar" }, "Glass tea pot Glass": { code: "KU", price: 13.00, year: "2018", desc: "Chinese Glass tea cups" }, "Glass tea pot Steel": { code: "KU", price: 8.00, year: "2018", desc: "Kildhiyada Yaryar ee Shaaha lagu shubo" }, "Glass water jug": { code: "KU", price: 5.00, year: "2018", desc: "jeegag quraarad ah" }, "Kildhi Shaaha 32": { code: "KU", price: 25.00, year: "2018", desc: "kilaadhi jandi ah 32" }, "Kildhi Shaaha 29": { code: "KU", price: 19.00, year: "2018", desc: "kilaadhi jandi ah 29" }, "Koobabka shaah dhobo": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah dhobo" }, "Koobabka shaah dhobo s.s": { code: "KU", price: 2.33, year: "2018", desc: "Koobabka shaah dhobo s.s" }, "Koobabka shaah quraarad": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah quraarad" }, "Macaan dhobo ah": { code: "KU", price: 2.00, year: "2018", desc: "macaan dhobo ah" }, "Macaan france ah": { code: "KU", price: 3.50, year: "2018", desc: "macaan france ah" }, "Macan quraarad ice ceram": { code: "KU", price: 2.33, year: "2018", desc: "macan quraarad ice ceram" }, "Madiibado gees ah dobool leh": { code: "KU", price: 2.00, year: "2018", desc: "madiibado gees ah dobool leh" }, "Malaas waawayn": { code: "KU", price: 10.00, year: "2018", desc: "malaas waawayn" }, "Maqliyo steel culus": { code: "KU", price: 18.00, year: "2018", desc: "maqliyo steel culus" }, "Mindiyo waaweyn": { code: "KU", price: 1.50, year: "2018", desc: "mindiyo waaweyn" }, "O-shaped plate Large": { code: "KU", price: 4.00, year: "2018", desc: "biledho qado gool ah, waaweyn" }, "O-shaped plate Medium": { code: "KU", price: 3.00, year: "2018", desc: "biledho qado gool ah dhexe" }, "O-shaped plate small": { code: "KU", price: 2.00, year: "2018", desc: "biledho qado gool ah yaryar" }, "Oil despenser and sugar pot": { code: "KU", price: 9.30, year: "2018", desc: "oil despenser and sugar pot" }, "Pizza plate weyn": { code: "KU", price: 8.00, year: "2018", desc: "pizza plate waaweyn" }, "Pizza plate dhexe": { code: "KU", price: 5.00, year: "2018", desc: "pizza plate dhexe" }, "Pizza plate yar": { code: "KU", price: 4.00, year: "2018", desc: "pizza plate yaryar" }, "Water Jug jaandi": { code: "KU", price: 2.00, year: "2018", desc: "Jeegaga Jaandiga ah" }, "Plates geeska jabiska": { code: "KU", price: 2.16, year: "2018", desc: "Suxuunta, geeska jabiska" }, "Shaandho Miiro Baasto": { code: "KU", price: 7.00, year: "2018", desc: "Shaandho Miiro Baasto" }, "Shaandho Miiro Jabis": { code: "KU", price: 3.00, year: "2018", desc: "Shaandho Miiro Jabis" }, "Shaandho Miiro Saanbuuse": { code: "KU", price: 9.00, year: "2018", desc: "Shaandho Miiro Saanbuuse" }, "Shaandho Miiro Sharaab": { code: "KU", price: 4.00, year: "2018", desc: "Shaandho Miiro Sharaab" }, "Suxuun dhar jandi": { code: "KU", price: 11.00, year: "2018", desc: "suxuun dhar jandi" }, "Suxuunta Cake- Wareega": { code: "KU", price: 4.00, year: "2018", desc: "Suxuunta Cake- Wareega" }, "Trays All Steel": { code: "KU", price: 9.00, year: "2018", desc: "try steel (Waaweyn, dhexe & Yaryar)" }, "Try caag loxoox": { code: "KU", price: 2.00, year: "2018", desc: "caag loxoox" }, "Mixed Utensils": { code: "KU", price: 2000.00, year: "2018", desc: "Weel wax lagu kariyo oo daadsan, Xabad Xabad ah oo jajaban" }, "Ushaped plate Large": { code: "KU", price: 7.00, year: "2018", desc: "huudhi waaweyn" }, "Ushaped plate Medium": { code: "KU", price: 5.00, year: "2018", desc: "huudhi dhexe" }, "Ushaped plate Small": { code: "KU", price: 4.00, year: "2018", desc: "huudhi yaryar" } };
         const bakeryItemsDB = { "Aluminium baking tray": { code: "B4", price: 15.00, year: "2011", desc: "40*60cm square bakery aluminium baking tray" }, "Bakery Kitchen UTENSILS": { code: "B6", price: 200.00, year: "2011", desc: "Agabka yaryar ee lagu shaqeeyo Bakeryga" }, "Cake, Magic Marble": { code: "B1", price: 20.00, year: "2018", desc: "Magic Marble Cake Stand black" }, "Electric Oven Bread Bakery": { code: "B5", price: 1500.00, year: "2011", desc: "D1-Oven. Model: HBL-40, Power 13.2Kw" }, "Fan Wall mounted": { code: "F3", price: 32.00, year: "2012", desc: "Maraxwada Gidaarka ku Xidhan" }, "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Kitchen Spring Scale 25Kg": { code: "B2", price: 30.00, year: "2012", desc: "Name: Camry, Model: J2012157363" }, "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" }, "Kitchen Wooden Tables 65x65": { code: "K3", price: 65.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" }, "Mixer High Capacity dough": { code: "B3", price: 1100.00, year: "2011", desc: "Electric Mixer, Model B20-B, Dcapacity 2-4Kg" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Refrigerator Chest freezer": { code: "R7", price: 600.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Glass door Fridge": { code: "R4", price: 700.00, year: "2015", desc: "Model, FC/LD60A. Capacity: 380L" }, "Refrigerator Large Fridge": { code: "R3", price: 800.00, year: "2015", desc: "NAME: GA, Model TBG15BARWM, Capacity 142Kg" }, "Refrigerator Small Fridge": { code: "R2", price: 250.00, year: "2015", desc: "Talagada VIP Rooms" }, "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" } };
         const cafeteriaItemsDB = { "Coffee Machines": { code: "M8", price: 3500.00, year: "2012", desc: "ellesse cupachine machine" }, "ICE CREAM, UTENSILS": { code: "I4", price: 200.00, year: "2015", desc: "Like, Scope etc (SETS)" }, "Ice Cream, Refrigerator Display": { code: "I1", price: 1400.00, year: "2015", desc: "Super King: Ice Cream Freezers scooping cabinet" }, "Kitchen Pot Rack": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Refrigerator Chest freezer": { code: "R8", price: 700.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Display Counter": { code: "R12", price: 2000.00, year: "2015", desc: "Refrigerator Display Freezer Counter Cake" }, "Refrigerator Glass door Fridge": { code: "R5", price: 960.00, year: "2015", desc: "Talagada Sharaabka ee Cafateria taala" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" } };
+        
+        // --- OFFICE DATA STRUCTURE ---
+        const officeItemsDB = { "3D Light Board Maansoor Hotel": { code: "LB", price: 2500.00, year: "2020", desc: "Boodhka 3D ee Maansoor Hotel" }, "New Aluminium Partition Office": { code: "AP", price: 3000.00, year: "2020", desc: "Xafiisyada Saleban & HR" }, "Computer Laptop Core i3": { code: "CL", price: 320.00, year: "2021", desc: "Computer Laptop, Core i3/4GB" }, "Office Desk MIISKA": { code: "OD", price: 80.00, year: "2018", desc: "MIISKA XAFIISKA" }, "Office Chairs Kuraas": { code: "OC", price: 40.00, year: "2018", desc: "Kuraas Xafiis" }, "Computer Desktop i3": { code: "CD", price: 200.00, year: "2021", desc: "Computer desktop, Core i3/8GB" }, "Office Shelf Two shelf": { code: "OS", price: 60.00, year: "2018", desc: "Two shelf cabinet" }, "UPS Power supply 850VA": { code: "UP", price: 45.00, year: "2020", desc: "UPS Power supply -850VA" }, "FIRST AID COMPLETE KIT": { code: "FA", price: 300.00, year: "2022", desc: "FIRST AID COMPLETE KIT" }, "Table TV Miis": { code: "TT", price: 60.00, year: "2018", desc: "Miis TV" }, "TV Screen JVC": { code: "TV", price: 80.00, year: "2018", desc: "JVC 21 inch" }, "Fan Wall Mounted OE": { code: "FW", price: 35.00, year: "2018", desc: "OE Maraxwado" }, "Wall Art Pictures OE": { code: "WP", price: 15.00, year: "2015", desc: "OE Sawiro Gidaar" }, "LCD Screen OE": { code: "LS", price: 290.00, year: "2022", desc: "HP- 27FW" }, "Printer Laserjet OE": { code: "PR", price: 365.00, year: "2022", desc: "Laserjet P235" }, "Safe and Lock Box OE": { code: "SB", price: 700.00, year: "2020", desc: "Khasnada lacagta Mid weyn" }, "Telephone Switch PABX": { code: "TS", price: 4500.00, year: "2015", desc: "Telephone Switch IKE PABX" }, "Landline Phone Madax": { code: "LP", price: 50.00, year: "2015", desc: "Madax Telephone Qolalka" }, "Tv- Switch OE": { code: "SW", price: 820.00, year: "2018", desc: "Modulator System OE" }, "TV- Amplifier OE": { code: "AM", price: 200.00, year: "2018", desc: "TV- Amplifier booster" }, "CCTV SWITCH POE": { code: "CP", price: 200.00, year: "2021", desc: "SWITCH CCTV - 16 CHANNEL" }, "NVR-32 OE": { code: "NV", price: 300.00, year: "2021", desc: "NVR-32 CHANNEL No POE" }, "IP CAMERA 2MP OE": { code: "IC", price: 50.00, year: "2021", desc: "IP CAMERA 2MP" }, "TV SCREEN 43 inch OE": { code: "TV", price: 300.00, year: "2022", desc: "TV SCREEN FLAT 43 inch" }, "Unifi Router LR": { code: "UR", price: 185.00, year: "2023", desc: "Unifi Router Long Rang U-6-LR" }, "Cisco Router OE": { code: "CR", price: 45.00, year: "2019", desc: "Linksys E900 Router" }, "TP-Link Wifi Extender OE": { code: "WE", price: 80.00, year: "2022", desc: "TP-Link 450 Wifi Extender" }, "Cisco Switch 24Ports": { code: "CS", price: 100.00, year: "2020", desc: "Unifi -24Ports Smart Managed OE" }, "Unifi Switch 8Ports": { code: "US", price: 320.00, year: "2023", desc: "Unifi Switch 8Ports - 8POE" }, "Network Cable OE": { code: "NC", price: 180.00, year: "2021", desc: "Xadhkaha Internet OE" }, "PhotoCopy Canon OE": { code: "PC", price: 600.00, year: "2020", desc: "Canon IR2016J" } };
+
+        // --- CAR DATA STRUCTURE ---
+        const carItemsDB = { "Mercedes (Booyada Biyaha)": { code: "C1", price: 5000.00, year: "2015", desc: "Booyada Biyaha, CH.No: WDB61702315215638" }, "Toyota Landcruiser BLACK VX": { code: "C2", price: 18000.00, year: "2018", desc: "BLACK VX, CH.No: HDJ810003205" }, "Toyota Landcruiser RED VX": { code: "C3", price: 8000.00, year: "2016", desc: "RED VX, CH No: HJ81-0022218" }, "Toyota Mark II ONE-TEN": { code: "C4", price: 3500.00, year: "2012", desc: "ONE-TEN CAR, CH.No: GX110-6095352" }, "Toyota Mark II GRANDA": { code: "C5", price: 1000.00, year: "2010", desc: "GRANDA, CH.No: GX881-6472824" }, "Hino Tanker (Booyada Bulaacada)": { code: "C6", price: 10000.00, year: "2015", desc: "Booyada Bulaacada, CH.No: FNFNB-10150" } };
+        
+        // --- NEW: ELECTRICITY DATA STRUCTURE ---
+        const electricityItemsDB = { "Generator 500KVA Perkins": { code: "GEN1", price: 15000.00, year: "2018", desc: "Main Generator - Perkins" }, "Generator 100KVA": { code: "GEN2", price: 8000.00, year: "2018", desc: "Backup Generator" }, "Transformer 11KV": { code: "TR1", price: 4000.00, year: "2015", desc: "Power Transformer" }, "Distribution Board (Main)": { code: "DB1", price: 1200.00, year: "2018", desc: "Main Distribution Panel" }, "LED Bulbs (Box)": { code: "LB1", price: 50.00, year: "2020", desc: "Carton of LED Bulbs" }, "Circuit Breakers (Mixed)": { code: "CB1", price: 200.00, year: "2018", desc: "Assorted Breakers" }, "Power Cables (Roll)": { code: "CAB1", price: 150.00, year: "2019", desc: "Armored Cable 4-Core" }, "Solar Panels (Set)": { code: "SOL1", price: 2500.00, year: "2020", desc: "Roof Solar System" }, "Inverter 5KW": { code: "INV1", price: 800.00, year: "2020", desc: "Solar Inverter" }, "Electric Drill Machine": { code: "TL1", price: 85.00, year: "2019", desc: "Bosch Hammer Drill" } };
+        
+        // --- NEW: SECURITY DATA STRUCTURE ---
+        const securityItemsDB = { "CCTV Camera 4K Outdoor": { code: "CAM1", price: 120.00, year: "2020", desc: "Hikvision Outdoor Bullet" }, "CCTV Camera Dome Indoor": { code: "CAM2", price: 80.00, year: "2020", desc: "Indoor Dome Camera" }, "DVR 32 Channel": { code: "DVR1", price: 350.00, year: "2020", desc: "Digital Video Recorder" }, "Walkie Talkie (Set of 2)": { code: "RAD1", price: 150.00, year: "2019", desc: "Motorola Long Range" }, "Metal Detector Scanner": { code: "SC1", price: 65.00, year: "2018", desc: "Handheld Security Scanner" }, "Security Gate Barrier": { code: "GT1", price: 1200.00, year: "2018", desc: "Automatic Boom Barrier" }, "Security Uniform (Set)": { code: "UN1", price: 45.00, year: "2021", desc: "Complete Security Uniform" }, "Flashlight Heavy Duty": { code: "FL1", price: 35.00, year: "2019", desc: "Rechargeable Torch" }, "Security Booth/Room": { code: "RM1", price: 500.00, year: "2015", desc: "Guard House Structure" }, "Fire Extinguisher": { code: "FE1", price: 40.00, year: "2020", desc: "CO2 Extinguisher" } };
+        
+        // --- NEW: GARDEN DATA STRUCTURE ---
+        const gardenItemsDB = { "Lawn Mower (Petrol)": { code: "GM1", price: 450.00, year: "2019", desc: "Honda Lawn Mower" }, "Water Hose Pipe (50m)": { code: "GP1", price: 35.00, year: "2020", desc: "Heavy Duty Hose" }, "Garden Shears/Scissors": { code: "GT1", price: 25.00, year: "2019", desc: "Hedge Trimmer" }, "Shovel (Badiil)": { code: "GT2", price: 15.00, year: "2019", desc: "Steel Shovel" }, "Rake (Fargeeto)": { code: "GT3", price: 12.00, year: "2019", desc: "Garden Rake" }, "Wheelbarrow (Gaari-gacan)": { code: "GT4", price: 45.00, year: "2018", desc: "Heavy Duty Wheelbarrow" }, "Water Sprinkler System": { code: "GS1", price: 120.00, year: "2020", desc: "Automatic Sprinklers" }, "Outdoor Bench": { code: "GB1", price: 150.00, year: "2018", desc: "Wooden Garden Bench" }, "Flower Pots (Large)": { code: "GP2", price: 40.00, year: "2018", desc: "Ceramic Pots" }, "Tree Trimmer (Electric)": { code: "GM2", price: 110.00, year: "2019", desc: "Electric Hedge Trimmer" } };
+
+        // --- NEW: UTENSILS DATA STRUCTURE (Placeholders as requested) ---
+        const utensilsItemsDB = { 
+            "Jaandi (Steel)": { code: "JD", price: 0.00, year: "2023", desc: "Agabka Jaandiga/Birta ah" },
+            "Dhoobo (Clay/Ceramic)": { code: "DH", price: 0.00, year: "2023", desc: "Agabka Dhoobada ah" },
+            "Gees (Horn/Plastic)": { code: "GS", price: 0.00, year: "2023", desc: "Agabka Geeska ama Caaga" },
+            "Qurarad (Glass)": { code: "QR", price: 0.00, year: "2023", desc: "Agabka Quraaradaha ah" },
+            "Mulqacado (Spoons)": { code: "MQ", price: 0.00, year: "2023", desc: "Malqacadaha Yar & Waaweyn" },
+            "Farageeto (Forks)": { code: "FG", price: 0.00, year: "2023", desc: "Fargeetooyinka noocyadooda" },
+            "Mindiyo (Knives)": { code: "MD", price: 0.00, year: "2023", desc: "Mindiyaha noocyadooda" }
+        };
 
         let activeRoomNumber = "0001";
         let currentUserRole = 'admin'; // 'admin' or 'staff'
@@ -904,7 +931,10 @@
                 // Update UI based on role
                 applyPermissions();
 
-                showHomePage();
+                // THIS FUNCTION SETS THE DASHBOARD HIGHLIGHT - WE DO NOT REMOVE IT AFTERWARDS
+                showHomePage(); 
+                
+                // Optimize Initial Load (No Images)
                 await loadInventory(); 
 
                 const savedProfile = JSON.parse(localStorage.getItem('maansoor_profile')) || { user: "Admin" };
@@ -916,13 +946,14 @@
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
                 document.getElementById('app-content').classList.add('hidden');
+                
+                // Clean up navigation if not logged in
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('btn-active');
+                    b.classList.remove('btn-active-red');
+                });
             }
 
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('btn-active');
-                b.classList.remove('btn-active-red');
-            });
-            renderTable("");
             closeSidebar();
         }
 
@@ -932,13 +963,22 @@
                 document.getElementById('nav-logs').classList.add('hidden');
                 document.getElementById('nav-settings').classList.add('hidden');
                 document.getElementById('reset-all-btn').classList.add('hidden');
-                document.querySelector('.action-column').classList.add('staff-hidden'); // Hide actions in table
+                document.querySelector('.action-column').classList.add('staff-hidden'); 
+                
+                // QARI EXCEL IYO PDF STAFF-KA (NEW FIX)
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
                 
             } else {
                 document.getElementById('nav-logs').classList.remove('hidden');
                 document.getElementById('nav-settings').classList.remove('hidden');
                 document.getElementById('reset-all-btn').classList.remove('hidden');
                 document.querySelector('.action-column').classList.remove('staff-hidden');
+                
+                // TUS EXCEL IYO PDF ADMIN-KA
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
             }
         }
 
@@ -1363,25 +1403,17 @@
         let currentImageBase64 = null; 
         let currentStatusFilter = 'All'; // Default filter
 
+        // *** OPTIMIZATION 1: COMPRESS IMAGE ON SELECTION ***
         document.getElementById('itemImage')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                // 3. SUPABASE STORAGE LOGIC START (Simplified)
-                // In production, use supabase.storage.from('images').upload()
-                // For now, keeping Base64 but preparing for transition
-                if (file.size > 20000 * 20000) {
-                    Swal.fire('Sawirku waa weyn yahay!', 'Fadlan isticmaal sawir ka yar 1MB', 'warning');
+                // If larger than 5MB, warn
+                if (file.size > 5 * 1024 * 1024) {
+                    Swal.fire('Sawirku waa weyn yahay!', 'Fadlan isticmaal sawir ka yar 5MB', 'warning');
                     this.value = "";
                     return;
                 }
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    currentImageBase64 = event.target.result;
-                    document.getElementById('image-preview').src = currentImageBase64;
-                    document.getElementById('image-preview-container').classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-                // 3. SUPABASE STORAGE LOGIC END
+                compressImage(file);
             }
         });
 
@@ -1401,27 +1433,50 @@
             cameraInput.onchange = function(e) {
                 const file = e.target.files[0];
                 if (file) {
-                    const fileSizeMB = file.size / (3648 * 2736); 
-                    if (fileSizeMB > 1) { 
-                        return Swal.fire({
-                            title: 'Sawirka waa weyn yahay!',
-                            text: 'Fadlan soo geli sawir ka yar 10MB. Kaaga hadda waa: ' + fileSizeMB.toFixed(2) + ' MB',
-                            icon: 'warning',
-                            confirmButtonColor: '#0f172a'
-                        });
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        currentImageBase64 = event.target.result;
-                        document.getElementById('image-preview').src = currentImageBase64;
-                        document.getElementById('image-preview-container').classList.remove('hidden');
-                        Swal.fire({ title: 'Waa la qabtay!', icon: 'success', timer: 1000, showConfirmButton: false });
-                    };
-                    reader.readAsDataURL(file);
+                    compressImage(file);
+                    
+                    // *** OPTIMIZATION 2: AUTO DOWNLOAD ORIGINAL TO DEVICE ***
+                    // This satisfies "save to files" requirement
+                    const url = URL.createObjectURL(file);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Maansoor_Img_" + Date.now() + ".jpg";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    Toast.fire({ icon: 'success', title: 'Sawirka Original-ka waa la dejiyey (Saved to Device)' });
                 }
             };
             cameraInput.click();
+        }
+
+        // *** OPTIMIZATION 1: COMPRESSION LOGIC ***
+        function compressImage(file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Resize to max 600px width (Thumbnail size for DB)
+                    const MAX_WIDTH = 600;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    // Compress to JPEG 60% quality
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                    
+                    currentImageBase64 = dataUrl;
+                    document.getElementById('image-preview').src = currentImageBase64;
+                    document.getElementById('image-preview-container').classList.remove('hidden');
+                }
+            }
         }
 
         // 2. SKELETON LOADING LOGIC
@@ -1469,8 +1524,10 @@
             // Show Skeleton before fetching
             renderSkeleton();
 
+            // *** OPTIMIZATION 3: DO NOT SELECT 'image' COLUMN ***
+            // This prevents loading massive Base64 strings immediately.
             const { data, error } = await db.from('inventory')
-                .select('*') 
+                .select('id, code, name, location, status, qty, total, uvalue, depreciation, purchase_date, item_age, holder, dept, desc') 
                 .order('id', { ascending: false });
             
             if (!error) {
@@ -1500,7 +1557,7 @@
 
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.remove('hidden');
-            document.getElementById('dashboard-alerts').classList.remove('hidden'); // Show alerts
+            document.getElementById('dashboard-alerts').classList.remove('hidden'); // SHOW ALERTS IN HOME
             document.getElementById('inventory-section').classList.remove('hidden');
             document.getElementById('selection-area').classList.add('hidden');
             document.getElementById('entry-form').classList.add('hidden');
@@ -1509,9 +1566,16 @@
             const btnFull = document.getElementById('btn-excel-full');
             const btnLoc = document.getElementById('btn-excel-loc');
             
-            btnFull.classList.remove('hidden');
-            btnFull.innerText = "Excel (Full)"; 
-            btnLoc.classList.add('hidden');
+            // RE-CHECK PERMISSIONS FOR EXCEL BUTTONS
+            if(currentUserRole === 'staff') {
+                btnFull.classList.add('hidden');
+                btnLoc.classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                btnFull.classList.remove('hidden');
+                btnFull.innerText = "Excel (Full)"; 
+                btnLoc.classList.add('hidden');
+            }
             
             renderTable(""); 
             closeSidebar();
@@ -1748,8 +1812,12 @@
             "CAFETERIA": Object.keys(cafeteriaItemsDB),
             "BAKERY": Object.keys(bakeryItemsDB),
             "KITCHEN": Object.keys(kitchenItemsDB),
-            "OFFICE": ["Xafiis (Desk)", "Kursi (Chair)", "Computer", "Printer", "File Cabinet", "AC", "Telephone", "Shelf"],
-            "UTENSILS": ["Jaandi", "Dhoobo", "Gees", "Qurarad", "Mulqacado", "Farageeto", "Mindiyo"]
+            "OFFICE": Object.keys(officeItemsDB),
+            "CARS": Object.keys(carItemsDB),
+            "ELECTRICITY": Object.keys(electricityItemsDB),
+            "SECURITY": Object.keys(securityItemsDB),
+            "GARDEN": Object.keys(gardenItemsDB),
+            "UTENSILS": Object.keys(utensilsItemsDB)
         };
 
         function getCurrentCategoryKey() {
@@ -1882,7 +1950,7 @@
                 document.getElementById('uvalue').value = data.price.toFixed(2);
                 document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
-                calculate();
+                calculate(); 
                 calculateAge();
             }
             else if (cat === 'BAKERY' && bakeryItemsDB[val]) {
@@ -1894,7 +1962,7 @@
                 document.getElementById('uvalue').value = data.price.toFixed(2);
                 document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
-                calculate();
+                calculate(); 
                 calculateAge();
             }
             else if (cat === 'CAFETERIA' && cafeteriaItemsDB[val]) {
@@ -1906,7 +1974,85 @@
                 document.getElementById('uvalue').value = data.price.toFixed(2);
                 document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
-                calculate();
+                calculate(); 
+                calculateAge();
+            }
+            // OFFICE LOGIC
+            else if (cat === 'OFFICE' && officeItemsDB[val]) {
+                const data = officeItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-OE-${data.code}`);
+                const fullID = `MH-OE-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // CARS LOGIC
+            else if (cat === 'CARS' && carItemsDB[val]) {
+                const data = carItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-CR-${data.code}`);
+                const fullID = `MH-CR-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // NEW ELECTRICITY LOGIC
+            else if (cat === 'ELECTRICITY' && electricityItemsDB[val]) {
+                const data = electricityItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-EL-${data.code}`);
+                const fullID = `MH-EL-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // NEW SECURITY LOGIC
+            else if (cat === 'SECURITY' && securityItemsDB[val]) {
+                const data = securityItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-SEC-${data.code}`);
+                const fullID = `MH-SEC-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // NEW GARDEN LOGIC
+            else if (cat === 'GARDEN' && gardenItemsDB[val]) {
+                const data = gardenItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-GAR-${data.code}`);
+                const fullID = `MH-GAR-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // NEW UTENSILS LOGIC
+            else if (cat === 'UTENSILS' && utensilsItemsDB[val]) {
+                const data = utensilsItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-UT-${data.code}`);
+                const fullID = `MH-UT-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2); // Prices default to 0.00
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
                 calculateAge();
             }
         }
@@ -2149,33 +2295,70 @@
                         });
                     } else {
                         loadInventory(); 
-                        Swal.fire('Cillad!', 'Database-ka ayaa diiday inuu tirtiro.', 'error');
+                        Swal.fire('Cillad!', 'Database-ka ayaa diiday tirtirista.', 'error');
                     }
                 }
             });
         }
         
-        // 4. BULK DELETE LOGIC
+        // 4. BULK DELETE LOGIC - UPDATED TO FIX DESKTOP & MOBILE ISSUES
         function toggleSelectAll() {
             const selectAllBox = document.getElementById('selectAll');
-            const boxes = document.querySelectorAll('.item-checkbox');
             const isChecked = selectAllBox.checked;
             
             selectedItems.clear();
+            const boxes = document.querySelectorAll('.item-checkbox');
+            
             boxes.forEach(box => {
                 box.checked = isChecked;
-                if(isChecked) selectedItems.add(parseInt(box.value));
+                if(isChecked) {
+                    const val = parseInt(box.value);
+                    if(!isNaN(val)) selectedItems.add(val);
+                }
             });
             updateBulkDeleteButton();
+            syncMobileSelectAll(isChecked);
+        }
+
+        // New function specifically for Mobile Select All
+        function toggleSelectAllMobile(isChecked) {
+            selectedItems.clear();
+            const boxes = document.querySelectorAll('.item-checkbox');
+            
+            boxes.forEach(box => {
+                box.checked = isChecked;
+                if(isChecked) {
+                    const val = parseInt(box.value);
+                    if(!isNaN(val)) selectedItems.add(val);
+                }
+            });
+            
+            // Sync Desktop Select All box if visible
+            const desktopSelectAll = document.getElementById('selectAll');
+            if(desktopSelectAll) desktopSelectAll.checked = isChecked;
+            
+            updateBulkDeleteButton();
+        }
+
+        function syncMobileSelectAll(isChecked) {
+            const mobileSelectAll = document.getElementById('mobileSelectAll');
+            if(mobileSelectAll) mobileSelectAll.checked = isChecked;
         }
         
-        function toggleItemSelection(id) {
-            const box = document.querySelector(`.item-checkbox[value="${id}"]`);
-            if(box.checked) {
+        function toggleItemSelection(id, isChecked) {
+            // Update Set based on Checked State
+            if(isChecked) {
                 selectedItems.add(id);
             } else {
                 selectedItems.delete(id);
             }
+
+            // Sync all checkboxes with this ID (Desktop & Mobile copies)
+            const allBoxesWithId = document.querySelectorAll(`.item-checkbox[value="${id}"]`);
+            allBoxesWithId.forEach(box => {
+                box.checked = isChecked;
+            });
+
             updateBulkDeleteButton();
         }
         
@@ -2215,6 +2398,9 @@
                          selectedItems.clear();
                          updateBulkDeleteButton();
                          document.getElementById('selectAll').checked = false;
+                         const mobSelect = document.getElementById('mobileSelectAll');
+                         if(mobSelect) mobSelect.checked = false;
+                         
                          renderTable(currentSelectedLocation);
                          updateDashboardStats();
                          Swal.fire('La tirtiray', 'Agabkii waa la tirtiray', 'success');
@@ -2249,7 +2435,7 @@
                         renderTable("");
                         updateDashboardStats();
                         updateCharts();
-                        Swal.fire('La tirtiray!', 'Xogta huteelka hadda waa madhan tahay.', 'success');
+                        Swal.fire('La tirtiray!', 'Xogta huteelka hadda waa madhan tay.', 'success');
                     } else {
                         console.error(error);
                         Swal.fire('Cillad!', 'Database-ka ayaa diiday tirtirista.', 'error');
@@ -2288,10 +2474,19 @@
             if(currentStatusFilter !== 'All') {
                 filtered = filtered.filter(i => i.status === currentStatusFilter);
             }
+
+            // ADD MOBILE SELECT ALL HEADER (Only Visible on Mobile)
+            cardContainer.innerHTML = `
+                <div class="md:hidden flex items-center p-4 bg-white rounded-xl shadow-sm mb-4 border border-gray-200">
+                    <input type="checkbox" id="mobileSelectAll" onchange="toggleSelectAllMobile(this.checked)" class="w-5 h-5 rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer">
+                    <span class="ml-3 font-bold text-slate-700 text-sm">Select All Items</span>
+                </div>
+            `;
             
             filtered.forEach((i, index) => {
                 const statusColor = i.status === 'Damaged' ? 'text-red-600 bg-red-50' : i.status === 'Missing' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-                
+                const isSelected = selectedItems.has(i.id) ? 'checked' : '';
+
                 let imageCell = `<button onclick="fetchViewImage(${i.id}, '${i.name}', this)" class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[9px] font-bold border hover:bg-slate-200 shadow-sm transition">
                     <i class="fas fa-image text-yellow-600"></i> Show
                 </button>`;
@@ -2309,7 +2504,7 @@
                 
                 // DESKTOP TABLE ROW
                 tbody.innerHTML += `<tr class="hover:bg-yellow-50/50 border-b transition-colors">
-                    <td class="px-4 py-3"><input type="checkbox" value="${i.id}" onclick="toggleItemSelection(${i.id})" class="item-checkbox rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer"></td>
+                    <td class="px-4 py-3"><input type="checkbox" value="${i.id}" ${isSelected} onchange="toggleItemSelection(${i.id}, this.checked)" class="item-checkbox rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer"></td>
                     <td class="px-6 py-4 text-[11px] font-bold text-gray-400">${index + 1}.</td>
                     <td class="px-6 py-4">${imageCell}</td>
                     <td class="px-6 py-4 text-xs text-gray-600 font-mono">${i.code || '-'}</td>
@@ -2332,24 +2527,23 @@
                 // 6. MOBILE CARD VIEW
                 cardContainer.innerHTML += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col relative overflow-hidden">
-                        <!-- FIX: Added Checkbox for Mobile -->
+                        <!-- FIX: Checkbox Logic Updated -->
                         <div class="absolute top-4 left-4 z-10">
-                            <input type="checkbox" value="${i.id}" onclick="toggleItemSelection(${i.id})" class="item-checkbox w-5 h-5 rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer">
+                            <input type="checkbox" value="${i.id}" ${isSelected} onchange="toggleItemSelection(${i.id}, this.checked)" class="item-checkbox w-5 h-5 rounded border-gray-300 text-slate-900 focus:ring-slate-900 cursor-pointer">
                         </div>
 
                         <div class="absolute top-0 right-0 p-4">
                              <span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusColor}">${i.status || 'Good'}</span>
                         </div>
                         
-                        <!-- Added ml-8 to push content so it doesn't overlap checkbox -->
-                        <div class="flex items-center mb-3 ml-6"> 
+                        <div class="flex items-center mb-3 ml-8"> 
                              <div class="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 font-bold text-xs mr-3 border">${index+1}</div>
                              <div>
                                  <h4 class="font-bold text-slate-800 text-sm">${i.name}</h4>
                                  <p class="text-[10px] text-gray-400 uppercase font-mono">${i.code || '-'}</p>
                              </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 text-xs mb-4 ml-6">
+                        <div class="grid grid-cols-2 gap-2 text-xs mb-4 ml-8">
                              <div class="bg-gray-50 p-2 rounded-lg">
                                 <span class="block text-gray-400 text-[9px] uppercase">Location</span>
                                 <span class="font-bold text-slate-700">${i.location}</span>
@@ -2363,7 +2557,7 @@
                                 <span class="font-extrabold text-green-600">${i.total}</span>
                              </div>
                         </div>
-                        <div class="flex justify-between items-center pt-3 border-t border-gray-50 ml-6">
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-50 ml-8">
                              ${imageCell}
                              <div class="flex space-x-3">
                                  ${actionButtons}
@@ -2373,11 +2567,17 @@
                 `;
             });
             
-            // Re-apply selection state
-            selectedItems.forEach(id => {
-                const box = document.querySelector(`.item-checkbox[value="${id}"]`);
-                if(box) box.checked = true;
-            });
+            // Re-apply Select All state visually
+            const selectAllBox = document.getElementById('selectAll');
+            const mobSelect = document.getElementById('mobileSelectAll');
+            if(selectedItems.size > 0 && selectedItems.size === filtered.length) {
+                if(selectAllBox) selectAllBox.checked = true;
+                if(mobSelect) mobSelect.checked = true;
+            } else {
+                if(selectAllBox) selectAllBox.checked = false;
+                if(mobSelect) mobSelect.checked = false;
+            }
+            
             updateBulkDeleteButton();
         }
 
@@ -2397,7 +2597,7 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('dashboard-alerts').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS-KA (FIX 1)
             
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
@@ -2423,13 +2623,25 @@
             document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            if(currentExportMode === 'room_only') {
-                 document.getElementById('btn-excel-full').innerText = "Excel (All Rooms)";
+            // FIX PERMISSIONS FOR EXCEL/PDF (FIX 2)
+            const btnFull = document.getElementById('btn-excel-full');
+            const btnLoc = document.getElementById('btn-excel-loc');
+            const btnPdf = document.getElementById('btn-pdf');
+
+            if(currentUserRole === 'staff') {
+                btnFull.classList.add('hidden');
+                btnLoc.classList.add('hidden');
+                btnPdf.classList.add('hidden');
             } else {
-                 document.getElementById('btn-excel-full').innerText = "Excel (Full)";
+                if(currentExportMode === 'room_only') {
+                    btnFull.innerText = "Excel (All Rooms)";
+                } else {
+                    btnFull.innerText = "Excel (Full)";
+                }
+                btnFull.classList.remove('hidden');
+                btnLoc.classList.add('hidden');
+                btnPdf.classList.remove('hidden');
             }
-            document.getElementById('btn-excel-full').classList.remove('hidden');
-            document.getElementById('btn-excel-loc').classList.add('hidden');
 
             for (let i = 1; i <= count; i++) {
                 const btn = document.createElement('button'); 
@@ -2446,8 +2658,11 @@
                     document.getElementById('entry-form').classList.remove('hidden'); 
                     document.getElementById('form-header').innerText = `Geli Xogta Agabka (${currentSelectedLocation})`;
                     document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`; 
-                    document.getElementById('btn-excel-full').classList.add('hidden');
-                    document.getElementById('btn-excel-loc').classList.remove('hidden');
+                    
+                    if(currentUserRole !== 'staff') {
+                        document.getElementById('btn-excel-full').classList.add('hidden');
+                        document.getElementById('btn-excel-loc').classList.remove('hidden');
+                    }
 
                     renderTable(currentSelectedLocation); 
                     
@@ -2467,7 +2682,7 @@
             
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('dashboard-alerts').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS (FIX 1)
             document.getElementById('selection-area').classList.add('hidden');
             
             document.getElementById('entry-form').classList.remove('hidden');
@@ -2489,8 +2704,16 @@
 
             resetFormOnlyInputs();
             
-            document.getElementById('btn-excel-full').classList.add('hidden');
-            document.getElementById('btn-excel-loc').classList.remove('hidden');
+            // PERMISSIONS CHECK (FIX 2)
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.remove('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
 
             renderTable(currentSelectedLocation);
         }
@@ -2621,6 +2844,7 @@
         let currentExportMode = 'full';
 
         function exportToExcel(type) {
+            if(currentUserRole === 'staff') return; // AMNIGA
             if (inventory.length === 0) {
                 return Swal.fire({ title: 'Cillad!', text: 'Xog ma jirto!', icon: 'warning', confirmButtonColor: '#0f172a' });
             }
@@ -2712,6 +2936,7 @@
 
         // --- FIXED: Updated exportToPDF function ---
         function exportToPDF() {
+            if(currentUserRole === 'staff') return; // AMNIGA
             if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
                 return Swal.fire('Error', 'PDF Library not loaded.', 'error');
             }
@@ -2893,7 +3118,7 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('dashboard-alerts').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS (FIX 1)
             
             document.getElementById('selection-area').classList.remove('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
@@ -2911,9 +3136,18 @@
             currentExportMode = 'rest_only'; 
             
             document.getElementById('table-title').innerText = "ALL RESTAURANT INVENTORY LOGS";
-            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL RESTAURANTS)";
-            document.getElementById('btn-excel-full').classList.remove('hidden');
-            document.getElementById('btn-excel-loc').classList.add('hidden');
+            
+            // PERMISSIONS (FIX 2)
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').innerText = "EXCEL (ALL RESTAURANTS)";
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
 
             renderTable("Restaurant");
 
@@ -2950,7 +3184,7 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden'); 
-            document.getElementById('dashboard-alerts').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS (FIX 1)
             
             document.getElementById('selection-area').classList.remove('hidden'); 
             document.getElementById('entry-form').classList.add('hidden'); 
@@ -2968,9 +3202,18 @@
             currentExportMode = 'hall_only'; 
             
             document.getElementById('table-title').innerText = "ALL HALLS INVENTORY LOGS";
-            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL HALLS)";
-            document.getElementById('btn-excel-full').classList.remove('hidden');
-            document.getElementById('btn-excel-loc').classList.add('hidden');
+            
+            // PERMISSIONS (FIX 2)
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').innerText = "EXCEL (ALL HALLS)";
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
 
             renderTable("Hall_And_Hodaale");
 
@@ -3029,8 +3272,10 @@
             document.getElementById('form-header').innerHTML = `Geli Xogta <span class="text-yellow-600 italic">(${currentSelectedLocation})</span>`;
             document.getElementById('table-title').innerText = `Inventory Log: ${currentSelectedLocation}`;
             
-            document.getElementById('btn-excel-full').classList.add('hidden');
-            document.getElementById('btn-excel-loc').classList.remove('hidden');
+            if(currentUserRole !== 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.remove('hidden');
+            }
 
             document.getElementById('inventory-section').classList.remove('hidden');
             renderTable(currentSelectedLocation);
@@ -3046,6 +3291,7 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS (FIX 1)
             
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
@@ -3064,9 +3310,18 @@
             currentExportMode = 'kitchen_only';
             
             document.getElementById('table-title').innerText = "ALL KITCHENS INVENTORY LOGS";
-            document.getElementById('btn-excel-full').classList.remove('hidden');
-            document.getElementById('btn-excel-loc').classList.add('hidden');
-            document.getElementById('btn-excel-full').innerText = "EXCEL (ALL KITCHENS)";
+            
+            // PERMISSIONS (FIX 2)
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-excel-full').innerText = "EXCEL (ALL KITCHENS)";
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
 
             renderTable("Kitchen");
 
@@ -3104,6 +3359,60 @@
                 }
             });
         });
+
+         document.getElementById('username').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') document.getElementById('password').focus();
+        });
+        document.getElementById('password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        
    </script>
+
+   <!-- SECURITY: BLOCK VIEW SOURCE & INSPECT -->
+<script>
+    // 1. Xanib Right Click (Context Menu)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // 2. Xanib Keyboard Shortcuts (F12, Ctrl+U, Ctrl+Shift+I)
+    document.onkeydown = function(e) {
+        // F12 (DevTools)
+        if (e.keyCode == 123) {
+            return false;
+        }
+        
+        // Ctrl+Shift+I (Inspect)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+            return false;
+        }
+        
+        // Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+            return false;
+        }
+
+        // Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+            return false;
+        }
+
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+            return false;
+        }
+    };
+
+     document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) { return false; }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+        }
+</script>
 </body>
 </html>
