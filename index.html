@@ -373,6 +373,30 @@
                         <span class="text-sm font-bold tracking-wide">Cars</span>
                     </button>
 
+                     <!-- 11. LAUNDRY (NEW ADDITION) -->
+                     <button onclick="showDirectCategory('Laundry', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-pink-400 group-hover:bg-pink-500/20 group-hover:text-pink-400">
+                            <i class="fas fa-shirt"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Laundry Store</span>
+                    </button>
+
+                     <!-- 12. STORES (NEW ADDITION) -->
+                     <button onclick="showStoreMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-amber-600 group-hover:bg-amber-500/20 group-hover:text-amber-500">
+                            <i class="fas fa-warehouse"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Stores</span>
+                    </button>
+
+                    <!-- 13. MOSQUE (NEW ADDITION) -->
+                    <button onclick="showDirectCategory('Mosque', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-teal-600 group-hover:bg-teal-500/20 group-hover:text-teal-500">
+                            <i class="fas fa-mosque"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Mosque</span>
+                    </button>
+
 
                     <!-- SETTINGS & LOGOUT AREA -->
                     <div class="pt-6 border-t border-slate-700/50 mt-6 space-y-2">
@@ -862,6 +886,36 @@
             "Farageeto (Forks)": { code: "FG", price: 0.00, year: "2023", desc: "Fargeetooyinka noocyadooda" },
             "Mindiyo (Knives)": { code: "MD", price: 0.00, year: "2023", desc: "Mindiyaha noocyadooda" }
         };
+
+        // --- LAUNDRY DATA STRUCTURE (NEW) ---
+        const laundryItemsDB = {
+            "Washing Machine Industrial": { code: "WM1", price: 2500.00, year: "2019", desc: "Industrial Washing Machine" },
+            "Dryer Machine Large": { code: "DM1", price: 2200.00, year: "2019", desc: "Industrial Dryer" },
+            "Ironing Table Steam": { code: "IR1", price: 450.00, year: "2020", desc: "Steam Iron Station" },
+            "Laundry Basket Trolley": { code: "LB1", price: 120.00, year: "2018", desc: "Large Laundry Cart" },
+            "Detergent Chemicals (Bulk)": { code: "CH1", price: 200.00, year: "2023", desc: "Washing Chemicals" }
+        };
+
+        // --- MOSQUE DATA STRUCTURE (NEW) ---
+        const mosqueItemsDB = { "Prayer Mat (Sijayad)": { code: "MQ1", price: 10.00, year: "2020", desc: "Large Carpets" }, "Sound System": { code: "MQ2", price: 500.00, year: "2019", desc: "Speakers & Mic" }, "Quran Stand (Rehal)": { code: "MQ3", price: 15.00, year: "2020", desc: "Wooden Stand" } };
+
+        // --- STORES DATA STRUCTURES (NEW) ---
+        // Equipment & General
+        const storeEquipmentDB = { "Ladder (Salan)": { code: "EQ1", price: 80.00, year: "2020", desc: "Aluminium Ladder" }, "Drill Machine": { code: "EQ2", price: 120.00, year: "2021", desc: "Power Drill" }, "Tool Box Set": { code: "EQ3", price: 150.00, year: "2020", desc: "Complete Tool Set" } };
+        const storeGeneralDB = { "Cleaning Supplies": { code: "GN1", price: 50.00, year: "2023", desc: "Mixed Supplies" }, "Spare Parts": { code: "GN2", price: 100.00, year: "2023", desc: "General Spares" } };
+        
+        // Ground Floor
+        const storeGroundRightDB = { "Storage Rack Metal": { code: "SGR1", price: 200.00, year: "2019", desc: "Heavy Duty Rack" }, "Pallet Wood": { code: "SGR2", price: 15.00, year: "2020", desc: "Wooden Pallet" } };
+        const storeGroundLeftDB = { "Cold Storage Unit": { code: "SGL1", price: 3000.00, year: "2018", desc: "Cold Room Unit" }, "Shelving Unit": { code: "SGL2", price: 150.00, year: "2019", desc: "Steel Shelf" } };
+        
+        // Floor 1
+        const storeFloor1RightDB = { "Linen Storage Cabinet": { code: "F1R1", price: 180.00, year: "2019", desc: "For Sheets/Towels" } };
+        const storeFloor1LeftDB = { "Housekeeping Cart Spare": { code: "F1L1", price: 250.00, year: "2020", desc: "Spare Cart" } };
+        
+        // Floor 2
+        const storeFloor2RightDB = { "Maintenance Tools Rack": { code: "F2R1", price: 120.00, year: "2019", desc: "Tools Storage" } };
+        const storeFloor2LeftDB = { "Old Furniture Storage": { code: "F2L1", price: 0.00, year: "2015", desc: "Stored Old Items" } };
+
 
         let activeRoomNumber = "0001";
         let currentUserRole = 'admin'; // 'admin' or 'staff'
@@ -1603,9 +1657,9 @@
 
         function updateCharts() {
             // Updated Categories
-            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Cafeteria', 'Bakery', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils'];
-            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#ea580c', '#db2777', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2'];
-            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#fb923c', '#f472b6', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee'];
+            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Cafeteria', 'Bakery', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils', 'Laundry', 'Store', 'Mosque'];
+            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#ea580c', '#db2777', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2', '#ec4899', '#78350f', '#0d9488'];
+            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#fb923c', '#f472b6', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee', '#fbcfe8', '#b45309', '#5eead4'];
 
             const calculateValue = (category) => {
                 return inventory.filter(i => {
@@ -1617,6 +1671,9 @@
                     if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
                     if (cat === 'cars') return loc.includes('car');
                     if (cat === 'utensils') return loc.includes('utensils');
+                    if (cat === 'laundry') return loc.includes('laundry');
+                    if (cat === 'store') return loc.includes('store') || loc.includes('ground') || loc.includes('floor 1') || loc.includes('floor 2') || loc.includes('equipment') || loc.includes('general');
+                    if (cat === 'mosque') return loc.includes('mosque');
                     return loc.includes(cat);
                 }).reduce((sum, i) => sum + (parseFloat(i.total?.toString().replace(/[$,]/g,''))||0), 0);
             };
@@ -1631,6 +1688,9 @@
                     if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
                     if (cat === 'cars') return loc.includes('car');
                     if (cat === 'utensils') return loc.includes('utensils');
+                    if (cat === 'laundry') return loc.includes('laundry');
+                    if (cat === 'store') return loc.includes('store') || loc.includes('ground') || loc.includes('floor 1') || loc.includes('floor 2') || loc.includes('equipment') || loc.includes('general');
+                    if (cat === 'mosque') return loc.includes('mosque');
                     return loc.includes(cat);
                 }).length;
             };
@@ -1817,7 +1877,17 @@
             "ELECTRICITY": Object.keys(electricityItemsDB),
             "SECURITY": Object.keys(securityItemsDB),
             "GARDEN": Object.keys(gardenItemsDB),
-            "UTENSILS": Object.keys(utensilsItemsDB)
+            "UTENSILS": Object.keys(utensilsItemsDB),
+            "LAUNDRY": Object.keys(laundryItemsDB),
+            "MOSQUE": Object.keys(mosqueItemsDB),
+            "STORE GROUND RIGHT": Object.keys(storeGroundRightDB),
+            "STORE GROUND LEFT": Object.keys(storeGroundLeftDB),
+            "STORE FLOOR 1 RIGHT": Object.keys(storeFloor1RightDB),
+            "STORE FLOOR 1 LEFT": Object.keys(storeFloor1LeftDB),
+            "STORE FLOOR 2 RIGHT": Object.keys(storeFloor2RightDB),
+            "STORE FLOOR 2 LEFT": Object.keys(storeFloor2LeftDB),
+            "STORE EQUIPMENT": Object.keys(storeEquipmentDB),
+            "STORE GENERAL": Object.keys(storeGeneralDB)
         };
 
         function getCurrentCategoryKey() {
@@ -1835,6 +1905,19 @@
             if (loc.includes("CARS")) return "CARS";
             if (loc.includes("OFFICE")) return "OFFICE";
             if (loc.includes("UTENSILS")) return "UTENSILS"; 
+            if (loc.includes("LAUNDRY")) return "LAUNDRY";
+            if (loc.includes("MOSQUE")) return "MOSQUE";
+            // STORES LOGIC
+            if (loc.includes("STORE")) {
+                if(loc.includes("GROUND") && loc.includes("RIGHT")) return "STORE GROUND RIGHT";
+                if(loc.includes("GROUND") && loc.includes("LEFT")) return "STORE GROUND LEFT";
+                if(loc.includes("FLOOR 1") && loc.includes("RIGHT")) return "STORE FLOOR 1 RIGHT";
+                if(loc.includes("FLOOR 1") && loc.includes("LEFT")) return "STORE FLOOR 1 LEFT";
+                if(loc.includes("FLOOR 2") && loc.includes("RIGHT")) return "STORE FLOOR 2 RIGHT";
+                if(loc.includes("FLOOR 2") && loc.includes("LEFT")) return "STORE FLOOR 2 LEFT";
+                if(loc.includes("EQUIPMENT")) return "STORE EQUIPMENT";
+                if(loc.includes("GENERAL")) return "STORE GENERAL";
+            }
             return "OTHER";
         }
 
@@ -2054,6 +2137,59 @@
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
+            }
+            // NEW LAUNDRY LOGIC
+            else if (cat === 'LAUNDRY' && laundryItemsDB[val]) {
+                const data = laundryItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-LD-${data.code}`);
+                const fullID = `MH-LD-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // NEW MOSQUE LOGIC
+            else if (cat === 'MOSQUE' && mosqueItemsDB[val]) {
+                const data = mosqueItemsDB[val];
+                const nextSeq = calcNextSequence(val, `MH-MQ-${data.code}`);
+                const fullID = `MH-MQ-${data.code}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // NEW STORE LOGIC (Generic Handler for all store sub-types)
+            else if (cat.includes("STORE")) {
+                let dbSource = {};
+                let prefix = "";
+                
+                if (cat === "STORE GROUND RIGHT") { dbSource = storeGroundRightDB; prefix = "MH-ST-GR-R"; }
+                else if (cat === "STORE GROUND LEFT") { dbSource = storeGroundLeftDB; prefix = "MH-ST-GR-L"; }
+                else if (cat === "STORE FLOOR 1 RIGHT") { dbSource = storeFloor1RightDB; prefix = "MH-ST-F1-R"; }
+                else if (cat === "STORE FLOOR 1 LEFT") { dbSource = storeFloor1LeftDB; prefix = "MH-ST-F1-L"; }
+                else if (cat === "STORE FLOOR 2 RIGHT") { dbSource = storeFloor2RightDB; prefix = "MH-ST-F2-R"; }
+                else if (cat === "STORE FLOOR 2 LEFT") { dbSource = storeFloor2LeftDB; prefix = "MH-ST-F2-L"; }
+                else if (cat === "STORE EQUIPMENT") { dbSource = storeEquipmentDB; prefix = "MH-ST-EQ"; }
+                else if (cat === "STORE GENERAL") { dbSource = storeGeneralDB; prefix = "MH-ST-GEN"; }
+
+                if (dbSource[val]) {
+                    const data = dbSource[val];
+                    const nextSeq = calcNextSequence(val, `${prefix}-${data.code}`);
+                    const fullID = `${prefix}-${data.code}-${nextSeq}`;
+                    
+                    document.getElementById('code').value = fullID;
+                    document.getElementById('uvalue').value = data.price.toFixed(2);
+                    document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                    document.getElementById('desc').value = data.desc;
+                    calculate(); 
+                    calculateAge();
+                }
             }
         }
 
@@ -2463,8 +2599,20 @@
                     i.location.toLowerCase().includes("floor") 
                 ));
             }
-            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Cafeteria", "Bakery", "Electricity", "Security", "Garden", "Cars", "Utensils"].includes(loc)) {
-                filtered = inventory.filter(i => i.location && i.location.includes(loc));
+            // Include Store in the general filter logic
+            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Cafeteria", "Bakery", "Electricity", "Security", "Garden", "Cars", "Utensils", "Laundry", "Store", "Mosque"].includes(loc)) {
+                if (loc === "Store") {
+                    filtered = inventory.filter(i => i.location && (
+                        i.location.toLowerCase().includes("store") || 
+                        i.location.toLowerCase().includes("ground") ||
+                        i.location.toLowerCase().includes("floor 1") ||
+                        i.location.toLowerCase().includes("floor 2") ||
+                        i.location.toLowerCase().includes("equipment") ||
+                        i.location.toLowerCase().includes("general")
+                    ));
+                } else {
+                    filtered = inventory.filter(i => i.location && i.location.includes(loc));
+                }
             } 
             else {
                 filtered = inventory.filter(i => i.location === loc);
@@ -2838,7 +2986,9 @@
             if (loc.includes("garden")) return 10;
             if (loc.includes("cars")) return 11;
             if (loc.includes("utensils")) return 12;
-            return 13; 
+            if (loc.includes("laundry")) return 13;
+            if (loc.includes("store")) return 14;
+            return 15; 
         }
 
         let currentExportMode = 'full';
@@ -2977,6 +3127,12 @@
                     } else if (currentCategory === 'restaurant') {
                         dataToProcess = inventory.filter(i => (i.location || "").toLowerCase().includes('restaurant'));
                         titleText = "INVENTORY REPORT: ALL RESTAURANTS";
+                    } else if (currentCategory === 'store') {
+                        dataToProcess = inventory.filter(i => {
+                            const loc = (i.location || "").toLowerCase();
+                            return loc.includes('store') || loc.includes('ground') || loc.includes('floor 1') || loc.includes('floor 2') || loc.includes('equipment') || loc.includes('general');
+                        });
+                        titleText = "INVENTORY REPORT: ALL STORES";
                     } else {
                         dataToProcess = inventory.filter(i => (i.location || "").toLowerCase().includes(currentCategory.toLowerCase()));
                         titleText = `INVENTORY REPORT: ALL ${currentCategory.toUpperCase()}S`;
@@ -3164,7 +3320,8 @@
                 { name: "Somali Restaurant", icon: "fa-bowl-food" },
                 { name: "Ethiopian Restaurant", icon: "fa-utensils" },
                 { name: "Indian Restaurant", icon: "fa-pepper-hot" },
-                { name: "Kenyan Restaurant", icon: "fa-burger" }
+                { name: "Kenyan Restaurant", icon: "fa-burger" },
+                { name: "Arabian Restaurant", icon: "fa-utensils" }
             ];
 
             restaurants.forEach(rest => {
@@ -3256,14 +3413,132 @@
             });
         }
 
+        // --- NEW: FUNCTION TO SHOW STORE SELECTION GRID (LEVEL 1: CATEGORIES) ---
+        function showStoreMainSelection() {
+            closeSidebar();
+            hideAllScreens();
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.add('hidden'); 
+            document.getElementById('dashboard-alerts').classList.add('hidden'); 
+            
+            document.getElementById('selection-area').classList.remove('hidden'); 
+            document.getElementById('entry-form').classList.add('hidden'); 
+            document.getElementById('inventory-section').classList.remove('hidden');
+
+            // Reset active state
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
+            const sidebarBtns = document.querySelectorAll('.nav-btn');
+            const storeBtn = Array.from(sidebarBtns).find(b => b.textContent.includes("Stores"));
+            if(storeBtn) storeBtn.classList.add('btn-active'); 
+
+            currentCategory = "Store";
+            currentExportMode = 'full';
+            
+            document.getElementById('table-title').innerText = "ALL STORES INVENTORY LOGS";
+            
+            // PERMISSIONS
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').innerText = "EXCEL (ALL STORES)";
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
+
+            renderTable("Store"); // Filter by "Store" keyword
+
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2">Dooro Qaybta Store-ka :</span>
+            `;
+
+            const grid = document.getElementById('grid-buttons');
+            grid.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4";
+            grid.innerHTML = ''; 
+
+            // LEVEL 1 CATEGORIES
+            const storeMainCats = [
+                { name: "Ground Stores", icon: "fa-layer-group", color: "amber", hasSub: true, type: "Ground" },
+                { name: "Floor 1 Stores", icon: "fa-layer-group", color: "blue", hasSub: true, type: "Floor 1" },
+                { name: "Floor 2 Stores", icon: "fa-layer-group", color: "indigo", hasSub: true, type: "Floor 2" },
+                { name: "Equipment Store", icon: "fa-tools", color: "slate", hasSub: false, finalName: "Store Equipment" },
+                { name: "General Store", icon: "fa-box-open", color: "slate", hasSub: false, finalName: "Store General" }
+            ];
+
+            storeMainCats.forEach(cat => {
+                const btn = document.createElement('button');
+                let bgClass = "";
+                if(cat.color === 'amber') bgClass = "bg-amber-50 border-amber-200 hover:bg-amber-100 hover:border-amber-500 text-amber-700";
+                if(cat.color === 'blue') bgClass = "bg-blue-50 border-blue-200 hover:bg-blue-100 hover:border-blue-500 text-blue-700";
+                if(cat.color === 'indigo') bgClass = "bg-indigo-50 border-indigo-200 hover:bg-indigo-100 hover:border-indigo-500 text-indigo-700";
+                if(cat.color === 'slate') bgClass = "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-500 text-slate-700";
+
+                btn.className = `p-5 border-2 rounded-2xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-md flex flex-col items-center justify-center gap-3 h-28 group ${bgClass}`;
+                btn.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+                        <i class="fas ${cat.icon} text-xl"></i>
+                    </div>
+                    <span class="font-black uppercase tracking-wide text-xs text-center">${cat.name}</span>
+                `;
+                
+                btn.onclick = () => {
+                    if (cat.hasSub) {
+                        showStoreSubSelection(cat.type); // Go to Level 2
+                    } else {
+                        handleSelectionClick(btn, cat.finalName); // Direct Entry
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        // --- NEW: FUNCTION TO SHOW STORE SUB-SELECTION (LEVEL 2: LEFT/RIGHT) ---
+        function showStoreSubSelection(floorType) {
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showStoreMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Main Stores</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2">Dooro Qaybta (${floorType}) :</span>
+            `;
+
+            const grid = document.getElementById('grid-buttons');
+            grid.className = "grid grid-cols-2 gap-6 max-w-lg mx-auto"; // Center align 2 buttons
+            grid.innerHTML = ''; 
+
+            const subOptions = [
+                { name: "Left Store", finalName: `Store ${floorType} Left`, icon: "fa-arrow-left" },
+                { name: "Right Store", finalName: `Store ${floorType} Right`, icon: "fa-arrow-right" }
+            ];
+
+            subOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-6 border-2 border-gray-200 rounded-2xl shadow-sm transition-all hover:bg-slate-50 hover:border-slate-400 hover:scale-105 flex flex-col items-center justify-center gap-3 h-32 bg-white text-slate-700";
+                btn.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center shadow-sm text-slate-600">
+                        <i class="fas ${opt.icon} text-2xl"></i>
+                    </div>
+                    <span class="font-black uppercase tracking-wide text-sm text-center">${opt.name}</span>
+                `;
+                btn.onclick = () => {
+                    handleSelectionClick(btn, opt.finalName);
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+
         function handleSelectionClick(btnElement, locationName) {
             resetFormOnlyInputs();
 
-            document.querySelectorAll('#grid-buttons button').forEach(b => {
-                b.classList.remove('black-active');
-            });
+            // Clear previous active buttons in grid
+            const gridBtns = document.querySelectorAll('#grid-buttons button');
+            if(gridBtns) gridBtns.forEach(b => b.classList.remove('black-active'));
 
-            btnElement.classList.add('black-active');
+            if(btnElement) btnElement.classList.add('black-active');
 
             currentSelectedLocation = locationName;
             
@@ -3330,14 +3605,15 @@
                 <span class="text-gray-400">|</span> <span class="ml-2">Dooro Jikada :</span>
             `;
             
-            document.getElementById('grid-buttons').className = "grid grid-cols-2 md:grid-cols-3 gap-4";
+            document.getElementById('grid-buttons').className = "grid grid-cols-2 md:grid-cols-4 gap-4";
             const grid = document.getElementById('grid-buttons');
             grid.innerHTML = ''; 
 
             const kitchens = [
-                { name: "Somali Kitchen", icon: "fa-bowl-rice" },
+                { name: "Main Kitchen", icon: "fa-bowl-rice" }, // Renamed from Somali
                 { name: "Indian Kitchen", icon: "fa-pepper-hot" },
-                { name: "Ethiopian Kitchen", icon: "fa-utensils" }
+                { name: "Ethiopian Kitchen", icon: "fa-utensils" },
+                { name: "Staff Kitchen", icon: "fa-users" } // Added
             ];
 
             kitchens.forEach(kit => {
@@ -3415,4 +3691,4 @@
         }
 </script>
 </body>
-</html>
+</html
