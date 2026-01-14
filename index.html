@@ -277,16 +277,32 @@
                         <span class="text-sm font-bold tracking-wide">Dashboard</span>
                     </button>
 
-                    <!-- 1. ROOMS -->
-                    <button onclick="changeCategory('room', 100)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <!-- 1. ROOMS (1-68) -->
+                    <button id="nav-room" onclick="changeCategory('room', 1, 68)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-400">
                             <i class="fas fa-bed"></i>
                         </div>
                         <span class="text-sm font-bold tracking-wide">Rooms</span>
                     </button>
 
+                    <!-- 1.1 VILLA (69-108) -->
+                    <button id="nav-villa" onclick="changeCategory('villa', 69, 108)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-indigo-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-400">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Villa</span>
+                    </button>
+
+                    <!-- 1.2 STAFF ROOMS (5 Rooms) -->
+                    <button id="nav-staffroom" onclick="changeCategory('staff_room', 1, 5)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-gray-400 group-hover:bg-gray-500/20 group-hover:text-gray-300">
+                            <i class="fas fa-person-shelter"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Staff Rooms</span>
+                    </button>
+
                     <!-- 2. RESTAURANTS -->
-                    <button onclick="showRestaurantMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-rest" onclick="showRestaurantMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-500">
                             <i class="fas fa-utensils"></i> 
                         </div>
@@ -294,7 +310,7 @@
                     </button>
 
                     <!-- 3. HALLS -->
-                    <button onclick="showHallMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-hall" onclick="showHallMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-teal-400 group-hover:bg-teal-500/20 group-hover:text-teal-400">
                             <i class="fas fa-hotel"></i>
                         </div>
@@ -302,7 +318,7 @@
                     </button>
 
                     <!-- 4. KITCHENS -->
-                    <button onclick="showKitchenMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-kitchen" onclick="showKitchenMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-red-500 group-hover:bg-red-500/20 group-hover:text-red-500">
                             <i class="fas fa-fire-burner"></i>
                         </div>
@@ -310,7 +326,7 @@
                     </button>
 
                     <!-- 4.1 CAFETERIA (NEW) -->
-                    <button onclick="showDirectCategory('Cafeteria', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-cafeteria" onclick="showDirectCategory('Cafeteria', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
                             <i class="fas fa-mug-hot"></i>
                         </div>
@@ -318,7 +334,7 @@
                     </button>
 
                     <!-- 4.2 BAKERY (NEW) -->
-                    <button onclick="showDirectCategory('Bakery', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-bakery" onclick="showDirectCategory('Bakery', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-pink-400 group-hover:bg-pink-500/20 group-hover:text-pink-400">
                             <i class="fas fa-bread-slice"></i>
                         </div>
@@ -326,7 +342,7 @@
                     </button>
 
                     <!-- 5. UTENSILS -->
-                    <button onclick="showDirectCategory('Utensils', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-utensils" onclick="showDirectCategory('Utensils', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-cyan-400 group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
                             <i class="fas fa-spoon"></i>
                         </div>
@@ -334,7 +350,7 @@
                     </button>
 
                     <!-- 6. OFFICES -->
-                    <button onclick="showDirectCategory('Office', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-office" onclick="showDirectCategory('Office', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
                             <i class="fas fa-briefcase"></i>
                         </div>
@@ -342,7 +358,7 @@
                     </button>
 
                     <!-- 7. ELECTRICITY (NEW ADDITION) -->
-                    <button onclick="showDirectCategory('Electricity', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-electric" onclick="showDirectCategory('Electricity', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-400">
                             <i class="fas fa-bolt"></i>
                         </div>
@@ -350,7 +366,7 @@
                     </button>
 
                     <!-- 8. SECURITY (NEW ADDITION) -->
-                    <button onclick="showDirectCategory('Security', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-security" onclick="showDirectCategory('Security', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-yellow-500 group-hover:bg-yellow-500/20 group-hover:text-yellow-400">
                             <i class="fas fa-shield-halved"></i>
                         </div>
@@ -358,7 +374,7 @@
                     </button>
 
                     <!-- 9. GARDEN (NEW ADDITION) -->
-                    <button onclick="showDirectCategory('Garden', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-garden" onclick="showDirectCategory('Garden', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-green-500 group-hover:bg-green-500/20 group-hover:text-green-500">
                             <i class="fas fa-tree"></i>
                         </div>
@@ -366,23 +382,23 @@
                     </button>
 
                     <!-- 10. CARS -->
-                    <button onclick="showDirectCategory('Cars', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-car" onclick="showDirectCategory('Cars', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-indigo-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-400">
                             <i class="fas fa-car"></i>
                         </div>
                         <span class="text-sm font-bold tracking-wide">Cars</span>
                     </button>
 
-                     <!-- 11. LAUNDRY (NEW ADDITION) -->
-                     <button onclick="showDirectCategory('Laundry', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                     <!-- 11. LAUNDRY (UPDATED) -->
+                     <button id="nav-laundry" onclick="showLaundryMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-pink-400 group-hover:bg-pink-500/20 group-hover:text-pink-400">
                             <i class="fas fa-shirt"></i>
                         </div>
-                        <span class="text-sm font-bold tracking-wide">Laundry Store</span>
+                        <span class="text-sm font-bold tracking-wide">Laundry</span>
                     </button>
 
                      <!-- 12. STORES (NEW ADDITION) -->
-                     <button onclick="showStoreMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                     <button id="nav-store" onclick="showStoreMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-amber-600 group-hover:bg-amber-500/20 group-hover:text-amber-500">
                             <i class="fas fa-warehouse"></i>
                         </div>
@@ -390,11 +406,19 @@
                     </button>
 
                     <!-- 13. MOSQUE (NEW ADDITION) -->
-                    <button onclick="showDirectCategory('Mosque', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <button id="nav-mosque" onclick="showDirectCategory('Mosque', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-teal-600 group-hover:bg-teal-500/20 group-hover:text-teal-500">
                             <i class="fas fa-mosque"></i>
                         </div>
                         <span class="text-sm font-bold tracking-wide">Mosque</span>
+                    </button>
+                    
+                    <!-- 14. STADIUM (NEW ADDITION) -->
+                    <button id="nav-stadium" onclick="showDirectCategory('Stadium', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                        <div class="nav-icon-box text-emerald-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-500">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <span class="text-sm font-bold tracking-wide">Stadium</span>
                     </button>
 
 
@@ -660,7 +684,8 @@
                                         <!-- Custom Dropdown (Item Name) -->
                                         <div class="relative">
                                             <label class="block text-[10px] font-bold text-gray-400 uppercase ml-1">Item Name</label>
-                                            <input type="text" id="name" onkeyup="filterCustomDropdown()" onfocus="filterCustomDropdown()" autocomplete="off"
+                                            <!-- FIX: Added oninput listener for live auto-generation -->
+                                            <input type="text" id="name" oninput="handleNameInput(this.value)" onkeyup="filterCustomDropdown()" onfocus="filterCustomDropdown()" autocomplete="off"
                                                    class="mt-1 block w-full p-3.5 bg-white border border-gray-200 rounded-xl text-sm font-bold placeholder-gray-300 focus:ring-2 focus:ring-yellow-500 transition-all shadow-sm" 
                                                    placeholder="Qor ama dooro...">
                                             <ul id="custom-dropdown-list" class="hidden absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto custom-scroll mt-1"></ul>
@@ -854,8 +879,11 @@
             phone: "+252 634245995"
         };
         
-        // --- 1. DATA STRUCTURES (Updated with PDF Content) ---
+        // --- 1. DATA STRUCTURES (Updated with Initials as Codes) ---
         const roomItemsDB = { "Bed Single": { code: "B1", price: 550.00, year: "2018", desc: "Sariir Hal Nafar ah" }, "Bed Double": { code: "B1", price: 1100.00, year: "2018", desc: "Sariir laba Nafar ah" }, "Bed Single Sheets": { code: "B10", price: 5.00, year: "2016", desc: "Goyaasha Nafarka ee Sariirta la saaro" }, "Bed pillow": { code: "B6", price: 5.00, year: "2016", desc: "Barkimo Sariirta" }, "Bathroom towel": { code: "B15", price: 8.00, year: "2018", desc: "Tuwaal la isku qalajiyo" }, "Bed Double Mattress": { code: "B2", price: 200.00, year: "2018", desc: "Furaash laba nafar ah" }, "Bed Double Cover Mattress": { code: "B3", price: 25.00, year: "2018", desc: "Xalaafka Furaashka (waterproof)" }, "Bed Double Linen Cover": { code: "B4", price: 35.00, year: "2018", desc: "Xalaaf la huwado ee laba nafar" }, "Bed Double Sheets": { code: "B5", price: 10.00, year: "2018", desc: "Goyaasha laba nafar ee sariirta" }, "Bed Single Mattress": { code: "B7", price: 120.00, year: "2018", desc: "Furaash Nafar kaliya" }, "Bed SingleCover Mattress": { code: "B8", price: 18.00, year: "2018", desc: "Xalaaf Sariirta la saaro ee nafarka ah" }, "Chair Coffee": { code: "C1", price: 50.00, year: "2018", desc: "Kuraasta Qolalka ee Shaaha" }, "Chair Wooden": { code: "C3", price: 40.00, year: "2012", desc: "Kuraasta Qolalka ee Shaaha" }, "Dustbin small": { code: "D1", price: 2.00, year: "2018", desc: "for waste papers" }, "Dustbin Middle": { code: "D2", price: 5.00, year: "2018", desc: "Basket Laundry" }, "Fan Small": { code: "F2", price: 35.00, year: "2018", desc: "Maraxwadaha Qolka" }, "Dressing mirror cupboard": { code: "K1", price: 250.00, year: "2018", desc: "Tawaleetka Hurdada" }, "Cupboards with 2 shelves": { code: "K2", price: 200.00, year: "2018", desc: "Kabadhka dharka ee labada Fardadood" }, "Cupboards with 3 shelves": { code: "K3", price: 290.00, year: "2018", desc: "Kabadhka dharka ee sadexda Fardadood" }, "Lights, for bedroom": { code: "L1", price: 35.00, year: "2018", desc: "Leedhka Hurdada ee Miiska la saaro" }, "Landline Phone": { code: "L3", price: 7.00, year: "2012", desc: "Madax Telephone Qolalka" }, "Mosquito net": { code: "MN", price: 12.00, year: "2018", desc: "Maro kaneeco" }, "Rugs Bedroom": { code: "R1", price: 20.00, year: "2018", desc: "Rooga Hurdada" }, "Rugs Doormats": { code: "R3", price: 7.00, year: "2018", desc: "Dacsadaha Albaabada" }, "Rugs for Prayers": { code: "R4", price: 6.00, year: "2018", desc: "Sijaayado" }, "Rugs Plastic for Toilets": { code: "R5", price: 5.00, year: "2018", desc: "Dacsadaha Suuliga ee rabadhka ah" }, "Refrigerator Mini Fridge": { code: "R6", price: 120.00, year: "2018", desc: "Talagadaha Maqsinada yar yar" }, "Bath Shower Box": { code: "SH", price: 50.00, year: "2020", desc: "Shower Quruurad" }, "TV screen wall mounted": { code: "T10", price: 200.00, year: "2017", desc: "Murayad LG 32\" iyo Birta Gidaarka" }, "Table Coffee small": { code: "T4", price: 50.00, year: "2018", desc: "Miiska Shaaha Qolalka" }, "Table TV": { code: "T5", price: 60.00, year: "2018", desc: "Miiska TV-ga la saaro" }, "Table for Briefcase": { code: "T7", price: 60.00, year: "2018", desc: "Miiska Shandadaha la saarto ee Qolalka" }, "Curtains bedroom window": { code: "W1", price: 65.00, year: "2020", desc: "Daahyo Daqadii -2Jeex" }, "Curtains Toilet window": { code: "W3", price: 18.00, year: "2020", desc: "Daaha Shower ee Plastic" }, "Wall art Pictures": { code: "W4", price: 15.00, year: "2012", desc: "Sawirka Gidaarka ku xidhan" }, "Wall mounted Electric heater": { code: "W5", price: 125.00, year: "2012", desc: "Electric Heater 50Ltr" }, "Wall mounted Air-condition": { code: "W6", price: 350.00, year: "2018", desc: "Aircondition - Qolalka" } };
+        // STAFF ROOMS DB (Same as Rooms for now - ADDED FOR TASK 1)
+        const staffRoomItemsDB = { ...roomItemsDB };
+        
         const hallItemsDB = { "Speakers Large Audio Concert": { code: "A1", price: 300.00, year: "2018", desc: "Sameecadaha Hoolasha" }, "Speakers Small": { code: "A1", price: 150.00, year: "2012", desc: "Small Speaker" }, "Audio Mixer & Assoceies": { code: "A2", price: 250.00, year: "2018", desc: "Mixer-ka & Microphones" }, "Chair VIP": { code: "C1", price: 60.00, year: "2012", desc: "Kuraasta Meherada" }, "Chair Red Bush with Iron legs": { code: "C2", price: 32.00, year: "2012", desc: "Kuraasta Hoolasha" }, "Chair for dining": { code: "C3", price: 30.00, year: "2012", desc: "Kuraasta Cuntada" }, "Chair Brown rubbed with iron legs": { code: "C4", price: 35.00, year: "2020", desc: "Kuraasta Caaga adag ee Turkey" }, "Chairs gold plastic for dining": { code: "C5", price: 30.00, year: "2020", desc: "Kuraasta Qadada Siminaarada" }, "Chairs Fibre White outdoor": { code: "C6", price: 11.00, year: "2018", desc: "Kuraasta Caaga Cadcad" }, "Chair Iron for outdoor": { code: "C7", price: 25.00, year: "2012", desc: "Kursiga Birta" }, "Chairs cover clothes": { code: "C8", price: 7.00, year: "2012", desc: "Marada Kuraasta Different Colors" }, "Chair Excutive meeting room": { code: "C9", price: 60.00, year: "2008", desc: "Kuraasida Shirarka ee VIP-da sare" }, "Dustbin small for Waste papers": { code: "D1", price: 2.00, year: "2020", desc: "Dusbin waraaqaha ee hoolasha" }, "Dustbin Middle (Basket Laundry)": { code: "D2", price: 5.00, year: "2018", desc: "Baaldiyada Khashinka" }, "Dustbin Large for waste": { code: "D3", price: 10.00, year: "2018", desc: "Baaldiyada Duskpinka waaweyn" }, "Dustbin for cigarettes": { code: "D4", price: 8.00, year: "2018", desc: "Sigaarka lagu bakhtiiyo" }, "Plug extension socket": { code: "D5", price: 12.00, year: "2020", desc: "Dabqaybisada Hoolasha ku samaysan" }, "Fan Wall mounted": { code: "F3", price: 35.00, year: "2018", desc: "Maraxwado" }, "Modern indoor plant pots": { code: "FL", price: 15.00, year: "2012", desc: "Floweradda Gudaha Hoteelka" }, "Flip Chart stand": { code: "P1", price: 45.00, year: "2018", desc: "Flip Chart" }, "Eurolite Projection Screen W/stand": { code: "P2", price: 70.00, year: "2018", desc: "Projector Stand" }, "Rug for hallway entrance red plastic": { code: "RG", price: 500.00, year: "2018", desc: "Roog cas ee Madaxda loo dhigo 80M" }, "Sofa seat for Wedding": { code: "S1", price: 400.00, year: "2018", desc: "Kurasida Caruuska SET (2pcs+1Table)" }, "Sofa seat complete (7 chairs)": { code: "S2", price: 1100.00, year: "2018", desc: "Fadhiyada" }, "Sofa seat complete (4 chairs)": { code: "S2", price: 600.00, year: "2018", desc: "Fadhiyada" }, "Sofa seat cover clothes": { code: "S5", price: 4.00, year: "2018", desc: "Gogosha Fadhiyada Sofa Seatka" }, "Glass portable stage speech": { code: "SS", price: 300.00, year: "2018", desc: "Stege-ka Quruurada" }, "Wooden portable stage speech": { code: "SS", price: 120.00, year: "2016", desc: "Steage Looxa ah" }, "Table Coffee small": { code: "T1", price: 50.00, year: "2012", desc: "Miisaska meherada ee yaryar" }, "Table Excutive meeting room": { code: "T10", price: 2000.00, year: "2012", desc: "Miiska Shirarka Dabaqa3aad" }, "Table Mirror": { code: "T11", price: 120.00, year: "2012", desc: "Miiska Quruurada" }, "Table With Iron legs/ Circle": { code: "T2", price: 80.00, year: "2012", desc: "Miisaska Goolka ah" }, "Table wooden for holls": { code: "T2", price: 150.00, year: "2017", desc: "Miisaska Hoolasha 150x80x75cm" }, "Table for Dining": { code: "T3", price: 120.00, year: "2017", desc: "Miisaska Qadada Looxa ah" }, "Table Outdoor Plastic Brown": { code: "T5", price: 45.00, year: "2018", desc: "Misaska Caaga Adag" }, "Table beefy Outdoor": { code: "T6", price: 200.00, year: "2018", desc: "Table beefy Seminaar 200x80x80 cm" }, "Table beefy Indoor Wooden 300x80x80": { code: "T6", price: 300.00, year: "2016", desc: "Table restaurant beefy" }, "Table beefy Indoor": { code: "T6", price: 160.00, year: "2016", desc: "Table restaurant beefy" }, "Table Outdoor Plastic White": { code: "T7", price: 26.00, year: "2017", desc: "Miisaska cadcad ee banaanka" }, "Table cover clothes": { code: "T8", price: 7.00, year: "2012", desc: "Different Colors" }, "Table cover Diamond clothes": { code: "T8", price: 5.00, year: "2012", desc: "Different Colors" }, "Wall art Pictures": { code: "W1", price: 15.00, year: "2012", desc: "Sawiro Gidaar" }, "TV Flat Screen": { code: "W1", price: 720.00, year: "2018", desc: "Tv 52Inch LG" }, "Wall art Pictures Large": { code: "W2", price: 15.00, year: "2012", desc: "Sawiro Gidaar" }, "Wall mounted Air-condition": { code: "W3", price: 350.00, year: "2018", desc: "LG AIR CONDITIONER" }, "Curtains, Living room Window": { code: "W7", price: 35.00, year: "2020", desc: "Daahyo Daqadii -1Jeex" }, "Fire Dry Powder wall mounted": { code: "F1", price: 33.00, year: "2020", desc: "Haanta Dabdamiska" }, "Dry Powder with wheels": { code: "F1", price: 63.00, year: "2020", desc: "Haanta Dabdamiska, Taayarada leh" }, "Curtains for Hools, Cafateria": { code: "W8", price: 85.00, year: "2020", desc: "Hools, Cafateria & restuarent" }, "Restaurant chines decoration": { code: "HA", price: 80.00, year: "2020", desc: "Sitaarada restuerent-ka" }, "Floor standing menu poster display": { code: "HA", price: 100.00, year: "2020", desc: "Birta Menu ee Quraarada ah" }, "Hotel suitcase wheels bags": { code: "HA", price: 200.00, year: "2020", desc: "Birta Shanadadaha la saaro" }, "Alaabta Hidaha & Dhaqanka": { code: "HA", price: 2000.00, year: "2020", desc: "Buulka Banaanka Qalabka Dhex-yaala" }, "Hotel Housekeeping / Maids Carts": { code: "HA", price: 300.00, year: "2020", desc: "Baabuurka Caaga ee Hablaha Nadaafada" }, "Hotel cleaning kits": { code: "HA", price: 25.00, year: "2020", desc: "Agabka ay ku shaqeeyaan Hablaha" } };
         const kitchenItemsDB = { "Charcoal Grill, Gas": { code: "M1", price: 1200.00, year: "2011", desc: "Heating By Steel Burners With Temp. Regulators" }, "Chicken Grill - Roller Grill": { code: "M7", price: 1200.00, year: "2011", desc: "Chicken Grill Machine (Electric & Gas)" }, "Cooking range (gas) 6 burners": { code: "M2", price: 1500.00, year: "2011", desc: "Name: Imperial, Model COK-IR6-USA" }, "Fries Maachine (Laba Khaanad)": { code: "M4", price: 450.00, year: "2020", desc: "electric deep fryer french fries machine" }, "Kitchen Metal Utility Trolley 2 Shelves": { code: "K1", price: 300.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" }, "Kitchen Metal Utility Trolley 3 Shelves": { code: "K1", price: 400.00, year: "2012", desc: "Gaadhiga Weelka & Malqacadaha" }, "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" }, "Kitchen Wooden Tables 140x70": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 140x70x70cm" }, "Kitchen Wooden Tables 240x80": { code: "K3", price: 240.00, year: "2011", desc: "Wooden Preparation Tables 240x80x80cm" }, "Kitchen Wooden Tables 65x65": { code: "K3", price: 140.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" }, "Microwave oven": { code: "M6", price: 70.00, year: "2012", desc: "geepas microwave oven" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Pizza Oven - Large": { code: "M5", price: 1200.00, year: "2011", desc: "Pizza Oven (Electric), 2 Deck, Table top" }, "Refrigerator Chest freezer double": { code: "R8", price: 700.00, year: "2016", desc: "Haier. Model, HCF368H-2. Capacity: 51Kg" }, "Refrigerator Chest freezer single": { code: "R4", price: 480.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Glass door Fridge": { code: "R5", price: 700.00, year: "2015", desc: "Model, MUC-440M. Capacity: 68Kg" }, "Refrigerator Steel Double door": { code: "R6", price: 1500.00, year: "2015", desc: "UAE - Al-halabi" }, "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm. Brand: Roller Grill" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm. Brand: Roller Grill" }, "Water heater": { code: "W4", price: 125.00, year: "2012", desc: "Wall mounted Electric heater" }, "6sppons, 6forks, 6small spoons": { code: "KU", price: 4.00, year: "2018", desc: "malqacado all steel" }, "Biifay (Chanfing dish)": { code: "KU", price: 37.00, year: "2018", desc: "chanfing dish" }, "Candy ball large": { code: "KU", price: 25.00, year: "2018", desc: "candy ball large" }, "Cups quraarada": { code: "KU", price: 2.50, year: "2018", desc: "Koobabka Quraarada ah" }, "Cups biyaha gees": { code: "KU", price: 1.16, year: "2018", desc: "koobabka biyaha gees" }, "Dusuud No.6": { code: "KU", price: 155.00, year: "2018", desc: "dusuud no. 9 (every six pcs are one set)" }, "Dusuud No.9": { code: "KU", price: 200.00, year: "2018", desc: "dusuud no. 6 (every six pcs are one set)" }, "Dusuud Normal": { code: "KU", price: 32.00, year: "2018", desc: "Dusuud godan & Caadi ah" }, "Every 3pcs are one set": { code: "KU", price: 28.00, year: "2018", desc: "kulaylisooyin" }, "Faashash": { code: "KU", price: 5.50, year: "2018", desc: "faashash" }, "Falaas Naqas": { code: "KU", price: 30.00, year: "2018", desc: "Falaash Shaah Naqas / Seminaar" }, "Glass tea pot Glass": { code: "KU", price: 13.00, year: "2018", desc: "Chinese Glass tea cups" }, "Glass tea pot Steel": { code: "KU", price: 8.00, year: "2018", desc: "Kildhiyada Yaryar ee Shaaha lagu shubo" }, "Glass water jug": { code: "KU", price: 5.00, year: "2018", desc: "jeegag quraarad ah" }, "Kildhi Shaaha 32": { code: "KU", price: 25.00, year: "2018", desc: "kilaadhi jandi ah 32" }, "Kildhi Shaaha 29": { code: "KU", price: 19.00, year: "2018", desc: "kilaadhi jandi ah 29" }, "Koobabka shaah dhobo": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah dhobo" }, "Koobabka shaah dhobo s.s": { code: "KU", price: 2.33, year: "2018", desc: "Koobabka shaah dhobo s.s" }, "Koobabka shaah quraarad": { code: "KU", price: 1.00, year: "2018", desc: "Koobabka shaah quraarad" }, "Macaan dhobo ah": { code: "KU", price: 2.00, year: "2018", desc: "macaan dhobo ah" }, "Macaan france ah": { code: "KU", price: 3.50, year: "2018", desc: "macaan france ah" }, "Macan quraarad ice ceram": { code: "KU", price: 2.33, year: "2018", desc: "macan quraarad ice ceram" }, "Madiibado gees ah dobool leh": { code: "KU", price: 2.00, year: "2018", desc: "madiibado gees ah dobool leh" }, "Malaas waawayn": { code: "KU", price: 10.00, year: "2018", desc: "malaas waawayn" }, "Maqliyo steel culus": { code: "KU", price: 18.00, year: "2018", desc: "maqliyo steel culus" }, "Mindiyo waaweyn": { code: "KU", price: 1.50, year: "2018", desc: "mindiyo waaweyn" }, "O-shaped plate Large": { code: "KU", price: 4.00, year: "2018", desc: "biledho qado gool ah, waaweyn" }, "O-shaped plate Medium": { code: "KU", price: 3.00, year: "2018", desc: "biledho qado gool ah dhexe" }, "O-shaped plate small": { code: "KU", price: 2.00, year: "2018", desc: "biledho qado gool ah yaryar" }, "Oil despenser and sugar pot": { code: "KU", price: 9.30, year: "2018", desc: "oil despenser and sugar pot" }, "Pizza plate weyn": { code: "KU", price: 8.00, year: "2018", desc: "pizza plate waaweyn" }, "Pizza plate dhexe": { code: "KU", price: 5.00, year: "2018", desc: "pizza plate dhexe" }, "Pizza plate yar": { code: "KU", price: 4.00, year: "2018", desc: "pizza plate yaryar" }, "Water Jug jaandi": { code: "KU", price: 2.00, year: "2018", desc: "Jeegaga Jaandiga ah" }, "Plates geeska jabiska": { code: "KU", price: 2.16, year: "2018", desc: "Suxuunta, geeska jabiska" }, "Shaandho Miiro Baasto": { code: "KU", price: 7.00, year: "2018", desc: "Shaandho Miiro Baasto" }, "Shaandho Miiro Jabis": { code: "KU", price: 3.00, year: "2018", desc: "Shaandho Miiro Jabis" }, "Shaandho Miiro Saanbuuse": { code: "KU", price: 9.00, year: "2018", desc: "Shaandho Miiro Saanbuuse" }, "Shaandho Miiro Sharaab": { code: "KU", price: 4.00, year: "2018", desc: "Shaandho Miiro Sharaab" }, "Suxuun dhar jandi": { code: "KU", price: 11.00, year: "2018", desc: "suxuun dhar jandi" }, "Suxuunta Cake- Wareega": { code: "KU", price: 4.00, year: "2018", desc: "Suxuunta Cake- Wareega" }, "Trays All Steel": { code: "KU", price: 9.00, year: "2018", desc: "try steel (Waaweyn, dhexe & Yaryar)" }, "Try caag loxoox": { code: "KU", price: 2.00, year: "2018", desc: "caag loxoox" }, "Mixed Utensils": { code: "KU", price: 2000.00, year: "2018", desc: "Weel wax lagu kariyo oo daadsan, Xabad Xabad ah oo jajaban" }, "Ushaped plate Large": { code: "KU", price: 7.00, year: "2018", desc: "huudhi waaweyn" }, "Ushaped plate Medium": { code: "KU", price: 5.00, year: "2018", desc: "huudhi dhexe" }, "Ushaped plate Small": { code: "KU", price: 4.00, year: "2018", desc: "huudhi yaryar" } };
         const bakeryItemsDB = { "Aluminium baking tray": { code: "B4", price: 15.00, year: "2011", desc: "40*60cm square bakery aluminium baking tray" }, "Bakery Kitchen UTENSILS": { code: "B6", price: 200.00, year: "2011", desc: "Agabka yaryar ee lagu shaqeeyo Bakeryga" }, "Cake, Magic Marble": { code: "B1", price: 20.00, year: "2018", desc: "Magic Marble Cake Stand black" }, "Electric Oven Bread Bakery": { code: "B5", price: 1500.00, year: "2011", desc: "D1-Oven. Model: HBL-40, Power 13.2Kw" }, "Fan Wall mounted": { code: "F3", price: 32.00, year: "2012", desc: "Maraxwada Gidaarka ku Xidhan" }, "Kitchen Pot Rack, Storage Units": { code: "K4", price: 600.00, year: "2011", desc: "Pot Rack, Storage Units (Shalafka Weelka)" }, "Kitchen Spring Scale 25Kg": { code: "B2", price: 30.00, year: "2012", desc: "Name: Camry, Model: J2012157363" }, "Kitchen Steel Preparation Tables": { code: "K2", price: 1200.00, year: "2011", desc: "Steel Preparation Tables" }, "Kitchen Wooden Tables 65x65": { code: "K3", price: 65.00, year: "2011", desc: "Wooden Preparation Tables 65x65x65cm" }, "Mixer High Capacity dough": { code: "B3", price: 1100.00, year: "2011", desc: "Electric Mixer, Model B20-B, Dcapacity 2-4Kg" }, "MOULINEX Genuine 1.5 Litre": { code: "M9", price: 45.00, year: "2020", desc: "Blender with grinder 500W" }, "Refrigerator Chest freezer": { code: "R7", price: 600.00, year: "2015", desc: "Talagad Jiifa" }, "Refrigerator Glass door Fridge": { code: "R4", price: 700.00, year: "2015", desc: "Model, FC/LD60A. Capacity: 380L" }, "Refrigerator Large Fridge": { code: "R3", price: 800.00, year: "2015", desc: "NAME: GA, Model TBG15BARWM, Capacity 142Kg" }, "Refrigerator Small Fridge": { code: "R2", price: 250.00, year: "2015", desc: "Talagada VIP Rooms" }, "Stove (gas), 1 burner": { code: "M3", price: 60.00, year: "2011", desc: "Unigas Dim: 35x51x18cm" }, "Stove (gas), 3 burners": { code: "M3", price: 40.00, year: "2011", desc: "Unigas, Dim: 98.5x51x18cm" } };
@@ -864,57 +892,62 @@
         // --- OFFICE DATA STRUCTURE ---
         const officeItemsDB = { "3D Light Board Maansoor Hotel": { code: "LB", price: 2500.00, year: "2020", desc: "Boodhka 3D ee Maansoor Hotel" }, "New Aluminium Partition Office": { code: "AP", price: 3000.00, year: "2020", desc: "Xafiisyada Saleban & HR" }, "Computer Laptop Core i3": { code: "CL", price: 320.00, year: "2021", desc: "Computer Laptop, Core i3/4GB" }, "Office Desk MIISKA": { code: "OD", price: 80.00, year: "2018", desc: "MIISKA XAFIISKA" }, "Office Chairs Kuraas": { code: "OC", price: 40.00, year: "2018", desc: "Kuraas Xafiis" }, "Computer Desktop i3": { code: "CD", price: 200.00, year: "2021", desc: "Computer desktop, Core i3/8GB" }, "Office Shelf Two shelf": { code: "OS", price: 60.00, year: "2018", desc: "Two shelf cabinet" }, "UPS Power supply 850VA": { code: "UP", price: 45.00, year: "2020", desc: "UPS Power supply -850VA" }, "FIRST AID COMPLETE KIT": { code: "FA", price: 300.00, year: "2022", desc: "FIRST AID COMPLETE KIT" }, "Table TV Miis": { code: "TT", price: 60.00, year: "2018", desc: "Miis TV" }, "TV Screen JVC": { code: "TV", price: 80.00, year: "2018", desc: "JVC 21 inch" }, "Fan Wall Mounted OE": { code: "FW", price: 35.00, year: "2018", desc: "OE Maraxwado" }, "Wall Art Pictures OE": { code: "WP", price: 15.00, year: "2015", desc: "OE Sawiro Gidaar" }, "LCD Screen OE": { code: "LS", price: 290.00, year: "2022", desc: "HP- 27FW" }, "Printer Laserjet OE": { code: "PR", price: 365.00, year: "2022", desc: "Laserjet P235" }, "Safe and Lock Box OE": { code: "SB", price: 700.00, year: "2020", desc: "Khasnada lacagta Mid weyn" }, "Telephone Switch PABX": { code: "TS", price: 4500.00, year: "2015", desc: "Telephone Switch IKE PABX" }, "Landline Phone Madax": { code: "LP", price: 50.00, year: "2015", desc: "Madax Telephone Qolalka" }, "Tv- Switch OE": { code: "SW", price: 820.00, year: "2018", desc: "Modulator System OE" }, "TV- Amplifier OE": { code: "AM", price: 200.00, year: "2018", desc: "TV- Amplifier booster" }, "CCTV SWITCH POE": { code: "CP", price: 200.00, year: "2021", desc: "SWITCH CCTV - 16 CHANNEL" }, "NVR-32 OE": { code: "NV", price: 300.00, year: "2021", desc: "NVR-32 CHANNEL No POE" }, "IP CAMERA 2MP OE": { code: "IC", price: 50.00, year: "2021", desc: "IP CAMERA 2MP" }, "TV SCREEN 43 inch OE": { code: "TV", price: 300.00, year: "2022", desc: "TV SCREEN FLAT 43 inch" }, "Unifi Router LR": { code: "UR", price: 185.00, year: "2023", desc: "Unifi Router Long Rang U-6-LR" }, "Cisco Router OE": { code: "CR", price: 45.00, year: "2019", desc: "Linksys E900 Router" }, "TP-Link Wifi Extender OE": { code: "WE", price: 80.00, year: "2022", desc: "TP-Link 450 Wifi Extender" }, "Cisco Switch 24Ports": { code: "CS", price: 100.00, year: "2020", desc: "Unifi -24Ports Smart Managed OE" }, "Unifi Switch 8Ports": { code: "US", price: 320.00, year: "2023", desc: "Unifi Switch 8Ports - 8POE" }, "Network Cable OE": { code: "NC", price: 180.00, year: "2021", desc: "Xadhkaha Internet OE" }, "PhotoCopy Canon OE": { code: "PC", price: 600.00, year: "2020", desc: "Canon IR2016J" } };
 
-        // --- CAR DATA STRUCTURE ---
-        const carItemsDB = { "Mercedes (Booyada Biyaha)": { code: "C1", price: 5000.00, year: "2015", desc: "Booyada Biyaha, CH.No: WDB61702315215638" }, "Toyota Landcruiser BLACK VX": { code: "C2", price: 18000.00, year: "2018", desc: "BLACK VX, CH.No: HDJ810003205" }, "Toyota Landcruiser RED VX": { code: "C3", price: 8000.00, year: "2016", desc: "RED VX, CH No: HJ81-0022218" }, "Toyota Mark II ONE-TEN": { code: "C4", price: 3500.00, year: "2012", desc: "ONE-TEN CAR, CH.No: GX110-6095352" }, "Toyota Mark II GRANDA": { code: "C5", price: 1000.00, year: "2010", desc: "GRANDA, CH.No: GX881-6472824" }, "Hino Tanker (Booyada Bulaacada)": { code: "C6", price: 10000.00, year: "2015", desc: "Booyada Bulaacada, CH.No: FNFNB-10150" } };
+        // --- CAR DATA STRUCTURE (Modified to Initials) ---
+        const carItemsDB = { "Mercedes (Booyada Biyaha)": { code: "MC", price: 5000.00, year: "2015", desc: "Booyada Biyaha, CH.No: WDB61702315215638" }, "Toyota Landcruiser BLACK VX": { code: "TL", price: 18000.00, year: "2018", desc: "BLACK VX, CH.No: HDJ810003205" }, "Toyota Landcruiser RED VX": { code: "TL", price: 8000.00, year: "2016", desc: "RED VX, CH No: HJ81-0022218" }, "Toyota Mark II ONE-TEN": { code: "TM", price: 3500.00, year: "2012", desc: "ONE-TEN CAR, CH.No: GX110-6095352" }, "Toyota Mark II GRANDA": { code: "TM", price: 1000.00, year: "2010", desc: "GRANDA, CH.No: GX881-6472824" }, "Hino Tanker (Booyada Bulaacada)": { code: "HT", price: 10000.00, year: "2015", desc: "Booyada Bulaacada, CH.No: FNFNB-10150" } };
         
-        // --- NEW: ELECTRICITY DATA STRUCTURE ---
-        const electricityItemsDB = { "Generator 500KVA Perkins": { code: "GEN1", price: 15000.00, year: "2018", desc: "Main Generator - Perkins" }, "Generator 100KVA": { code: "GEN2", price: 8000.00, year: "2018", desc: "Backup Generator" }, "Transformer 11KV": { code: "TR1", price: 4000.00, year: "2015", desc: "Power Transformer" }, "Distribution Board (Main)": { code: "DB1", price: 1200.00, year: "2018", desc: "Main Distribution Panel" }, "LED Bulbs (Box)": { code: "LB1", price: 50.00, year: "2020", desc: "Carton of LED Bulbs" }, "Circuit Breakers (Mixed)": { code: "CB1", price: 200.00, year: "2018", desc: "Assorted Breakers" }, "Power Cables (Roll)": { code: "CAB1", price: 150.00, year: "2019", desc: "Armored Cable 4-Core" }, "Solar Panels (Set)": { code: "SOL1", price: 2500.00, year: "2020", desc: "Roof Solar System" }, "Inverter 5KW": { code: "INV1", price: 800.00, year: "2020", desc: "Solar Inverter" }, "Electric Drill Machine": { code: "TL1", price: 85.00, year: "2019", desc: "Bosch Hammer Drill" } };
+        // --- NEW: ELECTRICITY DATA STRUCTURE (Modified to Initials) ---
+        const electricityItemsDB = { "Generator 500KVA Perkins": { code: "GP", price: 15000.00, year: "2018", desc: "Main Generator - Perkins" }, "Generator 100KVA": { code: "GK", price: 8000.00, year: "2018", desc: "Backup Generator" }, "Transformer 11KV": { code: "TR", price: 4000.00, year: "2015", desc: "Power Transformer" }, "Distribution Board (Main)": { code: "DB", price: 1200.00, year: "2018", desc: "Main Distribution Panel" }, "LED Bulbs (Box)": { code: "LB", price: 50.00, year: "2020", desc: "Carton of LED Bulbs" }, "Circuit Breakers (Mixed)": { code: "CB", price: 200.00, year: "2018", desc: "Assorted Breakers" }, "Power Cables (Roll)": { code: "PC", price: 150.00, year: "2019", desc: "Armored Cable 4-Core" }, "Solar Panels (Set)": { code: "SP", price: 2500.00, year: "2020", desc: "Roof Solar System" }, "Inverter 5KW": { code: "IK", price: 800.00, year: "2020", desc: "Solar Inverter" }, "Electric Drill Machine": { code: "ED", price: 85.00, year: "2019", desc: "Bosch Hammer Drill" } };
         
-        // --- NEW: SECURITY DATA STRUCTURE ---
-        const securityItemsDB = { "CCTV Camera 4K Outdoor": { code: "CAM1", price: 120.00, year: "2020", desc: "Hikvision Outdoor Bullet" }, "CCTV Camera Dome Indoor": { code: "CAM2", price: 80.00, year: "2020", desc: "Indoor Dome Camera" }, "DVR 32 Channel": { code: "DVR1", price: 350.00, year: "2020", desc: "Digital Video Recorder" }, "Walkie Talkie (Set of 2)": { code: "RAD1", price: 150.00, year: "2019", desc: "Motorola Long Range" }, "Metal Detector Scanner": { code: "SC1", price: 65.00, year: "2018", desc: "Handheld Security Scanner" }, "Security Gate Barrier": { code: "GT1", price: 1200.00, year: "2018", desc: "Automatic Boom Barrier" }, "Security Uniform (Set)": { code: "UN1", price: 45.00, year: "2021", desc: "Complete Security Uniform" }, "Flashlight Heavy Duty": { code: "FL1", price: 35.00, year: "2019", desc: "Rechargeable Torch" }, "Security Booth/Room": { code: "RM1", price: 500.00, year: "2015", desc: "Guard House Structure" }, "Fire Extinguisher": { code: "FE1", price: 40.00, year: "2020", desc: "CO2 Extinguisher" } };
+        // --- NEW: SECURITY DATA STRUCTURE (Modified to Initials) ---
+        const securityItemsDB = { "CCTV Camera 4K Outdoor": { code: "CC", price: 120.00, year: "2020", desc: "Hikvision Outdoor Bullet" }, "CCTV Camera Dome Indoor": { code: "CC", price: 80.00, year: "2020", desc: "Indoor Dome Camera" }, "DVR 32 Channel": { code: "DC", price: 350.00, year: "2020", desc: "Digital Video Recorder" }, "Walkie Talkie (Set of 2)": { code: "WT", price: 150.00, year: "2019", desc: "Motorola Long Range" }, "Metal Detector Scanner": { code: "MD", price: 65.00, year: "2018", desc: "Handheld Security Scanner" }, "Security Gate Barrier": { code: "SG", price: 1200.00, year: "2018", desc: "Automatic Boom Barrier" }, "Security Uniform (Set)": { code: "SU", price: 45.00, year: "2021", desc: "Complete Security Uniform" }, "Flashlight Heavy Duty": { code: "FH", price: 35.00, year: "2019", desc: "Rechargeable Torch" }, "Security Booth/Room": { code: "SB", price: 500.00, year: "2015", desc: "Guard House Structure" }, "Fire Extinguisher": { code: "FE", price: 40.00, year: "2020", desc: "CO2 Extinguisher" } };
         
-        // --- NEW: GARDEN DATA STRUCTURE ---
-        const gardenItemsDB = { "Lawn Mower (Petrol)": { code: "GM1", price: 450.00, year: "2019", desc: "Honda Lawn Mower" }, "Water Hose Pipe (50m)": { code: "GP1", price: 35.00, year: "2020", desc: "Heavy Duty Hose" }, "Garden Shears/Scissors": { code: "GT1", price: 25.00, year: "2019", desc: "Hedge Trimmer" }, "Shovel (Badiil)": { code: "GT2", price: 15.00, year: "2019", desc: "Steel Shovel" }, "Rake (Fargeeto)": { code: "GT3", price: 12.00, year: "2019", desc: "Garden Rake" }, "Wheelbarrow (Gaari-gacan)": { code: "GT4", price: 45.00, year: "2018", desc: "Heavy Duty Wheelbarrow" }, "Water Sprinkler System": { code: "GS1", price: 120.00, year: "2020", desc: "Automatic Sprinklers" }, "Outdoor Bench": { code: "GB1", price: 150.00, year: "2018", desc: "Wooden Garden Bench" }, "Flower Pots (Large)": { code: "GP2", price: 40.00, year: "2018", desc: "Ceramic Pots" }, "Tree Trimmer (Electric)": { code: "GM2", price: 110.00, year: "2019", desc: "Electric Hedge Trimmer" } };
+        // --- NEW: GARDEN DATA STRUCTURE (Modified to Initials) ---
+        const gardenItemsDB = { "Lawn Mower (Petrol)": { code: "LM", price: 450.00, year: "2019", desc: "Honda Lawn Mower" }, "Water Hose Pipe (50m)": { code: "WH", price: 35.00, year: "2020", desc: "Heavy Duty Hose" }, "Garden Shears/Scissors": { code: "GS", price: 25.00, year: "2019", desc: "Hedge Trimmer" }, "Shovel (Badiil)": { code: "SB", price: 15.00, year: "2019", desc: "Steel Shovel" }, "Rake (Fargeeto)": { code: "RF", price: 12.00, year: "2019", desc: "Garden Rake" }, "Wheelbarrow (Gaari-gacan)": { code: "WG", price: 45.00, year: "2018", desc: "Heavy Duty Wheelbarrow" }, "Water Sprinkler System": { code: "WS", price: 120.00, year: "2020", desc: "Automatic Sprinklers" }, "Outdoor Bench": { code: "OB", price: 150.00, year: "2018", desc: "Wooden Garden Bench" }, "Flower Pots (Large)": { code: "FP", price: 40.00, year: "2018", desc: "Ceramic Pots" }, "Tree Trimmer (Electric)": { code: "TT", price: 110.00, year: "2019", desc: "Electric Hedge Trimmer" } };
 
-        // --- NEW: UTENSILS DATA STRUCTURE (Placeholders as requested) ---
+        // --- NEW: UTENSILS DATA STRUCTURE (Modified to Initials) ---
         const utensilsItemsDB = { 
-            "Jaandi (Steel)": { code: "JD", price: 0.00, year: "2023", desc: "Agabka Jaandiga/Birta ah" },
-            "Dhoobo (Clay/Ceramic)": { code: "DH", price: 0.00, year: "2023", desc: "Agabka Dhoobada ah" },
-            "Gees (Horn/Plastic)": { code: "GS", price: 0.00, year: "2023", desc: "Agabka Geeska ama Caaga" },
-            "Qurarad (Glass)": { code: "QR", price: 0.00, year: "2023", desc: "Agabka Quraaradaha ah" },
-            "Mulqacado (Spoons)": { code: "MQ", price: 0.00, year: "2023", desc: "Malqacadaha Yar & Waaweyn" },
-            "Farageeto (Forks)": { code: "FG", price: 0.00, year: "2023", desc: "Fargeetooyinka noocyadooda" },
-            "Mindiyo (Knives)": { code: "MD", price: 0.00, year: "2023", desc: "Mindiyaha noocyadooda" }
+            "Jaandi (Steel)": { code: "JS", price: 0.00, year: "2023", desc: "Agabka Jaandiga/Birta ah" },
+            "Dhoobo (Clay/Ceramic)": { code: "DC", price: 0.00, year: "2023", desc: "Agabka Dhoobada ah" },
+            "Gees (Horn/Plastic)": { code: "GH", price: 0.00, year: "2023", desc: "Agabka Geeska ama Caaga" },
+            "Qurarad (Glass)": { code: "QG", price: 0.00, year: "2023", desc: "Agabka Quraaradaha ah" },
+            "Mulqacado (Spoons)": { code: "MS", price: 0.00, year: "2023", desc: "Malqacadaha Yar & Waaweyn" },
+            "Farageeto (Forks)": { code: "FF", price: 0.00, year: "2023", desc: "Fargeetooyinka noocyadooda" },
+            "Mindiyo (Knives)": { code: "MK", price: 0.00, year: "2023", desc: "Mindiyaha noocyadooda" }
         };
 
-        // --- LAUNDRY DATA STRUCTURE (NEW) ---
+        // --- LAUNDRY DATA STRUCTURE (Modified to Initials) ---
         const laundryItemsDB = {
-            "Washing Machine Industrial": { code: "WM1", price: 2500.00, year: "2019", desc: "Industrial Washing Machine" },
-            "Dryer Machine Large": { code: "DM1", price: 2200.00, year: "2019", desc: "Industrial Dryer" },
-            "Ironing Table Steam": { code: "IR1", price: 450.00, year: "2020", desc: "Steam Iron Station" },
-            "Laundry Basket Trolley": { code: "LB1", price: 120.00, year: "2018", desc: "Large Laundry Cart" },
-            "Detergent Chemicals (Bulk)": { code: "CH1", price: 200.00, year: "2023", desc: "Washing Chemicals" }
+            "Washing Machine Industrial": { code: "WM", price: 2500.00, year: "2019", desc: "Industrial Washing Machine" },
+            "Dryer Machine Large": { code: "DM", price: 2200.00, year: "2019", desc: "Industrial Dryer" },
+            "Ironing Table Steam": { code: "IT", price: 450.00, year: "2020", desc: "Steam Iron Station" },
+            "Laundry Basket Trolley": { code: "LB", price: 120.00, year: "2018", desc: "Large Laundry Cart" },
+            "Detergent Chemicals (Bulk)": { code: "DC", price: 200.00, year: "2023", desc: "Washing Chemicals" }
         };
 
-        // --- MOSQUE DATA STRUCTURE (NEW) ---
-        const mosqueItemsDB = { "Prayer Mat (Sijayad)": { code: "MQ1", price: 10.00, year: "2020", desc: "Large Carpets" }, "Sound System": { code: "MQ2", price: 500.00, year: "2019", desc: "Speakers & Mic" }, "Quran Stand (Rehal)": { code: "MQ3", price: 15.00, year: "2020", desc: "Wooden Stand" } };
+        // --- MOSQUE DATA STRUCTURE (Modified to Initials) ---
+        const mosqueItemsDB = { "Prayer Mat (Sijayad)": { code: "PM", price: 10.00, year: "2020", desc: "Large Carpets" }, "Sound System": { code: "SS", price: 500.00, year: "2019", desc: "Speakers & Mic" }, "Quran Stand (Rehal)": { code: "QS", price: 15.00, year: "2020", desc: "Wooden Stand" } };
 
-        // --- STORES DATA STRUCTURES (NEW) ---
+        // --- NEW: STADIUM & LAUNDRY STORE DBS (Modified to Initials) ---
+        const stadiumItemsDB = { "Stadium Lights": { code: "SL", price: 500.00, year: "2020", desc: "Floodlights for stadium" }, "Goal Net": { code: "GN", price: 150.00, year: "2021", desc: "Standard Goal Net" }, "Artificial Grass (M2)": { code: "AG", price: 25.00, year: "2019", desc: "Turf per meter" }, "Stadium Seats": { code: "SS", price: 40.00, year: "2020", desc: "Audience Chairs" } };
+        const laundryStoreDB = { "Detergent Powder (Sack)": { code: "DP", price: 80.00, year: "2023", desc: "Bulk Powder 50kg" }, "Bleach Liquid (Jerrycan)": { code: "BL", price: 25.00, year: "2023", desc: "Chemical Bleach 20L" }, "Softener": { code: "SF", price: 40.00, year: "2023", desc: "Fabric Softener" } };
+
+
+        // --- STORES DATA STRUCTURES (Modified to Initials) ---
         // Equipment & General
-        const storeEquipmentDB = { "Ladder (Salan)": { code: "EQ1", price: 80.00, year: "2020", desc: "Aluminium Ladder" }, "Drill Machine": { code: "EQ2", price: 120.00, year: "2021", desc: "Power Drill" }, "Tool Box Set": { code: "EQ3", price: 150.00, year: "2020", desc: "Complete Tool Set" } };
-        const storeGeneralDB = { "Cleaning Supplies": { code: "GN1", price: 50.00, year: "2023", desc: "Mixed Supplies" }, "Spare Parts": { code: "GN2", price: 100.00, year: "2023", desc: "General Spares" } };
+        const storeEquipmentDB = { "Ladder (Salan)": { code: "LS", price: 80.00, year: "2020", desc: "Aluminium Ladder" }, "Drill Machine": { code: "DM", price: 120.00, year: "2021", desc: "Power Drill" }, "Tool Box Set": { code: "TB", price: 150.00, year: "2020", desc: "Complete Tool Set" } };
+        const storeGeneralDB = { "Cleaning Supplies": { code: "CS", price: 50.00, year: "2023", desc: "Mixed Supplies" }, "Spare Parts": { code: "SP", price: 100.00, year: "2023", desc: "General Spares" } };
         
         // Ground Floor
-        const storeGroundRightDB = { "Storage Rack Metal": { code: "SGR1", price: 200.00, year: "2019", desc: "Heavy Duty Rack" }, "Pallet Wood": { code: "SGR2", price: 15.00, year: "2020", desc: "Wooden Pallet" } };
-        const storeGroundLeftDB = { "Cold Storage Unit": { code: "SGL1", price: 3000.00, year: "2018", desc: "Cold Room Unit" }, "Shelving Unit": { code: "SGL2", price: 150.00, year: "2019", desc: "Steel Shelf" } };
+        const storeGroundRightDB = { "Storage Rack Metal": { code: "SR", price: 200.00, year: "2019", desc: "Heavy Duty Rack" }, "Pallet Wood": { code: "PW", price: 15.00, year: "2020", desc: "Wooden Pallet" } };
+        const storeGroundLeftDB = { "Cold Storage Unit": { code: "CS", price: 3000.00, year: "2018", desc: "Cold Room Unit" }, "Shelving Unit": { code: "SU", price: 150.00, year: "2019", desc: "Steel Shelf" } };
         
         // Floor 1
-        const storeFloor1RightDB = { "Linen Storage Cabinet": { code: "F1R1", price: 180.00, year: "2019", desc: "For Sheets/Towels" } };
-        const storeFloor1LeftDB = { "Housekeeping Cart Spare": { code: "F1L1", price: 250.00, year: "2020", desc: "Spare Cart" } };
+        const storeFloor1RightDB = { "Linen Storage Cabinet": { code: "LS", price: 180.00, year: "2019", desc: "For Sheets/Towels" } };
+        const storeFloor1LeftDB = { "Housekeeping Cart Spare": { code: "HC", price: 250.00, year: "2020", desc: "Spare Cart" } };
         
         // Floor 2
-        const storeFloor2RightDB = { "Maintenance Tools Rack": { code: "F2R1", price: 120.00, year: "2019", desc: "Tools Storage" } };
-        const storeFloor2LeftDB = { "Old Furniture Storage": { code: "F2L1", price: 0.00, year: "2015", desc: "Stored Old Items" } };
+        const storeFloor2RightDB = { "Maintenance Tools Rack": { code: "MT", price: 120.00, year: "2019", desc: "Tools Storage" } };
+        const storeFloor2LeftDB = { "Old Furniture Storage": { code: "OF", price: 0.00, year: "2015", desc: "Stored Old Items" } };
 
 
         let activeRoomNumber = "0001";
@@ -1656,10 +1689,10 @@
         }
 
         function updateCharts() {
-            // Updated Categories
-            const cats = ['Room', 'Restaurant','Hall', 'Kitchen', 'Cafeteria', 'Bakery', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils', 'Laundry', 'Store', 'Mosque'];
-            const baseColors = ['#0f766e', '#0f172a', '#15803d', '#b91c1c', '#ea580c', '#db2777', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2', '#ec4899', '#78350f', '#0d9488'];
-            const lightColors = ['#2dd4bf', '#334155', '#4ade80', '#f87171', '#fb923c', '#f472b6', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee', '#fbcfe8', '#b45309', '#5eead4'];
+            // Updated Categories (Added Staff Room)
+            const cats = ['Room', 'Villa', 'Staff Room', 'Restaurant','Hall', 'Kitchen', 'Cafeteria', 'Bakery', 'Electricity', 'Security', 'Garden', 'Cars', 'Office', 'Utensils', 'Laundry', 'Store', 'Mosque', 'Stadium'];
+            const baseColors = ['#0f766e', '#312e81', '#64748b', '#0f172a', '#15803d', '#b91c1c', '#ea580c', '#db2777', '#7e22ce', '#475569', '#16a34a', '#4f46e5', '#ea580c', '#0891b2', '#ec4899', '#78350f', '#0d9488', '#10b981'];
+            const lightColors = ['#2dd4bf', '#4338ca', '#94a3b8', '#334155', '#4ade80', '#f87171', '#fb923c', '#f472b6', '#c084fc', '#94a3b8', '#86efac', '#818cf8', '#fb923c', '#22d3ee', '#fbcfe8', '#b45309', '#5eead4', '#34d399'];
 
             const calculateValue = (category) => {
                 return inventory.filter(i => {
@@ -1674,6 +1707,10 @@
                     if (cat === 'laundry') return loc.includes('laundry');
                     if (cat === 'store') return loc.includes('store') || loc.includes('ground') || loc.includes('floor 1') || loc.includes('floor 2') || loc.includes('equipment') || loc.includes('general');
                     if (cat === 'mosque') return loc.includes('mosque');
+                    if (cat === 'stadium') return loc.includes('stadium');
+                    // Special handling for Room vs Staff Room
+                    if (cat === 'staff room') return loc.includes('staff room');
+                    if (cat === 'room') return loc.includes('room') && !loc.includes('staff'); 
                     return loc.includes(cat);
                 }).reduce((sum, i) => sum + (parseFloat(i.total?.toString().replace(/[$,]/g,''))||0), 0);
             };
@@ -1691,6 +1728,10 @@
                     if (cat === 'laundry') return loc.includes('laundry');
                     if (cat === 'store') return loc.includes('store') || loc.includes('ground') || loc.includes('floor 1') || loc.includes('floor 2') || loc.includes('equipment') || loc.includes('general');
                     if (cat === 'mosque') return loc.includes('mosque');
+                    if (cat === 'stadium') return loc.includes('stadium');
+                    // Special handling for Room vs Staff Room
+                    if (cat === 'staff room') return loc.includes('staff room');
+                    if (cat === 'room') return loc.includes('room') && !loc.includes('staff'); 
                     return loc.includes(cat);
                 }).length;
             };
@@ -1867,6 +1908,8 @@
 
         const categoryItemsDB = {
             "ROOM": Object.keys(roomItemsDB),
+            "VILLA": Object.keys(roomItemsDB), 
+            "STAFF ROOM": Object.keys(staffRoomItemsDB), // ADDED FOR TASK 1
             "HALL": Object.keys(hallItemsDB),
             "RESTAURANT": Object.keys(hallItemsDB),
             "CAFETERIA": Object.keys(cafeteriaItemsDB),
@@ -1880,6 +1923,7 @@
             "UTENSILS": Object.keys(utensilsItemsDB),
             "LAUNDRY": Object.keys(laundryItemsDB),
             "MOSQUE": Object.keys(mosqueItemsDB),
+            "STADIUM": Object.keys(stadiumItemsDB),
             "STORE GROUND RIGHT": Object.keys(storeGroundRightDB),
             "STORE GROUND LEFT": Object.keys(storeGroundLeftDB),
             "STORE FLOOR 1 RIGHT": Object.keys(storeFloor1RightDB),
@@ -1887,7 +1931,13 @@
             "STORE FLOOR 2 RIGHT": Object.keys(storeFloor2RightDB),
             "STORE FLOOR 2 LEFT": Object.keys(storeFloor2LeftDB),
             "STORE EQUIPMENT": Object.keys(storeEquipmentDB),
-            "STORE GENERAL": Object.keys(storeGeneralDB)
+            "STORE GENERAL": Object.keys(storeGeneralDB),
+            "STORE LAUNDRY": Object.keys(laundryStoreDB),
+            // WINGS MAPPING
+            "STORE GROUND RIGHT WING": Object.keys(storeGroundRightDB),
+            "STORE GROUND LEFT WING": Object.keys(storeGroundRightDB),
+            "STORE FLOOR 2 RIGHT WING": Object.keys(storeFloor2LeftDB),
+            "STORE FLOOR 2 LEFT WING": Object.keys(storeFloor2LeftDB)
         };
 
         function getCurrentCategoryKey() {
@@ -1896,7 +1946,9 @@
             if (loc.includes("CAFETERIA")) return "CAFETERIA";
             if (loc.includes("BAKERY")) return "BAKERY";
             if (loc.includes("KITCHEN")) return "KITCHEN";
+            if (loc.includes("STAFF ROOM")) return "STAFF ROOM"; // NEW PRIORITY CHECK
             if (loc.includes("ROOM")) return "ROOM";
+            if (loc.includes("VILLA")) return "VILLA";
             if (loc.includes("RESTAURANT")) return "RESTAURANT";
             if (loc.includes("HALL") || loc.includes("HODAALE")) return "HALL";
             if (loc.includes("ELECTRICITY")) return "ELECTRICITY";
@@ -1905,10 +1957,17 @@
             if (loc.includes("CARS")) return "CARS";
             if (loc.includes("OFFICE")) return "OFFICE";
             if (loc.includes("UTENSILS")) return "UTENSILS"; 
-            if (loc.includes("LAUNDRY")) return "LAUNDRY";
+            if (loc.includes("LAUNDRY") && !loc.includes("STORE")) return "LAUNDRY";
             if (loc.includes("MOSQUE")) return "MOSQUE";
+            if (loc.includes("STADIUM")) return "STADIUM";
             // STORES LOGIC
             if (loc.includes("STORE")) {
+                if(loc.includes("LAUNDRY")) return "STORE LAUNDRY";
+                // WING LOGIC
+                if(loc.includes("WING")) {
+                    if(loc.includes("GROUND") && loc.includes("RIGHT")) return "STORE GROUND RIGHT WING";
+                    if(loc.includes("FLOOR 2") && loc.includes("LEFT")) return "STORE FLOOR 2 LEFT WING";
+                }
                 if(loc.includes("GROUND") && loc.includes("RIGHT")) return "STORE GROUND RIGHT";
                 if(loc.includes("GROUND") && loc.includes("LEFT")) return "STORE GROUND LEFT";
                 if(loc.includes("FLOOR 1") && loc.includes("RIGHT")) return "STORE FLOOR 1 RIGHT";
@@ -1924,11 +1983,20 @@
         function getItemsForCurrentLocation() {
             const key = getCurrentCategoryKey();
             const defaults = categoryItemsDB[key] || [];
+            
+            // --- FIX: Filter Inventory for Items in the same Category Scope ---
             const cloudItems = inventory.filter(i => {
                  const loc = (i.location || "").toUpperCase();
+                 
+                 // Special Handling for Halls/Hodaale grouping
                  if(key === 'HALL') return loc.includes('HALL') || loc.includes('HODAALE');
+                 
+                 // Standard check: Does the item location match the current category key?
+                 // e.g. If key is 'RESTAURANT', items in "Somali Restaurant" match.
+                 // Items in "Room 101" do NOT match.
                  return loc.includes(key);
             }).map(i => i.name);
+            
             return [...new Set([...defaults, ...cloudItems])].sort();
         }
 
@@ -1960,14 +2028,153 @@
             }
         }
 
-        // --- NEW: Helper to Calculate Sequential Number ---
-        function calcNextSequence(itemName, categoryPrefix) {
-            const similarItems = inventory.filter(i => 
-                (i.name === itemName || (i.code && i.code.includes(categoryPrefix))) 
-            );
-            let totalQty = similarItems.reduce((sum, item) => sum + (parseFloat(item.qty) || 0), 0);
-            let nextStart = totalQty + 1;
-            return nextStart.toString().padStart(4, '0');
+        // --- NEW: Helper to Calculate Sequential Number (FIXED FOR GLOBAL COUNT & QUANTITY) ---
+        function calcNextSequence(prefix) {
+            // Find all items with this prefix
+            const matches = inventory.filter(i => i.code && i.code.startsWith(prefix));
+            
+            if (matches.length === 0) return "0001";
+            
+            let maxUsedSeq = 0;
+            
+            matches.forEach(i => {
+                // Assuming format PREFIX-XXXX
+                const parts = i.code.split('-');
+                const lastPart = parts[parts.length - 1];
+                const startSeq = parseInt(lastPart);
+                const qty = parseInt(i.qty) || 1; // Default to 1 if not set
+                
+                if (!isNaN(startSeq)) {
+                    // Calculate the highest number this item takes up based on Quantity
+                    // Example: Code 0001, Qty 5 -> Uses numbers 1, 2, 3, 4, 5. Max is 5.
+                    const endSeq = startSeq + qty - 1;
+                    
+                    if (endSeq > maxUsedSeq) {
+                        maxUsedSeq = endSeq;
+                    }
+                }
+            });
+            
+            const nextVal = maxUsedSeq + 1;
+            return nextVal.toString().padStart(4, '0');
+        }
+
+        // --- NEW: Helper for Default Date ---
+        function getDefaultDate() {
+            const d = new Date();
+            d.setFullYear(d.getFullYear() - 3);
+            return d.toISOString().split('T')[0];
+        }
+
+        // --- NEW: HELPER TO GET CATEGORY PREFIX FOR AUTO GENERATION (TASK 3) ---
+        function getPrefixForAutoGenerate(categoryName) {
+             const c = (categoryName || "").toUpperCase();
+             if(c.includes("ROOM") && !c.includes("STAFF")) return "RA";
+             if(c.includes("VILLA")) return "VA";
+             if(c.includes("STAFF ROOM")) return "SR";
+             if(c.includes("KITCHEN")) return "KE";
+             if(c.includes("RESTAURANT")) return "RES";
+             if(c.includes("HALL") || c.includes("HODAALE")) return "HA";
+             if(c.includes("CAFETERIA")) return "CF";
+             if(c.includes("BAKERY")) return "BK";
+             if(c.includes("OFFICE")) return "OE";
+             if(c.includes("CARS")) return "CR";
+             if(c.includes("ELECTRICITY")) return "EL";
+             if(c.includes("SECURITY")) return "SEC";
+             if(c.includes("GARDEN")) return "GAR";
+             if(c.includes("UTENSILS")) return "UT";
+             if(c.includes("LAUNDRY") && !c.includes("STORE")) return "LD";
+             if(c.includes("MOSQUE")) return "MQ";
+             if(c.includes("STADIUM")) return "STD";
+             if(c.includes("STORE")) return "ST"; // Basic store, refined logic exists if needed
+             return "XX";
+        }
+
+        // --- NEW: Helper function to check if item is in hardcoded list ---
+        function checkHardcoded(cat, val) {
+            if(cat === 'ELECTRICITY' && electricityItemsDB[val]) return true;
+            if(cat === 'SECURITY' && securityItemsDB[val]) return true;
+            if(cat === 'GARDEN' && gardenItemsDB[val]) return true;
+            if(cat === 'UTENSILS' && utensilsItemsDB[val]) return true;
+            if(cat === 'LAUNDRY' && laundryItemsDB[val]) return true;
+            if(cat === 'MOSQUE' && mosqueItemsDB[val]) return true;
+            if(cat === 'STADIUM' && stadiumItemsDB[val]) return true;
+            return false;
+        }
+
+        // --- NEW: FUNCTION TO HANDLE LIVE TYPING & AUTO GENERATE CODE ---
+        function handleNameInput(val) {
+            // 1. Trigger Dropdown Filter (Standard behavior)
+            filterCustomDropdown();
+
+            // 2. If input is empty, do nothing
+            if(!val) {
+                document.getElementById('code').value = "";
+                return;
+            }
+
+            const cat = getCurrentCategoryKey();
+            
+            // 3. Check if this item already exists in Cloud DB (by Name)
+            const existingItem = inventory.find(i => i.name.toLowerCase() === val.toLowerCase());
+            
+            // 4. Check if this item is in the Hardcoded DBs
+            // (If it is, selectItem() will handle it when user clicks or hits enter/match, but for live preview we skip auto-gen logic)
+            // However, to be safe, if it's NOT in Cloud DB, we treat it as potentially new until matched.
+            
+            if (existingItem) {
+                // If found in Cloud, we don't auto-gen a NEW random code, we'd use the existing logic in selectItem
+                // So we can return here or let the user finish typing.
+                return; 
+            }
+
+            // 5. If NOT in Cloud and potentially NOT in Hardcoded list yet (or simply typing a new variation)
+            // We Generate the "New Item" Code Style: MH-[CAT]-[ABBREV]-[SEQ]
+            
+            // Check if it matches a hardcoded key exactly first
+            if(checkHardcoded(cat, val)) {
+                // If it matches exactly a hardcoded item name, we let selectItem logic run (which puts fixed code like GEN/CAM)
+                // We can trigger it artificially or just wait. 
+                // Let's generate the code PREVIEW assuming it follows the hardcoded rule if it matches partial
+                // Ideally, let's just do the "New Item" logic unless they click the dropdown.
+                return;
+            }
+
+            // --- AUTO GENERATE LOGIC FOR NEW ITEMS ---
+            // 1. Get Letters (Abbreviation of Name)
+            // Remove special chars, split by space
+            const cleanVal = val.replace(/[^a-zA-Z0-9\s]/g, "");
+            const words = cleanVal.split(/\s+/).filter(w => w.length > 0);
+            
+            let letters = "";
+            if (words.length >= 2) {
+                // First letter of first two words
+                letters = (words[0][0] + words[1][0]).toUpperCase();
+            } else if (words.length === 1) {
+                // First 2 letters of the word
+                letters = words[0].substring(0, 2).toUpperCase();
+                if(letters.length < 2) letters += "X"; // Pad if single letter
+            } else {
+                letters = "XX";
+            }
+
+            // 2. Get Category Prefix
+            const catPrefix = getPrefixForAutoGenerate(currentSelectedLocation); 
+            
+            // 3. Construct Prefix
+            const prefix = `MH-${catPrefix}-${letters}`;
+            
+            // 4. Calculate Sequence
+            const nextSeq = calcNextSequence(prefix);
+            
+            // 5. Set Code Field
+            document.getElementById('code').value = `${prefix}-${nextSeq}`;
+            
+            // 6. Set Defaults
+            document.getElementById('item_age').value = "0 Days";
+            document.getElementById('purchase_date').value = new Date().toISOString().split('T')[0]; // Today
+            if(document.getElementById('uvalue').value === "") document.getElementById('uvalue').value = "0.00";
+            calculate();
         }
 
         function selectItem(val) {
@@ -1976,26 +2183,87 @@
             const cat = getCurrentCategoryKey();
 
             // Calculate exactly 3 years ago from today to ensure AGE = 3 YEARS
-            const d = new Date();
-            d.setFullYear(d.getFullYear() - 3);
-            const threeYearsAgoDate = d.toISOString().split('T')[0];
+            const threeYearsAgoDate = getDefaultDate();
 
-            // --- REFACTORED SELECTION LOGIC ---
+            // --- 1. SMART MEMORY CHECK (Look in Database First) ---
+            const existingItem = inventory.find(i => i.name === val);
+            
+            if (existingItem) {
+                // If item exists, use its details + AUTO GENERATE NEW SEQUENCE CODE
+                // Extract prefix from the existing code (Everything up to the last hyphen)
+                let prefix = "";
+                if (existingItem.code && existingItem.code.includes('-')) {
+                    prefix = existingItem.code.substring(0, existingItem.code.lastIndexOf('-'));
+                } else {
+                    // Fallback if code format is weird
+                    const initials = val.match(/\b\w/g) || [];
+                    const letters = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+                    // Fallback to auto generation logic
+                    const autoCatPrefix = getPrefixForAutoGenerate(currentSelectedLocation);
+                    prefix = `MH-${autoCatPrefix}-${letters}`;
+                }
+
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
+
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = existingItem.uvalue;
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = existingItem.desc || "";
+                
+                calculate(); 
+                calculateAge();
+                return; // Exit function, we found it in DB
+            }
+
+            // --- 2. HARDCODED DB CHECK (If not in DB, use Hardcoded Defaults) ---
             
             if (cat === 'ROOM' && roomItemsDB[val]) {
                 const data = roomItemsDB[val]; 
-                const fullID = `MH-RA-${data.code}-${activeRoomNumber}`;
+                const prefix = `MH-RA-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`; // Use Sequence, NOT Room Number
+
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
                 document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
-            } 
+            }
+            else if (cat === 'VILLA' && roomItemsDB[val]) { 
+                const data = roomItemsDB[val]; 
+                const prefix = `MH-VA-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
+
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            // --- TASK 1: STAFF ROOM LOGIC ---
+            else if (cat === 'STAFF ROOM' && staffRoomItemsDB[val]) {
+                const data = staffRoomItemsDB[val];
+                // Ensure format MH-SR-[CODE]-[SEQ]
+                const prefix = `MH-SR-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
+
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate;
+                document.getElementById('desc').value = data.desc;
+                calculate();
+                calculateAge();
+            }
             else if (cat === 'HALL' && hallItemsDB[val]) {
                 const data = hallItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-HA-${data.code}`);
-                const fullID = `MH-HA-${data.code}-${nextSeq}`;
+                const prefix = `MH-HA-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2006,8 +2274,9 @@
             }
             else if (cat === 'RESTAURANT' && hallItemsDB[val]) {
                 const data = hallItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-RES-${data.code}`);
-                const fullID = `MH-RES-${data.code}-${nextSeq}`;
+                const prefix = `MH-RES-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2019,15 +2288,13 @@
             else if (cat === 'KITCHEN' && kitchenItemsDB[val]) {
                 const data = kitchenItemsDB[val];
                 let finalItemCode = data.code;
-
-                // "KU ka daa" logic: If code is KU, generate specific code from name
                 if(finalItemCode === 'KU') {
-                    // Remove non-alphanumeric, uppercase, take first 3 chars
                     finalItemCode = val.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase();
                 }
 
-                const nextSeq = calcNextSequence(val, `MH-KE-${finalItemCode}`);
-                const fullID = `MH-KE-${finalItemCode}-${nextSeq}`;
+                const prefix = `MH-KE-${finalItemCode}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2038,8 +2305,9 @@
             }
             else if (cat === 'BAKERY' && bakeryItemsDB[val]) {
                 const data = bakeryItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-BK-${data.code}`);
-                const fullID = `MH-BK-${data.code}-${nextSeq}`; 
+                const prefix = `MH-BK-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`; 
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2050,8 +2318,9 @@
             }
             else if (cat === 'CAFETERIA' && cafeteriaItemsDB[val]) {
                 const data = cafeteriaItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-CF-${data.code}`);
-                const fullID = `MH-CF-${data.code}-${nextSeq}`;
+                const prefix = `MH-CF-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2063,8 +2332,9 @@
             // OFFICE LOGIC
             else if (cat === 'OFFICE' && officeItemsDB[val]) {
                 const data = officeItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-OE-${data.code}`);
-                const fullID = `MH-OE-${data.code}-${nextSeq}`;
+                const prefix = `MH-OE-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2076,8 +2346,9 @@
             // CARS LOGIC
             else if (cat === 'CARS' && carItemsDB[val]) {
                 const data = carItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-CR-${data.code}`);
-                const fullID = `MH-CR-${data.code}-${nextSeq}`;
+                const prefix = `MH-CR-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2086,11 +2357,14 @@
                 calculate(); 
                 calculateAge();
             }
-            // NEW ELECTRICITY LOGIC
+            // --- TASK 2: FIXING FORMATS (SECURITY ONWARDS) ---
+            // Ensure format is MH-[CAT]-[ITEMCODE]-[SEQ]
             else if (cat === 'ELECTRICITY' && electricityItemsDB[val]) {
                 const data = electricityItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-EL-${data.code}`);
-                const fullID = `MH-EL-${data.code}-${nextSeq}`;
+                // data.code already has item code (e.g. GEN)
+                const prefix = `MH-EL-${data.code}`; 
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2099,11 +2373,12 @@
                 calculate(); 
                 calculateAge();
             }
-            // NEW SECURITY LOGIC
             else if (cat === 'SECURITY' && securityItemsDB[val]) {
                 const data = securityItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-SEC-${data.code}`);
-                const fullID = `MH-SEC-${data.code}-${nextSeq}`;
+                // data.code is e.g. CAM. Format becomes MH-SEC-CAM-[SEQ]
+                const prefix = `MH-SEC-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2112,11 +2387,11 @@
                 calculate(); 
                 calculateAge();
             }
-            // NEW GARDEN LOGIC
             else if (cat === 'GARDEN' && gardenItemsDB[val]) {
                 const data = gardenItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-GAR-${data.code}`);
-                const fullID = `MH-GAR-${data.code}-${nextSeq}`;
+                const prefix = `MH-GAR-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2125,24 +2400,24 @@
                 calculate(); 
                 calculateAge();
             }
-            // NEW UTENSILS LOGIC
             else if (cat === 'UTENSILS' && utensilsItemsDB[val]) {
                 const data = utensilsItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-UT-${data.code}`);
-                const fullID = `MH-UT-${data.code}-${nextSeq}`;
+                const prefix = `MH-UT-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
-                document.getElementById('uvalue').value = data.price.toFixed(2); // Prices default to 0.00
+                document.getElementById('uvalue').value = data.price.toFixed(2); 
                 document.getElementById('purchase_date').value = threeYearsAgoDate; 
                 document.getElementById('desc').value = data.desc;
                 calculate(); 
                 calculateAge();
             }
-            // NEW LAUNDRY LOGIC
             else if (cat === 'LAUNDRY' && laundryItemsDB[val]) {
                 const data = laundryItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-LD-${data.code}`);
-                const fullID = `MH-LD-${data.code}-${nextSeq}`;
+                const prefix = `MH-LD-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2151,12 +2426,37 @@
                 calculate(); 
                 calculateAge();
             }
-            // NEW MOSQUE LOGIC
             else if (cat === 'MOSQUE' && mosqueItemsDB[val]) {
                 const data = mosqueItemsDB[val];
-                const nextSeq = calcNextSequence(val, `MH-MQ-${data.code}`);
-                const fullID = `MH-MQ-${data.code}-${nextSeq}`;
+                const prefix = `MH-MQ-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            else if (cat === 'STADIUM' && stadiumItemsDB[val]) {
+                const data = stadiumItemsDB[val];
+                const prefix = `MH-STD-${data.code}`; // Becomes MH-STD-STD-[SEQ]
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
+                
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = data.price.toFixed(2);
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = data.desc;
+                calculate(); 
+                calculateAge();
+            }
+            else if (cat === 'STORE LAUNDRY' && laundryStoreDB[val]) {
+                const data = laundryStoreDB[val];
+                const prefix = `MH-ST-LD-${data.code}`;
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
                 document.getElementById('code').value = fullID;
                 document.getElementById('uvalue').value = data.price.toFixed(2);
                 document.getElementById('purchase_date').value = threeYearsAgoDate; 
@@ -2177,11 +2477,18 @@
                 else if (cat === "STORE FLOOR 2 LEFT") { dbSource = storeFloor2LeftDB; prefix = "MH-ST-F2-L"; }
                 else if (cat === "STORE EQUIPMENT") { dbSource = storeEquipmentDB; prefix = "MH-ST-EQ"; }
                 else if (cat === "STORE GENERAL") { dbSource = storeGeneralDB; prefix = "MH-ST-GEN"; }
+                // WINGS
+                else if (cat.includes("WING")) {
+                     dbSource = storeGroundRightDB; // Fallback or defined DB
+                     if(cat.includes("GROUND")) prefix = "MH-ST-GR-W";
+                     if(cat.includes("FLOOR 2")) prefix = "MH-ST-F2-W";
+                }
 
                 if (dbSource[val]) {
                     const data = dbSource[val];
-                    const nextSeq = calcNextSequence(val, `${prefix}-${data.code}`);
-                    const fullID = `${prefix}-${data.code}-${nextSeq}`;
+                    const fullPrefix = `${prefix}-${data.code}`;
+                    const nextSeq = calcNextSequence(fullPrefix);
+                    const fullID = `${fullPrefix}-${nextSeq}`;
                     
                     document.getElementById('code').value = fullID;
                     document.getElementById('uvalue').value = data.price.toFixed(2);
@@ -2189,7 +2496,46 @@
                     document.getElementById('desc').value = data.desc;
                     calculate(); 
                     calculateAge();
+                } else {
+                    // STORE FALLBACK - AUTO GENERATE
+                    const initials = val.match(/\b\w/g) || [];
+                    const letters = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+                    const autoPrefix = `MH-ST-XX-${letters}`;
+                    const nextSeq = calcNextSequence(autoPrefix);
+                    
+                    document.getElementById('code').value = `${autoPrefix}-${nextSeq}`;
+                    document.getElementById('uvalue').value = "0.00";
+                    document.getElementById('purchase_date').value = threeYearsAgoDate;
+                    calculate();
+                    calculateAge();
                 }
+            } 
+            // --- 3. AUTO-CODE GENERATION (TASK 3: Automatic New Items) ---
+            else {
+                // Generate Abbreviation (e.g., "Warqad" -> "WQ")
+                const initials = val.match(/\b\w/g) || [];
+                let letters = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+                
+                // Ensure at least 2 letters if possible, or X
+                if(letters.length === 0) letters = "XX";
+                if(letters.length === 1 && val.length > 1) letters += val.charAt(1).toUpperCase();
+
+                // Get Category Prefix (e.g. RA, SEC, SR)
+                const catPrefix = getPrefixForAutoGenerate(currentSelectedLocation);
+                
+                // Construct Prefix: MH-[CAT]-[ABBREV]
+                const prefix = `MH-${catPrefix}-${letters}`;
+                
+                // Get Sequence
+                const nextSeq = calcNextSequence(prefix);
+                const fullID = `${prefix}-${nextSeq}`;
+
+                document.getElementById('code').value = fullID;
+                document.getElementById('uvalue').value = "0.00"; // Default price
+                document.getElementById('purchase_date').value = threeYearsAgoDate; 
+                document.getElementById('desc').value = "";
+                calculate(); 
+                calculateAge();
             }
         }
 
@@ -2309,6 +2655,28 @@
             document.getElementById('status').value = 'Good';
             document.getElementById('itemImage').value = '';
             document.getElementById('image-preview-container').classList.add('hidden');
+        }
+
+        function resetFormOnlyInputs() {
+            editId = null;
+            currentImageBase64 = null;
+            const saveBtn = document.getElementById('save-btn');
+            if(saveBtn) {
+                saveBtn.innerHTML = '<i class="fas fa-plus-circle mr-2"></i> KAYDI AGABKA'; 
+                saveBtn.classList.remove('bg-blue-600');
+                saveBtn.classList.add('bg-slate-900');
+            }
+            ['holder','dept','code','name','desc','qty','uvalue','total','depreciation','purchase_date','item_age'].forEach(f => {
+                const el = document.getElementById(f);
+                if(el) el.value = '';
+            });
+            document.getElementById('status').value = 'Good';
+            document.getElementById('itemImage').value = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
+
+            // --- FIX: Constant Date ---
+            document.getElementById('purchase_date').value = getDefaultDate();
+            calculateAge();
         }
 
         async function editItem(id) { 
@@ -2600,7 +2968,7 @@
                 ));
             }
             // Include Store in the general filter logic
-            else if (loc === "" || ["Room", "Kitchen", "Restaurant", "Cafeteria", "Bakery", "Electricity", "Security", "Garden", "Cars", "Utensils", "Laundry", "Store", "Mosque"].includes(loc)) {
+            else if (loc === "" || ["Room", "Villa", "Staff Room", "Kitchen", "Restaurant", "Cafeteria", "Bakery", "Electricity", "Security", "Garden", "Cars", "Utensils", "Laundry", "Store", "Mosque", "Stadium"].includes(loc)) {
                 if (loc === "Store") {
                     filtered = inventory.filter(i => i.location && (
                         i.location.toLowerCase().includes("store") || 
@@ -2610,7 +2978,10 @@
                         i.location.toLowerCase().includes("equipment") ||
                         i.location.toLowerCase().includes("general")
                     ));
-                } else {
+                } else if(loc === "Laundry") {
+                     filtered = inventory.filter(i => i.location && i.location.toLowerCase().includes("laundry") && !i.location.toLowerCase().includes("store"));
+                }
+                else {
                     filtered = inventory.filter(i => i.location && i.location.includes(loc));
                 }
             } 
@@ -2729,10 +3100,13 @@
             updateBulkDeleteButton();
         }
 
-        function changeCategory(cat, count) {
+        // Updated Change Category with Range (1-68 for Room, 69-108 for Villa)
+        function changeCategory(cat, start, end) {
             currentCategory = cat; 
             currentSelectedLocation = ""; 
-            const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
+            // Fix formatting for Staff Room
+            let catLabel = cat.charAt(0).toUpperCase() + cat.slice(1);
+            if(cat === 'staff_room') catLabel = "Staff Room";
 
             if (cat === 'room') {
                 currentExportMode = 'room_only';
@@ -2745,23 +3119,23 @@
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS-KA (FIX 1)
+            document.getElementById('dashboard-alerts').classList.add('hidden'); 
             
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
 
-            // --- FIXED: Also remove btn-active-red ---
             document.querySelectorAll('.nav-btn').forEach(b => {
                 b.classList.remove('btn-active');
                 b.classList.remove('btn-active-red');
             });
-            if(event) event.currentTarget.classList.add('btn-active');
+            // FIX: Activate specific sidebar button based on category
+            if(cat === 'room') document.getElementById('nav-room').classList.add('btn-active');
+            if(cat === 'villa') document.getElementById('nav-villa').classList.add('btn-active');
+            if(cat === 'staff_room') document.getElementById('nav-staffroom').classList.add('btn-active');
 
-            // --- FIX START: Reset the Selection Label ---
             document.getElementById('selection-label').innerHTML = `
-                <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro Meesha aad rabto :
+                <i class="fas fa-th-large mr-2 text-yellow-600"></i> Dooro ${catLabel} Number :
             `;
-            // --- FIX END ---
 
             document.getElementById('grid-buttons').className = "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2";
             const grid = document.getElementById('grid-buttons'); 
@@ -2771,7 +3145,6 @@
             document.getElementById('table-title').innerText = `ALL ${catLabel.toUpperCase()}S INVENTORY`;
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            // FIX PERMISSIONS FOR EXCEL/PDF (FIX 2)
             const btnFull = document.getElementById('btn-excel-full');
             const btnLoc = document.getElementById('btn-excel-loc');
             const btnPdf = document.getElementById('btn-pdf');
@@ -2781,17 +3154,13 @@
                 btnLoc.classList.add('hidden');
                 btnPdf.classList.add('hidden');
             } else {
-                if(currentExportMode === 'room_only') {
-                    btnFull.innerText = "Excel (All Rooms)";
-                } else {
-                    btnFull.innerText = "Excel (Full)";
-                }
                 btnFull.classList.remove('hidden');
+                btnFull.innerText = "Excel (All)"; 
                 btnLoc.classList.add('hidden');
                 btnPdf.classList.remove('hidden');
             }
 
-            for (let i = 1; i <= count; i++) {
+            for (let i = start; i <= end; i++) {
                 const btn = document.createElement('button'); 
                 btn.innerText = i; 
                 btn.className = "room-btn p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold shadow-sm transition-all";
@@ -2800,8 +3169,9 @@
                     e.currentTarget.classList.add('black-active'); 
                     
                     activeRoomNumber = i.toString().padStart(4, '0');
+                    const locationName = `${catLabel} ${i}`;
 
-                    currentSelectedLocation = `${catLabel} ${i}`; 
+                    currentSelectedLocation = locationName; 
                     document.getElementById('location').value = currentSelectedLocation; 
                     document.getElementById('entry-form').classList.remove('hidden'); 
                     document.getElementById('form-header').innerText = `Geli Xogta Agabka (${currentSelectedLocation})`;
@@ -2841,7 +3211,14 @@
                 b.classList.remove('btn-active');
                 b.classList.remove('btn-active-red');
             });
-            if(event && event.currentTarget) event.currentTarget.classList.add('btn-active');
+            // FIX: Use current event or fallback to ID
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('btn-active');
+            } else {
+                // Fallback map
+                const map = {'Cafeteria': 'nav-cafeteria', 'Bakery': 'nav-bakery', 'Utensils': 'nav-utensils', 'Office': 'nav-office', 'Electricity': 'nav-electric', 'Security': 'nav-security', 'Garden': 'nav-garden', 'Cars': 'nav-car', 'Mosque': 'nav-mosque', 'Stadium': 'nav-stadium'};
+                if(map[catName]) document.getElementById(map[catName]).classList.add('btn-active');
+            }
 
             currentSelectedLocation = catName;
             currentCategory = catName.toLowerCase();
@@ -2864,24 +3241,6 @@
             }
 
             renderTable(currentSelectedLocation);
-        }
-
-        function resetFormOnlyInputs() {
-            editId = null;
-            currentImageBase64 = null;
-            const saveBtn = document.getElementById('save-btn');
-            if(saveBtn) {
-                saveBtn.innerHTML = '<i class="fas fa-plus-circle mr-2"></i> KAYDI AGABKA'; 
-                saveBtn.classList.remove('bg-blue-600');
-                saveBtn.classList.add('bg-slate-900');
-            }
-            ['holder','dept','code','name','desc','qty','uvalue','total','depreciation','purchase_date','item_age'].forEach(f => {
-                const el = document.getElementById(f);
-                if(el) el.value = '';
-            });
-            document.getElementById('status').value = 'Good';
-            document.getElementById('itemImage').value = '';
-            document.getElementById('image-preview-container').classList.add('hidden');
         }
 
        function toggleSidebar() {
@@ -2974,21 +3333,23 @@
         function getCategoryPriority(location) {
             if (!location) return 99;
             const loc = location.toLowerCase();
-            if (loc.startsWith("room")) return 1;
-            if (loc.includes("restaurant")) return 2;
-            if (loc.includes("hall") || loc.includes("hodaale")) return 3;
-            if (loc.includes("kitchen")) return 4;
-            if (loc.includes("cafeteria")) return 5;
-            if (loc.includes("bakery")) return 6;
-            if (loc.includes("office")) return 7;
-            if (loc.includes("electricity")) return 8;
-            if (loc.includes("security")) return 9;
-            if (loc.includes("garden")) return 10;
-            if (loc.includes("cars")) return 11;
-            if (loc.includes("utensils")) return 12;
-            if (loc.includes("laundry")) return 13;
-            if (loc.includes("store")) return 14;
-            return 15; 
+            if (loc.startsWith("room") && !loc.includes("staff")) return 1;
+            if (loc.includes("villa")) return 2;
+            if (loc.includes("staff room")) return 3;
+            if (loc.includes("restaurant")) return 4;
+            if (loc.includes("hall") || loc.includes("hodaale")) return 5;
+            if (loc.includes("kitchen")) return 6;
+            if (loc.includes("cafeteria")) return 7;
+            if (loc.includes("bakery")) return 8;
+            if (loc.includes("office")) return 9;
+            if (loc.includes("electricity")) return 10;
+            if (loc.includes("security")) return 11;
+            if (loc.includes("garden")) return 12;
+            if (loc.includes("cars")) return 13;
+            if (loc.includes("utensils")) return 14;
+            if (loc.includes("laundry")) return 15;
+            if (loc.includes("store")) return 16;
+            return 17; 
         }
 
         let currentExportMode = 'full';
@@ -3030,12 +3391,45 @@
                  }
                  else {
                      dataToExport = [...inventory];
-                     fileName = "Maansoor_Full_Inventory_Log";
+                     fileName = "Maansoor_Full_Inventory_Summary";
                  }
             }
 
             if (dataToExport.length === 0) {
                 return Swal.fire('Cillad', 'Qaybtan xog kuma jirto weli.', 'info');
+            }
+
+            // --- SUMMARY LOGIC (GROUP BY NAME) IF MODE IS FULL ---
+            if (type === 'full') {
+                const grouped = {};
+                dataToExport.forEach(item => {
+                    const key = item.name.trim().toLowerCase(); // Group by name
+                    
+                    if (!grouped[key]) {
+                        grouped[key] = {
+                            ...item,
+                            qty: 0,
+                            totalValNum: 0,
+                            // Use first code found, location becomes generalized
+                            location: "Multiple Locations" 
+                        };
+                    }
+                    
+                    // Accumulate Qty
+                    const q = parseFloat(item.qty) || 0;
+                    grouped[key].qty += q;
+                    
+                    // Accumulate Total Value
+                    const t = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
+                    grouped[key].totalValNum += t;
+                });
+                
+                // Convert back to array
+                dataToExport = Object.values(grouped).map(i => {
+                    // Update total string formatted
+                    i.total = `$${i.totalValNum.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                    return i;
+                });
             }
 
             dataToExport.sort((a, b) => {
@@ -3084,7 +3478,7 @@
             XLSX.writeFile(workbook, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
 
-        // --- FIXED: Updated exportToPDF function ---
+        // --- FIXED: Updated exportToPDF function with Summary ---
         function exportToPDF() {
             if(currentUserRole === 'staff') return; // AMNIGA
             if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
@@ -3103,6 +3497,7 @@
                 
                 let dataToProcess = [];
                 let titleText = "";
+                let isSummaryMode = false;
 
                 if (currentSelectedLocation) {
                     dataToProcess = inventory.filter(i => i.location === currentSelectedLocation);
@@ -3141,10 +3536,37 @@
                 else {
                     dataToProcess = [...inventory];
                     titleText = "FULL HOTEL INVENTORY SUMMARY REPORT";
+                    isSummaryMode = true;
                 }
 
                 if (dataToProcess.length === 0) {
                     return Swal.fire('Cillad', 'Qaybtan xog kuma jirto.', 'info');
+                }
+
+                // --- SUMMARY LOGIC FOR PDF ---
+                if (isSummaryMode) {
+                    const grouped = {};
+                    dataToProcess.forEach(item => {
+                        const key = item.name.trim().toLowerCase(); 
+                        
+                        if (!grouped[key]) {
+                            grouped[key] = {
+                                ...item,
+                                qty: 0,
+                                totalValNum: 0,
+                                location: "Multiple"
+                            };
+                        }
+                        const q = parseFloat(item.qty) || 0;
+                        grouped[key].qty += q;
+                        const t = parseFloat(item.total?.toString().replace(/[$,]/g, '')) || 0;
+                        grouped[key].totalValNum += t;
+                    });
+                    
+                    dataToProcess = Object.values(grouped).map(i => {
+                        i.total = `$${i.totalValNum.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                        return i;
+                    });
                 }
 
                 dataToProcess.sort((a, b) => (a.location || "").localeCompare(b.location || ""));
@@ -3280,13 +3702,12 @@
             document.getElementById('entry-form').classList.add('hidden'); 
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            // --- FIXED: Also remove btn-active-red ---
+            // --- FIXED: Sidebar Active State ---
             document.querySelectorAll('.nav-btn').forEach(b => {
                 b.classList.remove('btn-active');
                 b.classList.remove('btn-active-red');
             });
-            const sidebarBtns = document.querySelectorAll('.nav-btn');
-            if(sidebarBtns[2]) sidebarBtns[2].classList.add('btn-active'); 
+            document.getElementById('nav-rest').classList.add('btn-active'); 
 
             currentCategory = "Restaurant";
             currentExportMode = 'rest_only'; 
@@ -3347,13 +3768,12 @@
             document.getElementById('entry-form').classList.add('hidden'); 
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            // --- FIXED: Also remove btn-active-red ---
+            // --- FIXED: Sidebar Active State ---
             document.querySelectorAll('.nav-btn').forEach(b => {
                 b.classList.remove('btn-active');
                 b.classList.remove('btn-active-red');
             });
-            const sidebarBtns = document.querySelectorAll('.nav-btn');
-            if(sidebarBtns[3]) sidebarBtns[3].classList.add('btn-active'); 
+            document.getElementById('nav-hall').classList.add('btn-active'); 
 
             currentCategory = "Hall";
             currentExportMode = 'hall_only'; 
@@ -3430,10 +3850,7 @@
                 b.classList.remove('btn-active');
                 b.classList.remove('btn-active-red');
             });
-            const sidebarBtns = document.querySelectorAll('.nav-btn');
-            const storeBtn = Array.from(sidebarBtns).find(b => b.textContent.includes("Stores"));
-            if(storeBtn) storeBtn.classList.add('btn-active'); 
-
+            document.getElementById('nav-store').classList.add('btn-active');
             currentCategory = "Store";
             currentExportMode = 'full';
             
@@ -3459,16 +3876,17 @@
             `;
 
             const grid = document.getElementById('grid-buttons');
-            grid.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4";
+            grid.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"; // Increased for new Laundry Store
             grid.innerHTML = ''; 
 
-            // LEVEL 1 CATEGORIES
+            // LEVEL 1 CATEGORIES (Modified to include Laundry Store)
             const storeMainCats = [
                 { name: "Ground Stores", icon: "fa-layer-group", color: "amber", hasSub: true, type: "Ground" },
                 { name: "Floor 1 Stores", icon: "fa-layer-group", color: "blue", hasSub: true, type: "Floor 1" },
                 { name: "Floor 2 Stores", icon: "fa-layer-group", color: "indigo", hasSub: true, type: "Floor 2" },
                 { name: "Equipment Store", icon: "fa-tools", color: "slate", hasSub: false, finalName: "Store Equipment" },
-                { name: "General Store", icon: "fa-box-open", color: "slate", hasSub: false, finalName: "Store General" }
+                { name: "General Store", icon: "fa-box-open", color: "slate", hasSub: false, finalName: "Store General" },
+                { name: "Laundry Store", icon: "fa-jug-detergent", color: "pink", hasSub: false, finalName: "Store Laundry" } 
             ];
 
             storeMainCats.forEach(cat => {
@@ -3478,6 +3896,7 @@
                 if(cat.color === 'blue') bgClass = "bg-blue-50 border-blue-200 hover:bg-blue-100 hover:border-blue-500 text-blue-700";
                 if(cat.color === 'indigo') bgClass = "bg-indigo-50 border-indigo-200 hover:bg-indigo-100 hover:border-indigo-500 text-indigo-700";
                 if(cat.color === 'slate') bgClass = "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-500 text-slate-700";
+                if(cat.color === 'pink') bgClass = "bg-pink-50 border-pink-200 hover:bg-pink-100 hover:border-pink-500 text-pink-700";
 
                 btn.className = `p-5 border-2 rounded-2xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-md flex flex-col items-center justify-center gap-3 h-28 group ${bgClass}`;
                 btn.innerHTML = `
@@ -3485,7 +3904,7 @@
                         <i class="fas ${cat.icon} text-xl"></i>
                     </div>
                     <span class="font-black uppercase tracking-wide text-xs text-center">${cat.name}</span>
-                `;
+                    `;
                 
                 btn.onclick = () => {
                     if (cat.hasSub) {
@@ -3524,7 +3943,50 @@
                     <span class="font-black uppercase tracking-wide text-sm text-center">${opt.name}</span>
                 `;
                 btn.onclick = () => {
-                    handleSelectionClick(btn, opt.finalName);
+                    // WING LOGIC: Split specific stores into wings
+                    if(floorType === 'Ground' && opt.name.includes("Right")) {
+                        showStoreWingSelection(opt.finalName);
+                    }
+                    else if(floorType === 'Floor 2' && opt.name.includes("Left")) {
+                        showStoreWingSelection(opt.finalName);
+                    }
+                    else {
+                        handleSelectionClick(btn, opt.finalName);
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+        
+        // --- NEW: FUNCTION FOR WING SELECTION (LEVEL 3) ---
+        function showStoreWingSelection(parentLocationName) {
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showStoreMainSelection()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2">${parentLocationName} Wings :</span>
+            `;
+
+            const grid = document.getElementById('grid-buttons');
+            grid.innerHTML = ''; 
+
+            const wings = [
+                { name: "Right Wing", suffix: "Right Wing" },
+                { name: "Left Wing", suffix: "Left Wing" }
+            ];
+
+            wings.forEach(w => {
+                const btn = document.createElement('button');
+                btn.className = "p-6 border-2 border-gray-200 rounded-2xl shadow-sm transition-all hover:bg-emerald-50 hover:border-emerald-400 hover:scale-105 flex flex-col items-center justify-center gap-3 h-32 bg-white text-emerald-700";
+                btn.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center shadow-sm text-emerald-600">
+                        <i class="fas fa-building text-2xl"></i>
+                    </div>
+                    <span class="font-black uppercase tracking-wide text-sm text-center">${w.name}</span>
+                `;
+                
+                const finalLoc = `${parentLocationName} ${w.name}`;
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, finalLoc);
                 };
                 grid.appendChild(btn);
             });
@@ -3561,32 +4023,98 @@
             document.getElementById('entry-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
+        // --- NEW: LAUNDRY MAIN SELECTION (Sidebar) ---
+        function showLaundryMainSelection() {
+            closeSidebar();
+            hideAllScreens();
+            
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.add('hidden'); 
+            document.getElementById('dashboard-alerts').classList.add('hidden');
+            
+            document.getElementById('selection-area').classList.remove('hidden'); 
+            document.getElementById('entry-form').classList.add('hidden'); 
+            document.getElementById('inventory-section').classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
+            
+            // Activate Laundry Sidebar Button
+            const sidebarBtn = document.getElementById('nav-laundry');
+            if(sidebarBtn) sidebarBtn.classList.add('btn-active');
+
+            currentCategory = "Laundry";
+            currentExportMode = 'full';
+            
+            document.getElementById('table-title').innerText = "ALL LAUNDRY INVENTORY";
+
+            // Permissions
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
+
+            renderTable("Laundry");
+
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2">Dooro Qaybta Laundry-ga :</span>
+            `;
+
+            const grid = document.getElementById('grid-buttons');
+            grid.className = "grid grid-cols-2 gap-6 max-w-lg mx-auto";
+            grid.innerHTML = ''; 
+
+            const options = [
+                { name: "Main Laundry", icon: "fa-shirt" },
+                { name: "Villa Laundry", icon: "fa-vest" }
+            ];
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-6 bg-white border border-gray-200 rounded-2xl text-sm font-bold shadow-sm transition-all hover:bg-pink-50 hover:border-pink-500 hover:scale-105 flex flex-col items-center justify-center gap-3 h-32";
+                btn.innerHTML = `<i class="fas ${opt.icon} text-3xl text-pink-500"></i> <span>${opt.name}</span>`;
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, opt.name);
+                };
+                grid.appendChild(btn);
+            });
+        }
+
         function showKitchenMainSelection() {
             closeSidebar();
             hideAllScreens();
             document.getElementById('dashboard-content').classList.remove('hidden');
             document.getElementById('dashboard-visuals').classList.add('hidden');
-            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS (FIX 1)
+            document.getElementById('dashboard-alerts').classList.add('hidden'); // QARI ALERTS
             
             document.getElementById('selection-area').classList.remove('hidden');
             document.getElementById('entry-form').classList.add('hidden');
             
             document.getElementById('inventory-section').classList.remove('hidden');
 
-            // --- FIXED: Also remove btn-active-red ---
+            // --- FIXED: Sidebar Active State ---
             document.querySelectorAll('.nav-btn').forEach(b => {
                 b.classList.remove('btn-active');
                 b.classList.remove('btn-active-red');
             });
-            const sidebarBtns = document.querySelectorAll('.nav-btn');
-            if(sidebarBtns[4]) sidebarBtns[4].classList.add('btn-active'); 
+            const sidebarBtn = document.getElementById('nav-kitchen');
+            if(sidebarBtn) sidebarBtn.classList.add('btn-active'); 
             
             currentCategory = "Kitchen";
             currentExportMode = 'kitchen_only';
             
             document.getElementById('table-title').innerText = "ALL KITCHENS INVENTORY LOGS";
             
-            // PERMISSIONS (FIX 2)
+            // PERMISSIONS
             if(currentUserRole === 'staff') {
                 document.getElementById('btn-excel-full').classList.add('hidden');
                 document.getElementById('btn-excel-loc').classList.add('hidden');
@@ -3628,6 +4156,7 @@
             });
         }
 
+        // --- Sidebar Logic ---
         document.querySelectorAll('#sidebar button').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (window.innerWidth < 768) {
@@ -3636,6 +4165,7 @@
             });
         });
 
+        // --- Enter Key Support for Login ---
          document.getElementById('username').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') document.getElementById('password').focus();
         });
@@ -3644,7 +4174,7 @@
         });
         
    </script>
-
+   
    <!-- SECURITY: BLOCK VIEW SOURCE & INSPECT -->
 <script>
     // 1. Xanib Right Click (Context Menu)
@@ -3652,7 +4182,6 @@
         e.preventDefault();
         return false;
     });
-
     // 2. Xanib Keyboard Shortcuts (F12, Ctrl+U, Ctrl+Shift+I)
     document.onkeydown = function(e) {
         // F12 (DevTools)
@@ -3680,15 +4209,6 @@
             return false;
         }
     };
-
-     document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) { return false; }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
-        }
 </script>
 </body>
-</html
+</html>
