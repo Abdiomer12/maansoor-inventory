@@ -349,8 +349,8 @@
                         <span class="text-sm font-bold tracking-wide">Utensils</span>
                     </button>
 
-                    <!-- 6. OFFICES -->
-                    <button id="nav-office" onclick="showDirectCategory('Office', event)" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
+                    <!-- 6. OFFICES (UPDATED: Main Selection) -->
+                    <button id="nav-office" onclick="showOfficeMainSelection()" class="nav-btn w-full text-left py-3 px-3 rounded-xl hover:bg-slate-800 transition-all duration-300 flex items-center group border border-transparent">
                         <div class="nav-icon-box text-orange-400 group-hover:bg-orange-500/20 group-hover:text-orange-400">
                             <i class="fas fa-briefcase"></i>
                         </div>
@@ -1701,7 +1701,7 @@
                     
                     if (cat === 'kitchen') return loc.includes('kitchen');
                     if (cat === 'hall') return loc.includes('hall') || loc.includes('hodaale');
-                    if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                    if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground') || loc.includes('reception');
                     if (cat === 'cars') return loc.includes('car');
                     if (cat === 'utensils') return loc.includes('utensils');
                     if (cat === 'laundry') return loc.includes('laundry');
@@ -1722,7 +1722,7 @@
 
                     if (cat === 'kitchen') return loc.includes('kitchen');
                     if (cat === 'hall') return loc.includes('hall') || loc.includes('hodaale');
-                    if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                    if (cat === 'office') return loc.includes('office') || loc.includes('floor') || loc.includes('ground') || loc.includes('reception');
                     if (cat === 'cars') return loc.includes('car');
                     if (cat === 'utensils') return loc.includes('utensils');
                     if (cat === 'laundry') return loc.includes('laundry');
@@ -1955,7 +1955,7 @@
             if (loc.includes("SECURITY")) return "SECURITY";
             if (loc.includes("GARDEN")) return "GARDEN";
             if (loc.includes("CARS")) return "CARS";
-            if (loc.includes("OFFICE")) return "OFFICE";
+            if (loc.includes("OFFICE") || loc.includes("RECEPTION")) return "OFFICE";
             if (loc.includes("UTENSILS")) return "UTENSILS"; 
             if (loc.includes("LAUNDRY") && !loc.includes("STORE")) return "LAUNDRY";
             if (loc.includes("MOSQUE")) return "MOSQUE";
@@ -2077,7 +2077,7 @@
              if(c.includes("HALL") || c.includes("HODAALE")) return "HA";
              if(c.includes("CAFETERIA")) return "CF";
              if(c.includes("BAKERY")) return "BK";
-             if(c.includes("OFFICE")) return "OE";
+             if(c.includes("OFFICE") || c.includes("RECEPTION")) return "OE";
              if(c.includes("CARS")) return "CR";
              if(c.includes("ELECTRICITY")) return "EL";
              if(c.includes("SECURITY")) return "SEC";
@@ -2172,9 +2172,10 @@
             
             // 6. Set Defaults
             document.getElementById('item_age').value = "0 Days";
-            document.getElementById('purchase_date').value = new Date().toISOString().split('T')[0]; // Today
+            document.getElementById('purchase_date').value = getDefaultDate();
             if(document.getElementById('uvalue').value === "") document.getElementById('uvalue').value = "0.00";
             calculate();
+            calculateAge();
         }
 
         function selectItem(val) {
@@ -2964,7 +2965,8 @@
             else if (loc === "Office") {
                 filtered = inventory.filter(i => i.location && (
                     i.location.toLowerCase().includes("office") ||
-                    i.location.toLowerCase().includes("floor") 
+                    i.location.toLowerCase().includes("floor") ||
+                    i.location.toLowerCase().includes("reception")
                 ));
             }
             // Include Store in the general filter logic
@@ -3216,7 +3218,7 @@
                 event.currentTarget.classList.add('btn-active');
             } else {
                 // Fallback map
-                const map = {'Cafeteria': 'nav-cafeteria', 'Bakery': 'nav-bakery', 'Utensils': 'nav-utensils', 'Office': 'nav-office', 'Electricity': 'nav-electric', 'Security': 'nav-security', 'Garden': 'nav-garden', 'Cars': 'nav-car', 'Mosque': 'nav-mosque', 'Stadium': 'nav-stadium'};
+                const map = {'Cafeteria': 'nav-cafeteria', 'Bakery': 'nav-bakery', 'Utensils': 'nav-utensils', 'Electricity': 'nav-electric', 'Security': 'nav-security', 'Garden': 'nav-garden', 'Cars': 'nav-car', 'Mosque': 'nav-mosque', 'Stadium': 'nav-stadium'};
                 if(map[catName]) document.getElementById(map[catName]).classList.add('btn-active');
             }
 
@@ -3381,7 +3383,8 @@
                  else if (currentExportMode === 'office_only') {
                      dataToExport = inventory.filter(i => i.location && (
                         i.location.toLowerCase().includes("office") ||
-                        i.location.toLowerCase().includes("floor")
+                        i.location.toLowerCase().includes("floor") ||
+                        i.location.toLowerCase().includes("reception")
                      ));
                      fileName = "Maansoor_All_Offices";
                  } 
@@ -3516,7 +3519,7 @@
                     } else if (currentCategory === 'office') {
                         dataToProcess = inventory.filter(i => {
                             const loc = (i.location || "").toLowerCase();
-                            return loc.includes('office') || loc.includes('floor') || loc.includes('ground');
+                            return loc.includes('office') || loc.includes('floor') || loc.includes('ground') || loc.includes('reception');
                         });
                         titleText = "INVENTORY REPORT: ALL OFFICES";
                     } else if (currentCategory === 'restaurant') {
@@ -3756,6 +3759,81 @@
                 grid.appendChild(btn);
             });
         }
+        
+        // --- NEW: OFFICE MAIN SELECTION (FINANCE, HR, ETC) ---
+        function showOfficeMainSelection() {
+            closeSidebar();
+            hideAllScreens();
+            
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            document.getElementById('dashboard-visuals').classList.add('hidden');
+            document.getElementById('dashboard-alerts').classList.add('hidden');
+
+            document.getElementById('selection-area').classList.remove('hidden'); 
+            document.getElementById('entry-form').classList.add('hidden'); 
+            document.getElementById('inventory-section').classList.remove('hidden');
+
+            // Sidebar Active
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('btn-active');
+                b.classList.remove('btn-active-red');
+            });
+            document.getElementById('nav-office').classList.add('btn-active');
+
+            currentCategory = "Office";
+            currentExportMode = 'office_only';
+
+            document.getElementById('table-title').innerText = "ALL OFFICE INVENTORY LOGS";
+
+            // Permissions
+            if(currentUserRole === 'staff') {
+                document.getElementById('btn-excel-full').classList.add('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.add('hidden');
+            } else {
+                document.getElementById('btn-excel-full').innerText = "EXCEL (ALL OFFICES)";
+                document.getElementById('btn-excel-full').classList.remove('hidden');
+                document.getElementById('btn-excel-loc').classList.add('hidden');
+                document.getElementById('btn-pdf').classList.remove('hidden');
+            }
+
+            renderTable("Office");
+
+            document.getElementById('selection-label').innerHTML = `
+                <button onclick="showHomePage()" class="mr-3 text-blue-600 hover:underline text-[10px] uppercase font-bold bg-blue-50 px-2 py-1 rounded"><i class="fas fa-arrow-left"></i> Back to Dashboard</button> 
+                <span class="text-gray-400">|</span> <span class="ml-2">Dooro Xafiiska :</span>
+            `;
+
+            const grid = document.getElementById('grid-buttons');
+            grid.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"; // Adjusted grid
+            grid.innerHTML = ''; 
+
+            const offices = [
+                { name: "Finance Office", icon: "fa-calculator", color: "text-green-600", bg: "hover:bg-green-50" },
+                { name: "HR Office", icon: "fa-user-tie", color: "text-blue-600", bg: "hover:bg-blue-50" },
+                { name: "PR Office", icon: "fa-bullhorn", color: "text-purple-600", bg: "hover:bg-purple-50" },
+                { name: "IT Office", icon: "fa-laptop-code", color: "text-indigo-600", bg: "hover:bg-indigo-50" },
+                { name: "Reception Office", icon: "fa-bell-concierge", color: "text-yellow-600", bg: "hover:bg-yellow-50" },
+                { name: "General Office", icon: "fa-briefcase", color: "text-gray-600", bg: "hover:bg-gray-50" }
+            ];
+
+            offices.forEach(off => {
+                const btn = document.createElement('button');
+                btn.className = `p-5 bg-white border border-gray-200 rounded-2xl text-xs font-bold shadow-sm transition-all ${off.bg} hover:border-gray-400 hover:scale-105 flex flex-col items-center justify-center gap-3 h-28 group`;
+                btn.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shadow-sm group-hover:bg-white transition">
+                        <i class="fas ${off.icon} text-xl ${off.color}"></i>
+                    </div>
+                    <span class="font-black uppercase tracking-wide text-center">${off.name}</span>
+                `;
+                
+                btn.onclick = () => {
+                    handleSelectionClick(btn, off.name);
+                };
+                grid.appendChild(btn);
+            });
+        }
+
 
         function showHallMainSelection() {
             closeSidebar();
